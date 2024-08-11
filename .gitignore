@@ -38,3 +38,6 @@ out/
 
 ### Kotlin ###
 .kotlin
+
+### 운영 파일 ###
+application-prod.yml
