@@ -41,3 +41,9 @@ out/
 
 ### 운영 파일 ###
 application-prod.yml
+
+### 환경설정 파일
+.env
+
+### 데이터베이스
+/db
