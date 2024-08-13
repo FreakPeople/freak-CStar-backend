@@ -1,10 +1,8 @@
 package yjh.cstar
 
-import org.junit.jupiter.api.Test
-import org.springframework.boot.test.context.SpringBootTest
+import kotlin.test.Test
 
-@SpringBootTest
-class CstarApplicationTests {
+class CstarApplicationTests : IntegrationTest() {
 
     @Test
     fun contextLoads() {

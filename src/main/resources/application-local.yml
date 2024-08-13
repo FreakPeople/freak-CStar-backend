@@ -6,3 +6,19 @@ spring:
       on-profile: local
   application:
     name: cstar
+  datasource:
+    url: jdbc:mysql://localhost:3306/cstar_db
+    username: local_user
+    password: local_password
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  sql:
+    init:
+      mode: always
+      data-locations:
+        - classpath:/db/init_schema.sql
