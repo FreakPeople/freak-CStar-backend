@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:tc:mysql:8.0.35:///?useSSL=false&serverTimezone=Asia/Seoul
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
