@@ -10,6 +10,10 @@ import org.springframework.context.annotation.Import
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.jdbc.Sql
 import yjh.cstar.config.JpaConfig
+import yjh.cstar.game.infrastructure.jpa.GameEntity
+import yjh.cstar.game.infrastructure.jpa.GameJpaRepository
+import yjh.cstar.game.infrastructure.jpa.GameResultEntity
+import yjh.cstar.game.infrastructure.jpa.GameResultJpaRepository
 import yjh.cstar.member.infrastructure.jpa.MemberEntity
 import yjh.cstar.member.infrastructure.jpa.MemberJpaRepository
 import yjh.cstar.room.domain.RoomStatus
@@ -37,6 +41,12 @@ class JpaTest {
 
     @Autowired
     private lateinit var roomJoinJpaRepository: RoomJoinJpaRepository
+
+    @Autowired
+    private lateinit var gameJpaRepository: GameJpaRepository
+
+    @Autowired
+    private lateinit var gameResultJpaRepository: GameResultJpaRepository
 
     @DisplayName("Member Entity 연결 테스트")
     @Test
@@ -105,6 +115,57 @@ class JpaTest {
         assertAll(
             { assertNotNull(roomJoins) },
             { assertEquals(1, roomJoins.size) }
+        )
+    }
+
+    @DisplayName("Game Entity 연결 테스트")
+    @Test
+    fun test4() {
+        // given
+        gameJpaRepository.save(
+            GameEntity(
+                roomId = 1L,
+                winnerId = 1L,
+                totalQuizCount = 5,
+                startedAt = LocalDateTime.now(),
+                createdAt = LocalDateTime.now(),
+                updatedAt = LocalDateTime.now()
+            )
+        )
+
+        // when
+        val games = gameJpaRepository.findAll()
+
+        // then
+        assertAll(
+            { assertNotNull(games) },
+            { assertEquals(1, games.size) }
+        )
+    }
+
+    @DisplayName("GameResult Entity 연결 테스트")
+    @Test
+    fun test5() {
+        // given
+        gameResultJpaRepository.save(
+            GameResultEntity(
+                gameId = 1L,
+                playerId = 1L,
+                totalCount = 5,
+                correctCount = 5,
+                ranking = 1,
+                createdAt = LocalDateTime.now(),
+                updatedAt = LocalDateTime.now()
+            )
+        )
+
+        // when
+        val gameResults = gameResultJpaRepository.findAll()
+
+        // then
+        assertAll(
+            { assertNotNull(gameResults) },
+            { assertEquals(1, gameResults.size) }
         )
     }
 }
