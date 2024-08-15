@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.context.annotation.Import
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.jdbc.Sql
 import yjh.cstar.config.JpaConfig
@@ -16,6 +17,12 @@ import yjh.cstar.game.infrastructure.jpa.GameResultEntity
 import yjh.cstar.game.infrastructure.jpa.GameResultJpaRepository
 import yjh.cstar.member.infrastructure.jpa.MemberEntity
 import yjh.cstar.member.infrastructure.jpa.MemberJpaRepository
+import yjh.cstar.quiz.infrastructure.domain.Category
+import yjh.cstar.quiz.infrastructure.jpa.GameQuizEntity
+import yjh.cstar.quiz.infrastructure.jpa.GameQuizId
+import yjh.cstar.quiz.infrastructure.jpa.GameQuizJpaRepository
+import yjh.cstar.quiz.infrastructure.jpa.QuizEntity
+import yjh.cstar.quiz.infrastructure.jpa.QuizJpaRepository
 import yjh.cstar.room.domain.RoomStatus
 import yjh.cstar.room.infrastructure.jpa.RoomEntity
 import yjh.cstar.room.infrastructure.jpa.RoomJoinEntity
@@ -47,6 +54,12 @@ class JpaTest {
 
     @Autowired
     private lateinit var gameResultJpaRepository: GameResultJpaRepository
+
+    @Autowired
+    private lateinit var quizJpaRepository: QuizJpaRepository
+
+    @Autowired
+    private lateinit var gameQuizJpaRepository: GameQuizJpaRepository
 
     @DisplayName("Member Entity 연결 테스트")
     @Test
@@ -167,5 +180,47 @@ class JpaTest {
             { assertNotNull(gameResults) },
             { assertEquals(1, gameResults.size) }
         )
+    }
+
+    @DisplayName("Quiz Entity 연결 테스트")
+    @Test
+    fun test6() {
+        // given
+        quizJpaRepository.save(
+            QuizEntity(
+                writerId = 1L,
+                question = "question",
+                answer = "answer",
+                category = Category.NETWORK,
+                createdAt = LocalDateTime.now(),
+                updatedAt = LocalDateTime.now()
+            )
+        )
+
+        // when
+        val quizzes = quizJpaRepository.findAll()
+
+        // then
+        assertAll(
+            { assertNotNull(quizzes) },
+            { assertEquals(1, quizzes.size) }
+        )
+    }
+
+    @DisplayName("GameQuiz Entity 연결 테스트")
+    @Test
+    fun test7() {
+        // given
+        val gameQuizId = GameQuizId(1L, 1L)
+        gameQuizJpaRepository.save(GameQuizEntity(id = gameQuizId))
+
+        // when
+        val gameQuiz = gameQuizJpaRepository.findByIdOrNull(GameQuizId(1L, 1L))
+
+        // then
+        assertNotNull(gameQuiz).also {
+            assertEquals(1L, gameQuiz.id.gameId)
+            assertEquals(1L, gameQuiz.id.quizId)
+        }
     }
 }
