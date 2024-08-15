@@ -4,12 +4,10 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.context.annotation.Import
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.jdbc.Sql
 import yjh.cstar.config.JpaConfig
 import yjh.cstar.game.infrastructure.jpa.GameEntity
 import yjh.cstar.game.infrastructure.jpa.GameJpaRepository
@@ -33,10 +31,8 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 @ActiveProfiles("local-test")
-@Import(JpaConfig::class)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Sql(value = ["file:src/main/resources/db/init_schema.sql"])
 @DisplayName("JPA 연결 테스트")
+@Import(JpaConfig::class)
 @DataJpaTest
 class JpaTest {
 

@@ -9,3 +9,11 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  test:
+    database:
+      replace: none
+  sql:
+    init:
+      mode: always
+      data-locations:
+        - file:src/main/resources/db/init_schema.sql

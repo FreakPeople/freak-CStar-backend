@@ -7,6 +7,5 @@ import org.springframework.transaction.annotation.Transactional
 
 @Transactional
 @ActiveProfiles("local-test")
-@Sql(value = ["file:src/main/resources/db/init_schema.sql"])
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 abstract class IntegrationTest
