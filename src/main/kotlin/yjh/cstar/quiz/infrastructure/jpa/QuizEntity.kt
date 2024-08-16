@@ -10,7 +10,7 @@ import jakarta.persistence.Table
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
-import yjh.cstar.quiz.infrastructure.domain.Category
+import yjh.cstar.quiz.domain.Category
 import java.time.LocalDateTime
 
 @EntityListeners(AuditingEntityListener::class)

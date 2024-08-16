@@ -15,7 +15,7 @@ import yjh.cstar.game.infrastructure.jpa.GameResultEntity
 import yjh.cstar.game.infrastructure.jpa.GameResultJpaRepository
 import yjh.cstar.member.infrastructure.jpa.MemberEntity
 import yjh.cstar.member.infrastructure.jpa.MemberJpaRepository
-import yjh.cstar.quiz.infrastructure.domain.Category
+import yjh.cstar.quiz.domain.Category
 import yjh.cstar.quiz.infrastructure.jpa.GameQuizEntity
 import yjh.cstar.quiz.infrastructure.jpa.GameQuizId
 import yjh.cstar.quiz.infrastructure.jpa.GameQuizJpaRepository
