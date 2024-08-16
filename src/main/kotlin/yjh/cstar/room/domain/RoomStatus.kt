@@ -1,5 +1,5 @@
 package yjh.cstar.room.domain
 
 enum class RoomStatus {
-    WAITING, RUNNING
+    WAITING, IN_PROGRESS
 }
