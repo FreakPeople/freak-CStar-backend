@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus
 import yjh.cstar.common.BaseException
 import kotlin.test.assertEquals
 
-
 @DisplayName("[Domain 테스트] RoomCreateCommand")
 class RoomCreateCommandTest {
 

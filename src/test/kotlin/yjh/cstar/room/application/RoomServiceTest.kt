@@ -22,7 +22,6 @@ class RoomServiceTest : IntegrationTest() {
     @Autowired
     private lateinit var roomJpaRepository: RoomJpaRepository
 
-
     @Test
     fun `게임 방 생성 테스트`() {
         // given
