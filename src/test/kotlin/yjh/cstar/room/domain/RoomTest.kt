@@ -6,11 +6,11 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
+@DisplayName("[Domain 테스트] Room")
 class RoomTest {
 
-    @DisplayName("게임방 생성 테스트")
     @Test
-    fun test1() {
+    fun `게임 방 생성 테스트`() {
         // given
         val roomCreateCommand = RoomCreateCommand(maxCapacity = 5)
 

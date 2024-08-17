@@ -31,7 +31,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 @ActiveProfiles("local-test")
-@DisplayName("JPA 연결 테스트")
+@DisplayName("[Infrastructure 테스트] JPA 연결 테스트")
 @Import(JpaConfig::class)
 @DataJpaTest
 class JpaTest {
@@ -57,9 +57,8 @@ class JpaTest {
     @Autowired
     private lateinit var gameQuizJpaRepository: GameQuizJpaRepository
 
-    @DisplayName("Member Entity 연결 테스트")
     @Test
-    fun test1() {
+    fun `Member Entity 연결 테스트`() {
         // given
         memberJpaRepository.save(
             MemberEntity(
@@ -81,9 +80,8 @@ class JpaTest {
         )
     }
 
-    @DisplayName("Room Entity 연결 테스트")
     @Test
-    fun test2() {
+    fun `Room Entity 연결 테스트`() {
         // given
         roomJpaRepository.save(
             RoomEntity(
@@ -105,9 +103,8 @@ class JpaTest {
         )
     }
 
-    @DisplayName("RoomJoin Entity 연결 테스트")
     @Test
-    fun test3() {
+    fun `RoomJoin Entity 연결 테스트`() {
         // given
         roomJoinJpaRepository.save(
             RoomJoinEntity(
@@ -127,9 +124,8 @@ class JpaTest {
         )
     }
 
-    @DisplayName("Game Entity 연결 테스트")
     @Test
-    fun test4() {
+    fun `Game Entity 연결 테스트`() {
         // given
         gameJpaRepository.save(
             GameEntity(
@@ -152,9 +148,8 @@ class JpaTest {
         )
     }
 
-    @DisplayName("GameResult Entity 연결 테스트")
     @Test
-    fun test5() {
+    fun `GameResult Entity 연결 테스트`() {
         // given
         gameResultJpaRepository.save(
             GameResultEntity(
@@ -178,9 +173,8 @@ class JpaTest {
         )
     }
 
-    @DisplayName("Quiz Entity 연결 테스트")
     @Test
-    fun test6() {
+    fun `Quiz Entity 연결 테스트`() {
         // given
         quizJpaRepository.save(
             QuizEntity(
@@ -203,9 +197,8 @@ class JpaTest {
         )
     }
 
-    @DisplayName("GameQuiz Entity 연결 테스트")
     @Test
-    fun test7() {
+    fun `GameQuiz Entity 연결 테스트`() {
         // given
         val gameQuizId = GameQuizId(1L, 1L)
         gameQuizJpaRepository.save(GameQuizEntity(id = gameQuizId))

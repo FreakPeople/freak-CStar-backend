@@ -13,7 +13,7 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
-@DisplayName("RoomService 테스트")
+@DisplayName("[Application 테스트] RoomService")
 class RoomServiceTest : IntegrationTest() {
 
     @Autowired
@@ -22,9 +22,9 @@ class RoomServiceTest : IntegrationTest() {
     @Autowired
     private lateinit var roomJpaRepository: RoomJpaRepository
 
-    @DisplayName("게임 방 생성 테스트")
+
     @Test
-    fun test1() {
+    fun `게임 방 생성 테스트`() {
         // given
         val command = RoomCreateCommand(maxCapacity = 5)
 
