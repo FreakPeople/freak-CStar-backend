@@ -32,6 +32,9 @@ dependencies {
     // mysql
     runtimeOnly("com.mysql:mysql-connector-j")
 
+    // logging
+    implementation("io.github.oshai:kotlin-logging-jvm:5.1.4")
+
     // test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")

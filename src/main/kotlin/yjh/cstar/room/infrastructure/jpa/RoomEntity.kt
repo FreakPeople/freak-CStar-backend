@@ -10,6 +10,7 @@ import jakarta.persistence.Table
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
+import yjh.cstar.room.domain.Room
 import yjh.cstar.room.domain.RoomStatus
 import java.time.LocalDateTime
 
@@ -41,4 +42,30 @@ class RoomEntity(
 
     @Column(name = "deleted_at")
     private val deletedAt: LocalDateTime? = null,
-)
+) {
+    companion object {
+        fun from(room: Room): RoomEntity {
+            return RoomEntity(
+                id = room.id,
+                maxCapacity = room.maxCapacity,
+                currCapacity = room.currCapacity,
+                status = room.status,
+                createdAt = room.createdAt,
+                updatedAt = room.updatedAt,
+                deletedAt = room.deletedAt
+            )
+        }
+    }
+
+    fun toModel(): Room {
+        return Room(
+            id = this.id,
+            maxCapacity = this.maxCapacity,
+            currCapacity = this.currCapacity,
+            status = this.status,
+            createdAt = this.createdAt,
+            updatedAt = this.updatedAt,
+            deletedAt = this.deletedAt
+        )
+    }
+}
