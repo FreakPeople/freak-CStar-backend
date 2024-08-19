@@ -13,4 +13,12 @@ class MemberRepositoryAdapter(
     override fun save(member: Member): Member {
         return memberJpaRepository.save(MemberEntity.from(member)).toModel()
     }
+
+    override fun existsByEmail(email: String): Boolean {
+        return memberJpaRepository.existsByEmail(email)
+    }
+
+    override fun existsByNickname(nickname: String): Boolean {
+        return memberJpaRepository.existsByNickname(nickname)
+    }
 }

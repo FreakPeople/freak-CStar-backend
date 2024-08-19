@@ -36,6 +36,8 @@ enum class BaseErrorCode(
     // 404
     NOT_FOUND_ROOM(HttpStatus.NOT_FOUND, 4041, "게임방을 찾을 수 없습니다"),
 
+    CONFLICT_MEMBER(HttpStatus.CONFLICT, 4092, "회원이 이미 존재합니다."),
+
     // 500
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 5000, "서버 내부 에러"),
 }
