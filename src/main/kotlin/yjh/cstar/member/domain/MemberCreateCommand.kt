@@ -1,7 +1,6 @@
 package yjh.cstar.member.domain
 
 import yjh.cstar.common.BaseErrorCode
-import yjh.cstar.room.domain.Validator
 
 class MemberCreateCommand(
     val email: String,
