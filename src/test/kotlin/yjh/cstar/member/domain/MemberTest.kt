@@ -17,14 +17,15 @@ class MemberTest {
             password = "password",
             nickname = "nickname"
         )
+        val encodedPassword = "encodedPassword"
 
         // when
-        val member = assertDoesNotThrow { Member.create(command) }
+        val member = assertDoesNotThrow { Member.create(command, encodedPassword) }
 
         // then
         assertNotNull(member)
         assertEquals("email@naver.com", member.email)
         assertEquals("nickname", member.nickname)
-        assertEquals("password", member.password)
+        assertEquals("encodedPassword", member.password)
     }
 }

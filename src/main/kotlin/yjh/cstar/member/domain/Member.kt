@@ -12,10 +12,13 @@ class Member(
     val deletedAt: LocalDateTime? = null,
 ) {
     companion object {
-        fun create(command: MemberCreateCommand): Member {
+        fun create(
+            command: MemberCreateCommand,
+            encodedPassword: String,
+        ): Member {
             return Member(
                 email = command.email,
-                password = command.password,
+                password = encodedPassword,
                 nickname = command.nickname
             )
         }

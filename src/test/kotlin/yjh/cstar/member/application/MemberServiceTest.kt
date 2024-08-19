@@ -8,6 +8,7 @@ import yjh.cstar.IntegrationTest
 import yjh.cstar.member.domain.MemberCreateCommand
 import yjh.cstar.member.infrastructure.jpa.MemberJpaRepository
 import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
@@ -39,10 +40,11 @@ class MemberServiceTest : IntegrationTest() {
 
         assertNotNull(member)
         assertEquals("email@naver.com", member.email)
-//        assertNotEquals("password", member.password)
         assertEquals("nickname", member.nickname)
         assertNotNull(member.createdAt)
         assertNotNull(member.updatedAt)
         assertNull(member.deletedAt)
+
+        assertNotEquals("password", member.password)
     }
 }
