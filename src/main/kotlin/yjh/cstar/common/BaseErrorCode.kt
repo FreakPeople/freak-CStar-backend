@@ -1,12 +1,12 @@
 package yjh.cstar.common
 
 import org.springframework.http.HttpStatus
+import yjh.cstar.member.domain.Validator.Companion.MAX_NICKNAME
+import yjh.cstar.member.domain.Validator.Companion.MAX_PASSWORD
+import yjh.cstar.member.domain.Validator.Companion.MIN_NICKNAME
+import yjh.cstar.member.domain.Validator.Companion.MIN_PASSWORD
 import yjh.cstar.room.domain.Validator.Companion.MAX_CAPACITY
-import yjh.cstar.room.domain.Validator.Companion.MAX_NICKNAME
-import yjh.cstar.room.domain.Validator.Companion.MAX_PASSWORD
 import yjh.cstar.room.domain.Validator.Companion.MIN_CAPACITY
-import yjh.cstar.room.domain.Validator.Companion.MIN_NICKNAME
-import yjh.cstar.room.domain.Validator.Companion.MIN_PASSWORD
 
 enum class BaseErrorCode(
     val httpStatus: HttpStatus,
