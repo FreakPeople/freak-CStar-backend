@@ -10,6 +10,7 @@ import jakarta.persistence.Table
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
+import yjh.cstar.member.domain.Member
 import java.time.LocalDateTime
 
 @EntityListeners(AuditingEntityListener::class)
@@ -40,4 +41,30 @@ class MemberEntity(
 
     @Column(name = "deleted_at")
     private val deletedAt: LocalDateTime? = null,
-)
+) {
+    companion object {
+        fun from(member: Member): MemberEntity {
+            return MemberEntity(
+                id = member.id,
+                email = member.email,
+                password = member.password,
+                nickname = member.nickname,
+                createdAt = member.createdAt,
+                updatedAt = member.updatedAt,
+                deletedAt = member.deletedAt
+            )
+        }
+    }
+
+    fun toModel(): Member {
+        return Member(
+            id = this.id,
+            email = this.email,
+            password = this.password,
+            nickname = this.nickname,
+            createdAt = this.createdAt,
+            updatedAt = this.updatedAt,
+            deletedAt = this.deletedAt
+        )
+    }
+}
