@@ -17,3 +17,4 @@ spring:
       mode: always
       data-locations:
         - file:src/main/resources/db/init_schema.sql
+        - file:src/main/resources/db/v2_alter_member_table_for_unique.sql
