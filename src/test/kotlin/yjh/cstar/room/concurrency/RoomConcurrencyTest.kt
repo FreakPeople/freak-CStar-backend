@@ -36,11 +36,13 @@ class RoomConcurrencyTest {
     @BeforeTest
     fun clearBefore() {
         roomJpaRepository.deleteAll()
+        memberJpaRepository.deleteAll()
     }
 
     @AfterTest
     fun clearAfter() {
         roomJpaRepository.deleteAll()
+        memberJpaRepository.deleteAll()
     }
 
     @Test
