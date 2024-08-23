@@ -1,5 +1,6 @@
 package yjh.cstar.room.infrastructure
 
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 import yjh.cstar.room.application.port.RoomRepository
 import yjh.cstar.room.domain.Room
@@ -12,5 +13,9 @@ class RoomRepositoryAdapter(
 ) : RoomRepository {
     override fun save(room: Room): Room {
         return roomJpaRepository.save(RoomEntity.from(room)).toModel()
+    }
+
+    override fun findByIdOrNull(id: Long): Room? {
+        return roomJpaRepository.findByIdOrNull(id)?.toModel()
     }
 }

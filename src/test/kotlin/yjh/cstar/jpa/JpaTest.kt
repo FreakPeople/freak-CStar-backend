@@ -104,6 +104,28 @@ class JpaTest {
     }
 
     @Test
+    fun `Room Entity 조회 테스트`() {
+        // given
+        val roomId = roomJpaRepository.save(
+            RoomEntity(
+                maxCapacity = 5,
+                currCapacity = 3,
+                status = RoomStatus.WAITING,
+                createdAt = null,
+                updatedAt = null
+            )
+        ).toModel().id
+
+        // when
+        val rooms = roomJpaRepository.findByIdOrNull(roomId)
+
+        // then
+        assertAll(
+            { assertNotNull(rooms) }
+        )
+    }
+
+    @Test
     fun `RoomJoin Entity 연결 테스트`() {
         // given
         roomJoinJpaRepository.save(
