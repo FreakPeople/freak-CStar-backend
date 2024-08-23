@@ -40,6 +40,8 @@ class RoomController(
         @PathVariable("id") roomId: Long,
         @RequestBody request: RoomJoinRequest,
     ): ResponseEntity<Response<Long>> {
-        return ResponseEntity.ok(Response(data = roomService.join(roomId, request.memberId)))
+        synchronized(this) {
+            return ResponseEntity.ok(Response(data = roomService.join(roomId, request.memberId)))
+        }
     }
 }
