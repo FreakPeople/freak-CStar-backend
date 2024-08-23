@@ -4,4 +4,6 @@ import yjh.cstar.room.domain.Room
 
 interface RoomRepository {
     fun save(room: Room): Room
+
+    fun findByIdOrNull(id: Long): Room?
 }
