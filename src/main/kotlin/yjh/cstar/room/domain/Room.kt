@@ -38,5 +38,4 @@ class Room(
             throw BaseException(BaseErrorCode.NOT_IN_WAITING_STATUS)
         }
     }
-
 }

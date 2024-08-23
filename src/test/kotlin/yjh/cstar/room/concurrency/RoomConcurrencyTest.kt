@@ -54,7 +54,7 @@ class RoomConcurrencyTest {
                 currCapacity = 0,
                 status = RoomStatus.WAITING,
                 createdAt = null,
-                updatedAt = null,
+                updatedAt = null
             )
         ).toModel().id
 
@@ -64,7 +64,7 @@ class RoomConcurrencyTest {
                 password = "12345",
                 nickname = "testNickname",
                 createdAt = null,
-                updatedAt = null,
+                updatedAt = null
             )
         ).toModel().id
 
@@ -72,7 +72,6 @@ class RoomConcurrencyTest {
         val startLatch = CountDownLatch(1)
         val doneLatch = CountDownLatch(numberOfThreads)
         val executor = Executors.newFixedThreadPool(numberOfThreads)
-
 
         // when
         for (idx in 1..numberOfThreads) {
@@ -99,4 +98,3 @@ class RoomConcurrencyTest {
         assertEquals(50, room.currCapacity) // 최대 5명만 수용 가능해야함
     }
 }
-

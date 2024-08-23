@@ -33,7 +33,7 @@ class RoomTest {
         val room = Room(
             maxCapacity = 5,
             currCapacity = 3,
-            status = RoomStatus.WAITING,
+            status = RoomStatus.WAITING
         )
 
         // when
@@ -49,7 +49,7 @@ class RoomTest {
         val room = Room(
             maxCapacity = 5,
             currCapacity = 5,
-            status = RoomStatus.WAITING,
+            status = RoomStatus.WAITING
         )
 
         // when & then
@@ -65,7 +65,7 @@ class RoomTest {
         val room = Room(
             maxCapacity = 5,
             currCapacity = 3,
-            status = RoomStatus.IN_PROGRESS,
+            status = RoomStatus.IN_PROGRESS
         )
 
         // when & then

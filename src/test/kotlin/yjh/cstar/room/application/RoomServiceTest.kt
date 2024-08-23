@@ -57,7 +57,7 @@ class RoomServiceTest : IntegrationTest() {
                 currCapacity = 3,
                 status = RoomStatus.WAITING,
                 createdAt = null,
-                updatedAt = null,
+                updatedAt = null
             )
         ).toModel().id
 
@@ -67,7 +67,7 @@ class RoomServiceTest : IntegrationTest() {
                 password = "12345",
                 nickname = "testNickname",
                 createdAt = null,
-                updatedAt = null,
+                updatedAt = null
             )
         ).toModel().id
 
