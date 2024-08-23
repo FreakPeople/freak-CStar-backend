@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController
 import yjh.cstar.common.Response
 import yjh.cstar.room.application.RoomService
 import yjh.cstar.room.presentation.request.RoomCreateRequest
+import yjh.cstar.room.presentation.request.RoomJoinRequest
 import yjh.cstar.room.presentation.request.toCommand
 import yjh.cstar.room.presentation.response.RoomResponse
 
@@ -32,5 +33,15 @@ class RoomController(
     ): ResponseEntity<Response<RoomResponse>> {
         val response = RoomResponse.from(roomService.retrieve(id))
         return ResponseEntity.ok(Response(data = response))
+    }
+
+    @PostMapping("/rooms/{id}")
+    fun join(
+        @PathVariable("id") roomId: Long,
+        @RequestBody request: RoomJoinRequest,
+    ): ResponseEntity<Response<Long>> {
+        synchronized(this) {
+            return ResponseEntity.ok(Response(data = roomService.join(roomId, request.memberId)))
+        }
     }
 }
