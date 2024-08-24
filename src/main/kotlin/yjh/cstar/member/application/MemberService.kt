@@ -9,6 +9,7 @@ import yjh.cstar.member.application.port.PasswordEncryptor
 import yjh.cstar.member.domain.Member
 import yjh.cstar.member.domain.MemberCreateCommand
 
+@Transactional(readOnly = true)
 @Service
 class MemberService(
     private val memberRepository: MemberRepository,
