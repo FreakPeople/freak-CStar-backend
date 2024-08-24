@@ -29,6 +29,9 @@ dependencies {
     // security
     implementation("org.springframework.boot:spring-boot-starter-security")
 
+    // websocket
+    implementation("org.springframework.boot:spring-boot-starter-websocket")
+
     // jpa
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
