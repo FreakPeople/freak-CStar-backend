@@ -2,14 +2,23 @@ package yjh.cstar.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
+import yjh.cstar.auth.jwt.JwtAccessDeniedHandler
+import yjh.cstar.auth.jwt.JwtAuthenticationEntryPoint
+import yjh.cstar.auth.jwt.JwtSecurityConfig
+import yjh.cstar.auth.jwt.TokenProvider
 
 @Configuration
-class SecurityConfig {
+class SecurityConfig(
+    private val tokenProvider: TokenProvider,
+    private val jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint,
+    private val jwtAccessDeniedHandler: JwtAccessDeniedHandler,
+) {
 
     @Bean
     fun passwordEncoder(): PasswordEncoder {
@@ -22,7 +31,9 @@ class SecurityConfig {
             .csrf { it.disable() }
             .formLogin { it.disable() }
             .authorizeHttpRequests {
-                it.anyRequest().permitAll() // 추후에 인증이 필요한 부분에 대하여 경로 설정이 필요 합니다.
+                it.requestMatchers(HttpMethod.POST, "/v1/authenticate").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/v1/members").permitAll()
+                    .anyRequest().permitAll()
 
 //                it.requestMatchers(HttpMethod.POST, "/members").permitAll()
 //                    .requestMatchers(HttpMethod.POST, "/games").permitAll()
@@ -31,6 +42,11 @@ class SecurityConfig {
             .sessionManagement {
                 it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             }
+            .exceptionHandling {
+                it.authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                    .accessDeniedHandler(jwtAccessDeniedHandler)
+            }
+            .with(JwtSecurityConfig(tokenProvider)) {}
         return http.build()
     }
 }

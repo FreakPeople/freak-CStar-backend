@@ -10,6 +10,10 @@ import yjh.cstar.member.infrastructure.jpa.MemberJpaRepository
 class MemberRepositoryAdapter(
     private val memberJpaRepository: MemberJpaRepository,
 ) : MemberRepository {
+    override fun findByEmail(email: String): Member? {
+        return memberJpaRepository.findByEmail(email)?.toModel()
+    }
+
     override fun save(member: Member): Member {
         return memberJpaRepository.save(MemberEntity.from(member)).toModel()
     }

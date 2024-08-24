@@ -18,3 +18,6 @@ spring:
       data-locations:
         - file:src/main/resources/db/init_schema.sql
         - file:src/main/resources/db/v2_alter_member_table_for_unique.sql
+jwt:
+  secret: eWpoLWNzdGFyLWJhY2tlbmQtand0LXNlY3JldC1rZXkteWpoLWNzdGFyLWJhY2tlbmQtand0LXNlY3JldC1rZXkK
+  token-validity-in-seconds: 86400

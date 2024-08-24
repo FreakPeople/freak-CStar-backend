@@ -15,6 +15,10 @@ class MemberService(
     private val passwordEncryptor: PasswordEncryptor,
 ) {
 
+    fun retrieve(email: String): Member {
+        return memberRepository.findByEmail(email) ?: throw BaseException(BaseErrorCode.NOT_FOUND_MEMBER)
+    }
+
     @Transactional
     fun create(command: MemberCreateCommand): Long {
         checkEmailDuplicated(command.email)
