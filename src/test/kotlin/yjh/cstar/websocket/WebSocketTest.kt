@@ -1,5 +1,6 @@
 package yjh.cstar.websocket
 
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
@@ -17,6 +18,10 @@ import org.springframework.web.socket.messaging.WebSocketStompClient
 @SpringBootTest
 class WebSocketTest {
 
+    /**
+     * 웹소켓 연결 할 서버가 켜져있지 않으면(8080) 동작하지 않는 테스트이므로 @Disabled 처리를 해주었습니다.
+     */
+    @Disabled
     @Test
     fun connect() {
         val webSocketClient = StandardWebSocketClient();
