@@ -22,7 +22,6 @@ class JwtAuthenticationEntryPoint(
         authException: AuthenticationException,
     ) {
         logger.error { "[ERROR] ${authException.message}" }
-        println("야 ㅁ너 머야?")
 
         val errorData = ErrorResponse(
             status = BaseErrorCode.UNAUTHORIZED,
