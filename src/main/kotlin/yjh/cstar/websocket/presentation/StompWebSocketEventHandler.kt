@@ -47,4 +47,3 @@ class StompWebSocketEventHandler {
 
     private fun getDestination(event: AbstractSubProtocolEvent) = getHeader(event).destination
 }
-

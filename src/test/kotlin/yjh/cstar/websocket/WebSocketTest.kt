@@ -12,7 +12,6 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.web.socket.client.standard.StandardWebSocketClient
 import org.springframework.web.socket.messaging.WebSocketStompClient
 
-
 @ActiveProfiles("local-test")
 @DisplayName("[Websocket 테스트] Websocket 연결 테스트")
 @SpringBootTest
@@ -24,7 +23,7 @@ class WebSocketTest {
     @Disabled
     @Test
     fun connect() {
-        val webSocketClient = StandardWebSocketClient();
+        val webSocketClient = StandardWebSocketClient()
         val stompClient = WebSocketStompClient(webSocketClient).apply {
             messageConverter = MappingJackson2MessageConverter()
         }
