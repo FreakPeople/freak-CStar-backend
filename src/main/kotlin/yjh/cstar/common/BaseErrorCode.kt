@@ -39,9 +39,17 @@ enum class BaseErrorCode(
         40011,
         "닉네임의 길이는 $MIN_NICKNAME 이상 $MAX_NICKNAME 이하여야 합니다."
     ),
+    PASSWORD_INVALID(HttpStatus.BAD_REQUEST, 40012, "비밀번호가 일치하지 않습니다."),
+
+    // 401
+    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, 4010, "인증이 필요합니다."),
+
+    // 403
+    FORBIDDEN(HttpStatus.FORBIDDEN, 4030, "권한이 없는 접근입니다."),
 
     // 404
     NOT_FOUND_ROOM(HttpStatus.NOT_FOUND, 4040, "게임방을 찾을 수 없습니다"),
+    NOT_FOUND_MEMBER(HttpStatus.NOT_FOUND, 40410, "회원을 찾을 수 없습니다"),
 
     // 409
     NOT_IN_WAITING_STATUS(HttpStatus.CONFLICT, 4090, "게임 방이 현재 대기 상태가 아닙니다."),

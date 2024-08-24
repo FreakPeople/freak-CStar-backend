@@ -9,7 +9,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.io.Serializable
 
 @Embeddable
-class GameQuizId(
+data class GameQuizId(
     val gameId: Long = 0,
     val quizId: Long = 0,
 ) : Serializable
