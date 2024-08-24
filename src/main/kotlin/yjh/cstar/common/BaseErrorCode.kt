@@ -12,7 +12,7 @@ import yjh.cstar.room.domain.Validator.Companion.MIN_CAPACITY
  * 커스텀 코드
  * 0 ~ 9 : Room 도메인
  * 10 ~ 19 : Member 도메인
- * 20 ~ 29 : ??? 도메인
+ * 20 ~ 29 : Quiz 도메인
  * 30 ~ 40 : ??? 도메인
  */
 enum class BaseErrorCode(
@@ -40,6 +40,7 @@ enum class BaseErrorCode(
         "닉네임의 길이는 $MIN_NICKNAME 이상 $MAX_NICKNAME 이하여야 합니다."
     ),
     PASSWORD_INVALID(HttpStatus.BAD_REQUEST, 40012, "비밀번호가 일치하지 않습니다."),
+    QUIZ_CATEGORY_INVALID(HttpStatus.BAD_REQUEST, 40020, "지원하지 않는 퀴즈 카테고리 입니다."),
 
     // 401
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, 4010, "인증이 필요합니다."),
