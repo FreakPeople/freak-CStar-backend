@@ -11,10 +11,10 @@ import org.springframework.data.redis.serializer.StringRedisSerializer
 @Configuration
 class RedisConfig() {
 
-    @Value("\${spring.redis.host}")
+    @Value("\${spring.data.redis.host}")
     lateinit var host: String
 
-    @Value("\${spring.redis.port}")
+    @Value("\${spring.data.redis.port}")
     lateinit var port: String
 
     @Bean
@@ -23,8 +23,8 @@ class RedisConfig() {
     }
 
     @Bean
-    fun redisTemplate(redisConnectionFactory: RedisConnectionFactory): RedisTemplate<String, Any> {
-        return RedisTemplate<String, Any>().apply {
+    fun redisTemplate(redisConnectionFactory: RedisConnectionFactory): RedisTemplate<String, String> {
+        return RedisTemplate<String, String>().apply {
             connectionFactory = redisConnectionFactory
             keySerializer = StringRedisSerializer()
             valueSerializer = StringRedisSerializer()
