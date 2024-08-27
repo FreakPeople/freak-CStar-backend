@@ -11,6 +11,11 @@ import yjh.cstar.quiz.domain.Category
 import yjh.cstar.quiz.infrastructure.jpa.QuizEntity
 import yjh.cstar.quiz.infrastructure.jpa.QuizJpaRepository
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
+import org.springframework.data.repository.findByIdOrNull
+import yjh.cstar.quiz.domain.QuizCreateCommand
 
 @DisplayName("[Application 테스트] QuizService")
 class QuizServiceTest : IntegrationTest() {
@@ -20,6 +25,32 @@ class QuizServiceTest : IntegrationTest() {
 
     @Autowired
     private lateinit var quizJpaRepository: QuizJpaRepository
+
+    @Test
+    fun `퀴즈 생성 테스트`() {
+        // given
+        val command = QuizCreateCommand(
+            question = "question",
+            answer = "answer",
+            category = Category.ALGORITHM
+        )
+        val writerId = 1L
+
+        // when
+        val quizId = quizService.create(command, writerId)
+
+        // then
+        assertTrue(quizId > 0L)
+        val quiz = quizJpaRepository.findByIdOrNull(quizId)?.toModel()
+
+        assertNotNull(quiz)
+        assertEquals("question", quiz.question)
+        assertEquals("answer", quiz.answer)
+        assertEquals(Category.ALGORITHM, quiz.category)
+        assertNotNull(quiz.createdAt)
+        assertNotNull(quiz.updatedAt)
+        assertNull(quiz.deletedAt)
+    }
 
     @Test
     fun `퀴즈 문제 조회 테스트`() {
