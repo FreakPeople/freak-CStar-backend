@@ -13,4 +13,10 @@ class RoomJoinRepositoryAdapter(
     override fun save(roomJoin: RoomJoin): RoomJoin {
         return roomJoinJpaRepository.save(RoomJoinEntity.from(roomJoin)).toModel()
     }
+
+    override fun findCurrParticipant(roomId: Long, currentCapacity: Int): List<Long> {
+        return roomJoinJpaRepository.findCurrParticipant(roomId, currentCapacity)
+            .map { it.toModel() }
+            .map { it.playerId }
+    }
 }

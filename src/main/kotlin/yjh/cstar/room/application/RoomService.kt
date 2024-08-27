@@ -21,6 +21,11 @@ class RoomService(
         return roomRepository.findByIdOrNull(id) ?: throw BaseException(BaseErrorCode.NOT_FOUND_ROOM)
     }
 
+    fun retrieveCurrParticipant(roomId: Long): List<Long> {
+        val room = retrieve(roomId)
+        return roomJoinRepository.findCurrParticipant(roomId, room.currCapacity)
+    }
+
     @Transactional
     fun create(command: RoomCreateCommand): Long {
         val room = Room.create(command)
