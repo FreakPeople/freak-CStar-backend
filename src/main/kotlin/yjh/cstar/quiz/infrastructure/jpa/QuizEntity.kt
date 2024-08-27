@@ -3,8 +3,6 @@ package yjh.cstar.quiz.infrastructure.jpa
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EntityListeners
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
@@ -35,7 +33,6 @@ class QuizEntity(
     val answer: String,
 
     @Column(name = "category", nullable = false)
-    @Enumerated(EnumType.STRING)
     val category: Category,
 
     @CreatedDate
@@ -49,6 +46,20 @@ class QuizEntity(
     @Column(name = "deleted_at")
     private val deletedAt: LocalDateTime? = null,
 ) {
+    companion object {
+        fun from(quiz: Quiz): QuizEntity {
+            return QuizEntity(
+                id = quiz.id,
+                writerId = quiz.writerId,
+                question = quiz.question,
+                answer = quiz.answer,
+                category = quiz.category,
+                createdAt = quiz.createdAt,
+                updatedAt = quiz.updatedAt,
+                deletedAt = quiz.deletedAt
+            )
+        }
+    }
 
     fun toModel(): Quiz {
         return Quiz(
