@@ -107,7 +107,6 @@ class RoomServiceTest : IntegrationTest() {
             )
         ).toModel().id
 
-
         roomJoinJpaRepository.save(
             RoomJoinEntity(
                 roomId = roomId,
