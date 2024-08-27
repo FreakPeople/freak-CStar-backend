@@ -1,5 +1,8 @@
 package yjh.cstar.room.presentation
 
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.data.web.PageableDefault
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -33,6 +36,14 @@ class RoomController(
     ): ResponseEntity<Response<RoomResponse>> {
         val response = RoomResponse.from(roomService.retrieve(id))
         return ResponseEntity.ok(Response(data = response))
+    }
+
+    @GetMapping("/rooms")
+    fun retrieveAll(
+        @PageableDefault(size = 10) pageable: Pageable,
+    ): ResponseEntity<Response<Page<RoomResponse>>> {
+        val responses = roomService.retrieveAll(pageable).map { RoomResponse.from(it) }
+        return ResponseEntity.ok(Response(data = responses))
     }
 
     @PostMapping("/rooms/{id}")
