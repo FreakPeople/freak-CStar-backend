@@ -10,6 +10,7 @@ import jakarta.persistence.Table
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
+import yjh.cstar.game.domain.Game
 import java.time.LocalDateTime
 
 @EntityListeners(AuditingEntityListener::class)
@@ -43,4 +44,31 @@ class GameEntity(
 
     @Column(name = "deleted_at")
     private val deletedAt: LocalDateTime? = null,
-)
+) {
+    companion object {
+        fun from(game: Game): GameEntity {
+            return GameEntity(
+                id = game.id,
+                roomId = game.roomId,
+                winnerId = game.winnerId,
+                totalQuizCount = game.totalQuizCount,
+                startedAt = game.startedAt,
+                createdAt = game.createdAt,
+                updatedAt = game.updatedAt,
+                deletedAt = game.deletedAt
+            )
+        }
+    }
+    fun toModel(): Game {
+        return Game(
+            id = this.id,
+            roomId = this.roomId,
+            winnerId = this.winnerId,
+            totalQuizCount = this.totalQuizCount,
+            startedAt = this.startedAt,
+            createdAt = this.createdAt,
+            updatedAt = this.updatedAt,
+            deletedAt = this.deletedAt
+        )
+    }
+}
