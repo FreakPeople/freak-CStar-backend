@@ -8,7 +8,7 @@ class Room(
     val id: Long = 0,
     val maxCapacity: Int,
     var currCapacity: Int = 0,
-    val status: RoomStatus = RoomStatus.WAITING,
+    var status: RoomStatus = RoomStatus.WAITING,
     var createdAt: LocalDateTime? = null,
     var updatedAt: LocalDateTime? = null,
     val deletedAt: LocalDateTime? = null,
@@ -25,6 +25,11 @@ class Room(
         checkWaitingStatus()
         checkCapacity()
         currCapacity++
+    }
+
+    fun startGame() {
+        checkWaitingStatus()
+        status = RoomStatus.IN_PROGRESS
     }
 
     private fun checkCapacity() {

@@ -1,6 +1,5 @@
 package yjh.cstar.room.infrastructure
 
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 import yjh.cstar.room.application.port.RoomRepository
 import yjh.cstar.room.domain.Room

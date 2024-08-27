@@ -7,11 +7,13 @@ import yjh.cstar.common.BaseException
 import yjh.cstar.room.application.port.RoomRepository
 import yjh.cstar.room.domain.Room
 import yjh.cstar.room.domain.RoomCreateCommand
+import yjh.cstar.room.infrastructure.jpa.RoomJoinJpaRepository
 
 @Transactional(readOnly = true)
 @Service
 class RoomService(
     private val roomRepository: RoomRepository,
+    private val roomJoinJpaRepository: RoomJoinJpaRepository,
 ) {
 
     fun retrieve(id: Long): Room {
@@ -30,5 +32,12 @@ class RoomService(
         room.entrance()
         roomRepository.save(room)
         return roomId
+    }
+
+    @Transactional
+    fun startGame(roomId: Long) {
+        val room = retrieve(roomId)
+        room.startGame()
+        roomRepository.save(room)
     }
 }
