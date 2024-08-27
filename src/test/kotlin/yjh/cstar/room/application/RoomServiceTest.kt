@@ -8,6 +8,7 @@ import yjh.cstar.member.infrastructure.jpa.MemberJpaRepository
 import yjh.cstar.room.domain.RoomCreateCommand
 import yjh.cstar.room.domain.RoomStatus
 import yjh.cstar.room.infrastructure.jpa.RoomEntity
+import yjh.cstar.room.infrastructure.jpa.RoomJoinJpaRepository
 import yjh.cstar.room.infrastructure.jpa.RoomJpaRepository
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -23,6 +24,9 @@ class RoomServiceTest : IntegrationTest() {
 
     @Autowired
     private lateinit var roomJpaRepository: RoomJpaRepository
+
+    @Autowired
+    private lateinit var roomJoinJpaRepository: RoomJoinJpaRepository
 
     @Autowired
     private lateinit var memberJpaRepository: MemberJpaRepository
@@ -76,9 +80,15 @@ class RoomServiceTest : IntegrationTest() {
 
         // then
         assertTrue(createdRoomId > 0L)
-        val room = roomJpaRepository.findByIdOrNull(createdRoomId)?.toModel()
 
+        val room = roomJpaRepository.findByIdOrNull(createdRoomId)?.toModel()
         assertNotNull(room)
         assertEquals(4, room.currCapacity)
+
+        val roomJoins = roomJoinJpaRepository.findAll().map { it.toModel() }
+        assertEquals(1, roomJoins.size)
+        assertEquals(roomId, roomJoins[0].roomId)
+        assertEquals(memberId, roomJoins[0].playerId)
+        assertNotNull(roomJoins[0].joinedAt)
     }
 }

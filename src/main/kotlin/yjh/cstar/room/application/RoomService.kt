@@ -4,16 +4,17 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import yjh.cstar.common.BaseErrorCode
 import yjh.cstar.common.BaseException
+import yjh.cstar.room.application.port.RoomJoinRepository
 import yjh.cstar.room.application.port.RoomRepository
 import yjh.cstar.room.domain.Room
 import yjh.cstar.room.domain.RoomCreateCommand
-import yjh.cstar.room.infrastructure.jpa.RoomJoinJpaRepository
+import yjh.cstar.room.domain.RoomJoin
 
 @Transactional(readOnly = true)
 @Service
 class RoomService(
     private val roomRepository: RoomRepository,
-    private val roomJoinJpaRepository: RoomJoinJpaRepository,
+    private val roomJoinRepository: RoomJoinRepository,
 ) {
 
     fun retrieve(id: Long): Room {
@@ -31,6 +32,13 @@ class RoomService(
         val room = retrieve(roomId)
         room.entrance()
         roomRepository.save(room)
+
+        val roomJoin = RoomJoin(
+            roomId = roomId,
+            playerId = memberId
+        )
+        roomJoinRepository.save(roomJoin)
+
         return roomId
     }
 
