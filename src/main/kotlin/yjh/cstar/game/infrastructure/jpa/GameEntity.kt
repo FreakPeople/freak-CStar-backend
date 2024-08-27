@@ -32,7 +32,7 @@ class GameEntity(
     private val totalQuizCount: Int,
 
     @Column(name = "started_at", nullable = false)
-    private var startedAt: LocalDateTime?,
+    private var startedAt: LocalDateTime,
 
     @CreatedDate
     @Column(name = "created_at", nullable = false)

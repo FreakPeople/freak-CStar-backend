@@ -14,14 +14,12 @@ class GameService(
     val gameEngineService: GameEngineService,
 ) {
     @Transactional
-    fun start(command: GameStartCommand, playerId: Long) {
-
+    fun start(command: GameStartCommand) {
         roomService.startGame(command.roomId)
 
-        // command 안에 category 기준으로 10개의 랜덤 문제를 가져온다.
         val quizzes = quizService.getQuizzes(command.quizCategory, command.totalQuestions)
 
-        // 실제 퀴즈 제공해주는 별도의 스레드 생성
-        gameEngineService.start(quizzes, command.roomId, playerId)
+        // 실제 퀴즈 실행하는 비동기 메서드
+        gameEngineService.start(quizzes, command.roomId)
     }
 }

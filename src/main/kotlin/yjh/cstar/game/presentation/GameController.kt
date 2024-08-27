@@ -23,8 +23,8 @@ class GameController(
         @RequestBody request: GameStartRequest,
         authentication: Authentication,
     ): ResponseEntity<Response<Long>> {
-        val playerId = tokenProvider.getMemberId(authentication);
-        gameService.start(request.toCommand(), playerId)
+        val playerId = tokenProvider.getMemberId(authentication)
+        gameService.start(request.toCommand())
         return ResponseEntity.ok(Response())
     }
 }
