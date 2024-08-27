@@ -8,16 +8,15 @@ import yjh.cstar.game.domain.AnswerResult
 class GameAnswerQueueService(
     private val queueService: QueueService,
 ) {
-
     /**
-     * 사용자의 정답 요청이 들어오면, submit을 통해 제출하고, 순차적으로 저장한다.
+     * 플레이어의 정답을 add을 통해 제출하고, 순차적으로 저장한다.
      */
     fun add(answerResult: AnswerResult) {
         queueService.add(answerResult)
     }
 
     /**
-     * 순차적으로 저장된 정답을, 하나씩 꺼내온다.
+     * 순차적으로 저장된 정답을,하나씩 꺼내온다.
      */
     fun poll(roomId: Long, quizId: Long): AnswerResult? {
         return queueService.poll(roomId, quizId)
