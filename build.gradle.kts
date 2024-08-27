@@ -32,6 +32,9 @@ dependencies {
     // websocket
     implementation("org.springframework.boot:spring-boot-starter-websocket")
 
+    // redis
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+
     // jpa
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 

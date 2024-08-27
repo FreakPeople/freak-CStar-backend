@@ -12,7 +12,7 @@ import yjh.cstar.room.domain.Validator.Companion.MIN_CAPACITY
  * 커스텀 코드
  * 0 ~ 9 : Room 도메인
  * 10 ~ 19 : Member 도메인
- * 20 ~ 29 : ??? 도메인
+ * 20 ~ 29 : Quiz 도메인
  * 30 ~ 40 : ??? 도메인
  */
 enum class BaseErrorCode(
@@ -29,6 +29,9 @@ enum class BaseErrorCode(
         4000,
         "방 최대 수용가능 인원수는 $MIN_CAPACITY 이상 $MAX_CAPACITY 이하 여야 합니다."
     ),
+
+    EMPTY_ANSWER(HttpStatus.BAD_REQUEST, 4001, "답변이 비어 있습니다."),
+
     PASSWORD_OUT_OF_LENGTH(
         HttpStatus.BAD_REQUEST,
         40010,
@@ -40,6 +43,7 @@ enum class BaseErrorCode(
         "닉네임의 길이는 $MIN_NICKNAME 이상 $MAX_NICKNAME 이하여야 합니다."
     ),
     PASSWORD_INVALID(HttpStatus.BAD_REQUEST, 40012, "비밀번호가 일치하지 않습니다."),
+    QUIZ_CATEGORY_INVALID(HttpStatus.BAD_REQUEST, 40020, "지원하지 않는 퀴즈 카테고리 입니다."),
 
     // 401
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, 4010, "인증이 필요합니다."),
@@ -49,6 +53,7 @@ enum class BaseErrorCode(
 
     // 404
     NOT_FOUND_ROOM(HttpStatus.NOT_FOUND, 4040, "게임방을 찾을 수 없습니다"),
+    INVALID_QUIZ_ID(HttpStatus.NOT_FOUND, 4042, "유효하지 않은 퀴즈 번호입니다."),
     NOT_FOUND_MEMBER(HttpStatus.NOT_FOUND, 40410, "회원을 찾을 수 없습니다"),
 
     // 409

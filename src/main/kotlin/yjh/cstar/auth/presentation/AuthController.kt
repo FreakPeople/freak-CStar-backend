@@ -34,7 +34,7 @@ class AuthController(
             throw BaseException(BaseErrorCode.PASSWORD_INVALID)
         }
 
-        val jwtTokenResponse = JwtTokenResponse(accessToken = tokenProvider.createToken(email))
+        val jwtTokenResponse = JwtTokenResponse(accessToken = tokenProvider.createToken(member.id, email))
         return ResponseEntity.ok(Response(data = jwtTokenResponse))
     }
 }

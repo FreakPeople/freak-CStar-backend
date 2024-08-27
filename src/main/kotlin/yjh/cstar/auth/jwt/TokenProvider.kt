@@ -16,6 +16,8 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.User
 import org.springframework.stereotype.Component
+import yjh.cstar.common.BaseErrorCode
+import yjh.cstar.common.BaseException
 import java.security.Key
 import java.util.Date
 
@@ -27,12 +29,8 @@ class TokenProvider(
     @Value("\${jwt.token-validity-in-seconds}") tokenValidityInSeconds: Long,
 ) : InitializingBean {
 
-    private val tokenValidityInMilliseconds: Long
+    private val tokenValidityInMilliseconds = tokenValidityInSeconds * 1000
     private var key: Key? = null
-
-    init {
-        tokenValidityInMilliseconds = tokenValidityInSeconds * 1000
-    }
 
     companion object {
         private const val AUTHORITIES_KEY = "auth"
@@ -42,12 +40,16 @@ class TokenProvider(
         key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret))
     }
 
-    fun createToken(email: String): String {
+    fun createToken(memberId: Long, email: String): String {
         val validity = Date(Date().time + tokenValidityInMilliseconds)
+
+        val claims = Jwts.claims()
+        claims["memberId"] = memberId
+        claims[AUTHORITIES_KEY] = ""
 
         return Jwts.builder()
             .setSubject(email)
-            .claim(AUTHORITIES_KEY, "")
+            .setClaims(claims)
             .signWith(key, SignatureAlgorithm.HS512)
             .setExpiration(validity)
             .compact()
@@ -88,5 +90,19 @@ class TokenProvider(
             logger.info { "JWT 토큰이 잘못되었습니다." }
         }
         return false
+    }
+
+    fun getMemberId(authentication: Authentication): Long {
+        val jwtToken = getJwtTokenFrom(authentication)
+        val claims = Jwts.parserBuilder().setSigningKey(key)
+            .build().parseClaimsJws(jwtToken)
+        return claims.body["memberId"].toString().toLong()
+    }
+
+    fun getJwtTokenFrom(authentication: Authentication): String {
+        if (authentication.credentials is String) {
+            return authentication.credentials as String
+        }
+        throw BaseException(BaseErrorCode.INTERNAL_SERVER_ERROR)
     }
 }

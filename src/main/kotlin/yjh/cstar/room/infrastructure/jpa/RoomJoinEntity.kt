@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
+import yjh.cstar.room.domain.RoomJoin
 import java.time.LocalDateTime
 
 @EntityListeners(AuditingEntityListener::class)
@@ -27,4 +28,24 @@ class RoomJoinEntity(
 
     @Column(name = "joined_at", nullable = false)
     private var joinedAt: LocalDateTime?,
-)
+) {
+    companion object {
+        fun from(roomJoin: RoomJoin): RoomJoinEntity {
+            return RoomJoinEntity(
+                id = roomJoin.id,
+                roomId = roomJoin.roomId,
+                playerId = roomJoin.playerId,
+                joinedAt = roomJoin.joinedAt
+            )
+        }
+    }
+
+    fun toModel(): RoomJoin {
+        return RoomJoin(
+            id = this.id,
+            roomId = this.roomId,
+            playerId = this.playerId,
+            joinedAt = this.joinedAt
+        )
+    }
+}
