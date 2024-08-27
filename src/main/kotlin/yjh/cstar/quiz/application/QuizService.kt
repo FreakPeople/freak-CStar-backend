@@ -11,6 +11,6 @@ class QuizService(
 ) {
     fun getQuizzes(quizCategory: String, totalQuestions: Int): List<Quiz> {
         val category = Category.create(quizCategory)
-        return quizRepository.getQuizzes(category, totalQuestions)
+        return quizRepository.getQuizzes(category.name, totalQuestions)
     }
 }
