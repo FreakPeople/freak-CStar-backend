@@ -29,6 +29,9 @@ enum class BaseErrorCode(
         4000,
         "방 최대 수용가능 인원수는 $MIN_CAPACITY 이상 $MAX_CAPACITY 이하 여야 합니다."
     ),
+
+    EMPTY_ANSWER(HttpStatus.BAD_REQUEST, 4001, "답변이 비어 있습니다."),
+
     PASSWORD_OUT_OF_LENGTH(
         HttpStatus.BAD_REQUEST,
         40010,
@@ -50,6 +53,7 @@ enum class BaseErrorCode(
 
     // 404
     NOT_FOUND_ROOM(HttpStatus.NOT_FOUND, 4040, "게임방을 찾을 수 없습니다"),
+    INVALID_QUIZ_ID(HttpStatus.NOT_FOUND, 4042, "유효하지 않은 퀴즈 번호입니다."),
     NOT_FOUND_MEMBER(HttpStatus.NOT_FOUND, 40410, "회원을 찾을 수 없습니다"),
 
     // 409
