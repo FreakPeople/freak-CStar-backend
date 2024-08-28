@@ -4,18 +4,18 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import yjh.cstar.IntegrationTest
 import yjh.cstar.common.BaseException
 import yjh.cstar.quiz.domain.Category
+import yjh.cstar.quiz.domain.QuizCreateCommand
 import yjh.cstar.quiz.infrastructure.jpa.QuizEntity
 import yjh.cstar.quiz.infrastructure.jpa.QuizJpaRepository
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
-import org.springframework.data.repository.findByIdOrNull
-import yjh.cstar.quiz.domain.QuizCreateCommand
 
 @DisplayName("[Application 테스트] QuizService")
 class QuizServiceTest : IntegrationTest() {

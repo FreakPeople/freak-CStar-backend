@@ -12,7 +12,6 @@ import yjh.cstar.quiz.application.QuizService
 import yjh.cstar.quiz.presentation.request.QuizCreateRequest
 import yjh.cstar.quiz.presentation.request.toCommand
 
-
 @RestController
 @RequestMapping("/v1")
 class QuizController(
