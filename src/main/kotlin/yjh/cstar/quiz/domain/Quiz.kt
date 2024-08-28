@@ -8,7 +8,18 @@ class Quiz(
     val question: String,
     val answer: String,
     val category: Category,
-    val createdAt: LocalDateTime? = null,
-    val updatedAt: LocalDateTime? = null,
+    var createdAt: LocalDateTime? = null,
+    var updatedAt: LocalDateTime? = null,
     val deletedAt: LocalDateTime? = null,
-)
+) {
+    companion object {
+        fun create(command: QuizCreateCommand, writerId: Long): Quiz {
+            return Quiz(
+                writerId = writerId,
+                question = command.question,
+                answer = command.answer,
+                category = command.category
+            )
+        }
+    }
+}

@@ -49,6 +49,20 @@ class QuizEntity(
     @Column(name = "deleted_at")
     private val deletedAt: LocalDateTime? = null,
 ) {
+    companion object {
+        fun from(quiz: Quiz): QuizEntity {
+            return QuizEntity(
+                id = quiz.id,
+                writerId = quiz.writerId,
+                question = quiz.question,
+                answer = quiz.answer,
+                category = quiz.category,
+                createdAt = quiz.createdAt,
+                updatedAt = quiz.updatedAt,
+                deletedAt = quiz.deletedAt
+            )
+        }
+    }
 
     fun toModel(): Quiz {
         return Quiz(
