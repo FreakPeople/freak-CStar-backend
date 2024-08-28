@@ -2,6 +2,7 @@ package yjh.cstar.room.application
 
 import org.junit.jupiter.api.DisplayName
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.PageRequest
 import yjh.cstar.IntegrationTest
 import yjh.cstar.member.infrastructure.jpa.MemberEntity
 import yjh.cstar.member.infrastructure.jpa.MemberJpaRepository
@@ -32,6 +33,55 @@ class RoomServiceTest : IntegrationTest() {
 
     @Autowired
     private lateinit var memberJpaRepository: MemberJpaRepository
+
+    @Test
+    fun `게임 방 전체 조회 테스트`() {
+        // given
+        roomJpaRepository.save(
+            RoomEntity(
+                maxCapacity = 5,
+                currCapacity = 3,
+                status = RoomStatus.WAITING,
+                createdAt = null,
+                updatedAt = null
+            )
+        ).toModel()
+        roomJpaRepository.save(
+            RoomEntity(
+                maxCapacity = 5,
+                currCapacity = 3,
+                status = RoomStatus.WAITING,
+                createdAt = null,
+                updatedAt = null
+            )
+        ).toModel()
+        roomJpaRepository.save(
+            RoomEntity(
+                maxCapacity = 5,
+                currCapacity = 3,
+                status = RoomStatus.WAITING,
+                createdAt = null,
+                updatedAt = null
+            )
+        ).toModel()
+        roomJpaRepository.save(
+            RoomEntity(
+                maxCapacity = 5,
+                currCapacity = 3,
+                status = RoomStatus.WAITING,
+                createdAt = null,
+                updatedAt = null
+            )
+        ).toModel()
+
+        // when
+        val page_1 = roomService.retrieveAll(PageRequest.of(0, 3))
+        val page_2 = roomService.retrieveAll(PageRequest.of(1, 3))
+
+        // then
+        assertEquals(3, page_1.content.size)
+        assertEquals(1, page_2.content.size)
+    }
 
     @Test
     fun `게임 방 생성 테스트`() {

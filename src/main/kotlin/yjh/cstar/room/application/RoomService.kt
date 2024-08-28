@@ -1,5 +1,7 @@
 package yjh.cstar.room.application
 
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import yjh.cstar.common.BaseErrorCode
@@ -19,6 +21,10 @@ class RoomService(
 
     fun retrieve(id: Long): Room {
         return roomRepository.findByIdOrNull(id) ?: throw BaseException(BaseErrorCode.NOT_FOUND_ROOM)
+    }
+
+    fun retrieveAll(pageable: Pageable): Page<Room> {
+        return roomRepository.findAll(pageable)
     }
 
     fun retrieveCurrParticipant(roomId: Long): List<Long> {
