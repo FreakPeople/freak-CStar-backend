@@ -33,6 +33,7 @@ class TokenProvider(
     private var key: Key? = null
 
     companion object {
+        private const val MEMBER_ID = "memberId"
         private const val AUTHORITIES_KEY = "auth"
     }
 
@@ -43,13 +44,14 @@ class TokenProvider(
     fun createToken(memberId: Long, email: String): String {
         val validity = Date(Date().time + tokenValidityInMilliseconds)
 
-        val claims = Jwts.claims()
-        claims["memberId"] = memberId
-        claims[AUTHORITIES_KEY] = ""
+        val claims = Jwts.claims().apply {
+            put(MEMBER_ID, memberId)
+            put(AUTHORITIES_KEY, "")
+            subject = email
+        }
 
         return Jwts.builder()
-            .setSubject(email)
-            .setClaims(claims)
+            .addClaims(claims)
             .signWith(key, SignatureAlgorithm.HS512)
             .setExpiration(validity)
             .compact()
@@ -69,6 +71,7 @@ class TokenProvider(
             .filter { it.isNotEmpty() }
             .map { role -> SimpleGrantedAuthority(role) }
 
+        println(claims.subject)
         val principal = User(claims.subject, "", authorities)
 
         return UsernamePasswordAuthenticationToken(principal, token, authorities)
