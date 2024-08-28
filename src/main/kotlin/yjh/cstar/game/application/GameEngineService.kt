@@ -18,7 +18,7 @@ class GameEngineService(
 ) {
 
     companion object {
-        private const val TIME_LIMIT = 10
+        private const val TIME_LIMIT_MILLIS = 10000
     }
 
     private val ranking = TreeMap<Long, Int>()
@@ -29,7 +29,7 @@ class GameEngineService(
         val gameStartedAt = LocalDateTime.now()
 
         messagingTemplate.convertAndSend(destination, "GAME START!")
-        messagingTemplate.convertAndSend(destination, "각 문제당 ${TIME_LIMIT}초의 제한시간이 주어집니다.")
+        messagingTemplate.convertAndSend(destination, "각 문제당 ${TIME_LIMIT_MILLIS / 1000}초의 제한시간이 주어집니다.")
 
         for ((idx, quiz) in quizzes.withIndex()) {
             val quizNo = idx + 1
@@ -78,6 +78,6 @@ class GameEngineService(
     }
 
     private fun checkTimeIn(startTime: Long): Boolean {
-        return System.currentTimeMillis() - startTime < TIME_LIMIT
+        return System.currentTimeMillis() - startTime < TIME_LIMIT_MILLIS
     }
 }
