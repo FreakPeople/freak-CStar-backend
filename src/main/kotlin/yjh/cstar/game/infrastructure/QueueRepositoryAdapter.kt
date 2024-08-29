@@ -23,6 +23,8 @@ class QueueRepositoryAdapter(
 
     override fun poll(roomId: Long, quizId: Long): AnswerResult? {
         val key = "roomId : " + roomId.toString() + ", " + "quizId : " + quizId.toString()
-        return objectMapper.readValue(redisQueueRepository.poll(key), AnswerResultEntity::class.java)?.toModel()
+        return redisQueueRepository.poll(key)?.let {
+            objectMapper.readValue(it, AnswerResultEntity::class.java)?.toModel()
+        }
     }
 }
