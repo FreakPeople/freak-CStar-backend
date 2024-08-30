@@ -16,7 +16,7 @@ class UserDetailService(
 
     override fun loadUserByUsername(email: String): UserDetails {
         val member =
-            memberJpaRepository.findByEmail(email)?.toModel() ?: throw BaseException(BaseErrorCode.NOT_FOUND_ROOM)
+            memberJpaRepository.findByEmail(email)?.toModel() ?: throw BaseException(BaseErrorCode.NOT_FOUND_MEMBER)
         return createUser(email, member)
     }
 
