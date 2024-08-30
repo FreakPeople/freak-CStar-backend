@@ -33,11 +33,8 @@ class SecurityConfig(
             .authorizeHttpRequests {
                 it.requestMatchers(HttpMethod.POST, "/v1/authenticate").permitAll()
                     .requestMatchers(HttpMethod.POST, "/v1/members").permitAll()
-                    .anyRequest().permitAll()
-
-//                it.requestMatchers(HttpMethod.POST, "/members").permitAll()
-//                    .requestMatchers(HttpMethod.POST, "/games").permitAll()
-//                    .anyRequest().authenticated()
+                    .requestMatchers("/connect/websocket").permitAll()
+                    .anyRequest().authenticated()
             }
             .sessionManagement {
                 it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)

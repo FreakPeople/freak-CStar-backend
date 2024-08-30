@@ -4,16 +4,17 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import yjh.cstar.auth.jwt.TokenProvider
 import yjh.cstar.common.Response
 import yjh.cstar.room.application.RoomService
 import yjh.cstar.room.presentation.request.RoomCreateRequest
-import yjh.cstar.room.presentation.request.RoomJoinRequest
 import yjh.cstar.room.presentation.request.toCommand
 import yjh.cstar.room.presentation.response.RoomResponse
 
@@ -21,6 +22,7 @@ import yjh.cstar.room.presentation.response.RoomResponse
 @RequestMapping("/v1")
 class RoomController(
     private val roomService: RoomService,
+    private val tokenProvider: TokenProvider,
 ) {
 
     @PostMapping("/rooms")
@@ -49,10 +51,11 @@ class RoomController(
     @PostMapping("/rooms/{id}")
     fun join(
         @PathVariable("id") roomId: Long,
-        @RequestBody request: RoomJoinRequest,
+        authentication: Authentication,
     ): ResponseEntity<Response<Long>> {
         synchronized(this) {
-            return ResponseEntity.ok(Response(data = roomService.join(roomId, request.memberId)))
+            val memberId = tokenProvider.getMemberId(authentication)
+            return ResponseEntity.ok(Response(data = roomService.join(roomId, memberId)))
         }
     }
 }
