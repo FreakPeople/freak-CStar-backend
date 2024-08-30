@@ -71,7 +71,6 @@ class TokenProvider(
             .filter { it.isNotEmpty() }
             .map { role -> SimpleGrantedAuthority(role) }
 
-        println(claims.subject)
         val principal = User(claims.subject, "", authorities)
 
         return UsernamePasswordAuthenticationToken(principal, token, authorities)

@@ -12,19 +12,4 @@ class GameResult(
     var createdAt: LocalDateTime? = null,
     var updatedAt: LocalDateTime? = null,
     val deletedAt: LocalDateTime? = null,
-) {
-
-    fun update(command: GameResult) {
-        this.totalCount = command.totalCount
-        this.correctCount = command.correctCount
-        this.ranking = command.ranking
-        this.updatedAt = LocalDateTime.now()
-    }
-
-    fun updateCorrectCount(playerId: Long) {
-        if (this.playerId == playerId) {
-            correctCount += 1
-            updatedAt = LocalDateTime.now()
-        }
-    }
-}
+)
