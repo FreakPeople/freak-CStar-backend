@@ -47,3 +47,6 @@ application-prod.yml
 
 ### 데이터베이스
 /db
+
+### 테스트를 위한 http 파일
+request.http
