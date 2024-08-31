@@ -5,13 +5,13 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
+import yjh.cstar.auth.jwt.TokenProvider
 import yjh.cstar.member.infrastructure.jpa.MemberEntity
 import yjh.cstar.member.infrastructure.jpa.MemberJpaRepository
 import yjh.cstar.room.domain.RoomStatus
 import yjh.cstar.room.infrastructure.jpa.RoomEntity
 import yjh.cstar.room.infrastructure.jpa.RoomJpaRepository
 import yjh.cstar.room.presentation.RoomController
-import yjh.cstar.room.presentation.request.RoomJoinRequest
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
 import kotlin.test.AfterTest
@@ -32,6 +32,9 @@ class RoomConcurrencyTest {
 
     @Autowired
     private lateinit var memberJpaRepository: MemberJpaRepository
+
+    @Autowired
+    private lateinit var tokenProvider: TokenProvider
 
     @BeforeTest
     fun clearBefore() {
@@ -58,9 +61,10 @@ class RoomConcurrencyTest {
             )
         ).toModel().id
 
+        val email = "test@test.com"
         val memberId = memberJpaRepository.save(
             MemberEntity(
-                email = "test@test.com",
+                email = email,
                 password = "12345",
                 nickname = "testNickname",
                 createdAt = null,
@@ -73,11 +77,14 @@ class RoomConcurrencyTest {
         val doneLatch = CountDownLatch(numberOfThreads)
         val executor = Executors.newFixedThreadPool(numberOfThreads)
 
+        val token = tokenProvider.createToken(memberId, email)
+        val authentication = tokenProvider.getAuthentication(token)
+
         // when
         for (idx in 1..numberOfThreads) {
             executor.submit {
                 try {
-                    roomController.join(roomId, RoomJoinRequest(memberId))
+                    roomController.join(roomId, authentication)
                 } catch (e: Exception) {
                     println("Error: ${e.message}")
                 } finally {
