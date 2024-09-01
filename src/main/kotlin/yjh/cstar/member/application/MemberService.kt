@@ -20,6 +20,10 @@ class MemberService(
         return memberRepository.findByEmail(email) ?: throw BaseException(BaseErrorCode.NOT_FOUND_MEMBER)
     }
 
+    fun retrieveMe(myId: Long): Member {
+        return memberRepository.findById(myId) ?: throw BaseException(BaseErrorCode.NOT_FOUND_MEMBER)
+    }
+
     @Transactional
     fun create(command: MemberCreateCommand): Long {
         checkEmailDuplicated(command.email)

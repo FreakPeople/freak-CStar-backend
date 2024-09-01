@@ -1,5 +1,6 @@
 package yjh.cstar.member.infrastructure
 
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 import yjh.cstar.member.application.port.MemberRepository
 import yjh.cstar.member.domain.Member
@@ -10,6 +11,10 @@ import yjh.cstar.member.infrastructure.jpa.MemberJpaRepository
 class MemberRepositoryAdapter(
     private val memberJpaRepository: MemberJpaRepository,
 ) : MemberRepository {
+    override fun findById(id: Long): Member? {
+        return memberJpaRepository.findByIdOrNull(id)?.toModel()
+    }
+
     override fun findByEmail(email: String): Member? {
         return memberJpaRepository.findByEmail(email)?.toModel()
     }
