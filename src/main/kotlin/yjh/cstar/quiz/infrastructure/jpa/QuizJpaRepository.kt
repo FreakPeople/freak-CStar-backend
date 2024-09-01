@@ -24,6 +24,6 @@ interface QuizJpaRepository : JpaRepository<QuizEntity, Long> {
         @Param("totalQuestions") totalQuestions: Int,
     ): List<QuizEntity>
 
-    @Query("SELECT q FROM QuizEntity q WHERE q.category = :category")
+    @Query("SELECT q FROM QuizEntity q WHERE q.deletedAt IS NULL AND q.category = :category")
     fun findAllByCategory(@Param("category") category: Category, pageable: Pageable): Page<QuizEntity>
 }
