@@ -8,7 +8,7 @@ import yjh.cstar.game.domain.Game
 import yjh.cstar.game.domain.GameResult
 import yjh.cstar.room.application.RoomService
 import java.time.LocalDateTime
-import java.util.*
+import java.util.TreeMap
 
 @Service
 class GameResultService(
@@ -57,5 +57,6 @@ class GameResultService(
             )
             gameResultRepository.save(gameResult)
         }
+        roomService.endGameAndResetRoom(savedGame.roomId)
     }
 }

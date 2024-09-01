@@ -32,6 +32,15 @@ class Room(
         status = RoomStatus.IN_PROGRESS
     }
 
+    fun endGameAndResetRoom() {
+        resetStatusIfInProgress()
+        currCapacity = 0
+    }
+
+    private fun resetStatusIfInProgress() {
+        status = RoomStatus.WAITING.takeIf { status == RoomStatus.IN_PROGRESS } ?: status
+    }
+
     private fun checkCapacity() {
         require(currCapacity <= maxCapacity - 1) {
             throw BaseException(BaseErrorCode.CAPACITY_EXCEEDED)
