@@ -27,6 +27,27 @@ class MemberServiceTest : IntegrationTest() {
     private lateinit var memberJpaRepository: MemberJpaRepository
 
     @Test
+    fun `내정보_조회 테스트`() {
+        // given
+        val savedMemberId = memberJpaRepository.save(
+            MemberEntity(
+                email = "email@naver.com",
+                password = "password",
+                nickname = "nickname",
+                createdAt = null,
+                updatedAt = null
+            )
+        ).toModel().id
+
+        // when
+        val member = memberService.retrieveMe(savedMemberId)
+
+        // then
+        assertEquals("email@naver.com", member.email)
+        assertEquals("nickname", member.nickname)
+    }
+
+    @Test
     fun `회원 조회 테스트 - 존재하지 않는 email`() {
         // given
         memberJpaRepository.save(
