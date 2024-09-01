@@ -4,6 +4,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 import yjh.cstar.game.domain.AnswerResult
+import yjh.cstar.game.presentation.response.QuizInfoResponse
 import yjh.cstar.quiz.domain.Quiz
 import java.time.LocalDateTime
 import java.util.TreeMap
@@ -28,6 +29,7 @@ class GameEngineService(
         logger.info { "[INFO] 게임 엔진 스레드 시작 - roomId : $roomId" }
         val destination = "/topic/rooms/$roomId"
         val gameStartedAt = LocalDateTime.now()
+        broadCastService.sendMessage(destination, "start", "게임 시작 합니다. $roomId", null)
 
         broadCastService.sendMessage(destination, "guide", "GAME START!", null)
         broadCastService.sendMessage(destination, "guide", "각 문제당 ${TIME_LIMIT_MILLIS / 1000}초의 제한시간이 주어집니다.", null)
@@ -35,7 +37,12 @@ class GameEngineService(
         for ((idx, quiz) in quizzes.withIndex()) {
             val quizNo = idx + 1
 
-            broadCastService.sendMessage(destination, "quiz", "${quizNo}번 문제 입니다.", quiz.question)
+            broadCastService.sendMessage(
+                destination,
+                "quiz",
+                "${quizNo}번 문제 입니다.",
+                QuizInfoResponse(quiz.id, quiz.question)
+            )
 
             val startTime = System.currentTimeMillis()
             var notExistWinner = true
