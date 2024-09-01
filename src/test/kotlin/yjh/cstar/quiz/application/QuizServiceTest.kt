@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import yjh.cstar.IntegrationTest
@@ -109,6 +110,77 @@ class QuizServiceTest : IntegrationTest() {
             quizService.getQuizzes(
                 quizCategory = quizCategory,
                 totalQuestions = totalQuestions
+            )
+        }
+
+        // then
+        assertEquals(HttpStatus.BAD_REQUEST, exception.baseErrorCode.httpStatus)
+    }
+
+    @Test
+    fun `퀴즈 카테고리별로 퀴즈를 조회하는 테스트`() {
+        // given
+        quizJpaRepository.save(
+            QuizEntity(
+                writerId = 1L,
+                question = "문제1",
+                answer = "정답1",
+                category = Category.ALGORITHM,
+                createdAt = null,
+                updatedAt = null
+            )
+        )
+        quizJpaRepository.save(
+            QuizEntity(
+                writerId = 2L,
+                question = "문제2",
+                answer = "정답2",
+                category = Category.ALGORITHM,
+                createdAt = null,
+                updatedAt = null
+            )
+        )
+        quizJpaRepository.save(
+            QuizEntity(
+                writerId = 1L,
+                question = "문제3",
+                answer = "정답3",
+                category = Category.DATABASE,
+                createdAt = null,
+                updatedAt = null
+            )
+        )
+        quizJpaRepository.save(
+            QuizEntity(
+                writerId = 1L,
+                question = "문제4",
+                answer = "정답4",
+                category = Category.NETWORK,
+                createdAt = null,
+                updatedAt = null
+            )
+        )
+
+        // when
+        val page1 = quizService.retrieveAllByCategory(
+            quizCategory = "알고리즘",
+            pageable = PageRequest.of(0, 10)
+        )
+
+        // then
+        assertEquals(2, page1.content.size)
+    }
+
+    @Test
+    fun `퀴즈 카테고리별로 퀴즈를 조회 할 때, 잘못된 카테고리 이름 입력 시 BAD_REQUEST 에러 발생 테스트 `() {
+        // given
+        val quizCategory = "운영체제임"
+
+        // when
+        val exception = assertThrows<BaseException> {
+            quizService.retrieveAllByCategory(
+                quizCategory = quizCategory,
+                pageable = PageRequest.of(0, 10)
             )
         }
 

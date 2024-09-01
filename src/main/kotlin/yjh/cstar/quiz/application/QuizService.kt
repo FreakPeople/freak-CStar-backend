@@ -1,5 +1,7 @@
 package yjh.cstar.quiz.application
 
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import yjh.cstar.quiz.application.port.QuizRepository
@@ -21,5 +23,10 @@ class QuizService(
     fun create(command: QuizCreateCommand, writerId: Long): Long {
         val quiz = Quiz.create(command, writerId)
         return quizRepository.save(quiz).id
+    }
+
+    fun retrieveAllByCategory(quizCategory: String, pageable: Pageable): Page<Quiz> {
+        val category = Category.create(quizCategory)
+        return quizRepository.findAllByCategory(category, pageable)
     }
 }
