@@ -59,4 +59,11 @@ class RoomService(
         room.startGame()
         roomRepository.save(room)
     }
+
+    @Transactional
+    fun endGameAndResetRoom(roomId: Long) {
+        val room = retrieve(roomId)
+        room.endGameAndResetRoom()
+        roomRepository.save(room)
+    }
 }
