@@ -3,6 +3,7 @@ package yjh.cstar.game.application
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -23,6 +24,7 @@ import kotlin.test.assertNotNull
 
 @ActiveProfiles("local-test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DisplayName("[Application 테스트] GameAnswerQueueService")
 class GameAnswerQueueServiceTest {
 
     @Autowired
