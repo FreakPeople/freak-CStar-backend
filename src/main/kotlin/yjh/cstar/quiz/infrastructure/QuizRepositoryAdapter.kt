@@ -25,4 +25,12 @@ class QuizRepositoryAdapter(
     override fun findAllByCategory(category: Category, pageable: Pageable): Page<Quiz> {
         return quizJpaRepository.findAllByCategory(category, pageable).map { it.toModel() }
     }
+
+    override fun findAllCreatedByMember(writerId: Long, pageable: Pageable): Page<Quiz> {
+        return quizJpaRepository.findAllCreatedByMember(writerId, pageable).map { it.toModel() }
+    }
+
+    override fun findAllAttemptedByMember(memberId: Long, pageable: Pageable): Page<Quiz> {
+        return quizJpaRepository.findAllAttemptedByMember(memberId, pageable).map { it.toModel() }
+    }
 }

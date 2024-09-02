@@ -42,4 +42,16 @@ class QuizController(
         val responses = quizService.retrieveAllByCategory(category, pageable).map { QuizResponse.from(it) }
         return ResponseEntity.ok(Response(data = responses))
     }
+
+    @GetMapping("/quizzes/filter")
+    fun retrieveAllByQuizFilterType(
+        @RequestParam quizFilterType: String,
+        @PageableDefault(size = 10) pageable: Pageable,
+        authentication: Authentication,
+    ): ResponseEntity<Response<Page<QuizResponse>>> {
+        val memberId = tokenProvider.getMemberId(authentication)
+        val responses = quizService.retrieveAllByQuizFilterType(memberId, quizFilterType, pageable)
+            .map { QuizResponse.from(it) }
+        return ResponseEntity.ok(Response(data = responses))
+    }
 }
