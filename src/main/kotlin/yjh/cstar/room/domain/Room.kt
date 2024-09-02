@@ -27,6 +27,11 @@ class Room(
         currCapacity++
     }
 
+    fun leave() {
+        require(currCapacity != 0) { BaseException(BaseErrorCode.CAPACITY_CANNOT_BE_NEGATIVE) }
+        currCapacity--
+    }
+
     fun startGame() {
         checkWaitingStatus()
         status = RoomStatus.IN_PROGRESS

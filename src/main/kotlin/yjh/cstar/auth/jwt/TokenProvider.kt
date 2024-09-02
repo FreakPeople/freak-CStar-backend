@@ -96,8 +96,12 @@ class TokenProvider(
 
     fun getMemberId(authentication: Authentication): Long {
         val jwtToken = getJwtTokenFrom(authentication)
+        return getMemberId(jwtToken)
+    }
+
+    fun getMemberId(token: String): Long {
         val claims = Jwts.parserBuilder().setSigningKey(key)
-            .build().parseClaimsJws(jwtToken)
+            .build().parseClaimsJws(token)
         return claims.body["memberId"].toString().toLong()
     }
 

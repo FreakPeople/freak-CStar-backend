@@ -59,8 +59,9 @@ enum class BaseErrorCode(
     // 409
     NOT_IN_WAITING_STATUS(HttpStatus.CONFLICT, 4090, "게임 방이 현재 대기 상태가 아닙니다."),
     CAPACITY_EXCEEDED(HttpStatus.CONFLICT, 4091, "게임 방의 수용 가능 인원이 초과되었습니다."),
+    CAPACITY_CANNOT_BE_NEGATIVE(HttpStatus.CONFLICT, 4092, "게임 방 수용 인원은 음수가 될 수 없습니다."),
     CONFLICT_MEMBER(HttpStatus.CONFLICT, 40910, "회원이 이미 존재합니다."),
 
     // 500
-    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 5000, "서버 내부 에러"),
+    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 5000, "서버 내부 에러"), ;
 }
