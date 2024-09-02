@@ -85,7 +85,8 @@ class GameAnswerQueueServiceTest {
             answer = "answer",
             roomId = ROOM_ID,
             quizId = QUIZ_ID,
-            playerId = 1
+            playerId = 1,
+            nickname = "nickname"
         )
 
         // when
@@ -103,7 +104,8 @@ class GameAnswerQueueServiceTest {
             answer = "answer",
             roomId = ROOM_ID,
             quizId = QUIZ_ID,
-            playerId = 1
+            playerId = 1,
+            nickname = "nickname"
         )
         val value = objectMapper.writeValueAsString(answerResultEntity)
         redisTemplate.opsForList().rightPush(KEY, value)

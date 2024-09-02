@@ -77,9 +77,9 @@ class RedisTest {
     @Test
     fun `레디스 큐에 데이터 삽입 테스트`() {
         // given
-        val value_1 = objectMapper.writeValueAsString(AnswerResultEntity("ans_1", QUIZ_ID, ROOM_ID, 1))
+        val value_1 = objectMapper.writeValueAsString(AnswerResultEntity("ans_1", QUIZ_ID, ROOM_ID, 1, "nickname"))
         redisQueueRepository.add(KEY, value_1)
-        val value_2 = objectMapper.writeValueAsString(AnswerResultEntity("ans_2", QUIZ_ID, ROOM_ID, 1))
+        val value_2 = objectMapper.writeValueAsString(AnswerResultEntity("ans_2", QUIZ_ID, ROOM_ID, 1, "nickname"))
         redisQueueRepository.add(KEY, value_2)
 
         // when
@@ -93,9 +93,9 @@ class RedisTest {
     @Test
     fun `레디스 큐에 데이터 반환 테스트`() {
         // given
-        val value_1 = objectMapper.writeValueAsString(AnswerResultEntity("ans_1", QUIZ_ID, ROOM_ID, 1))
+        val value_1 = objectMapper.writeValueAsString(AnswerResultEntity("ans_1", QUIZ_ID, ROOM_ID, 1, "nickname"))
         redisQueueRepository.add(KEY, value_1)
-        val value_2 = objectMapper.writeValueAsString(AnswerResultEntity("ans_2", QUIZ_ID, ROOM_ID, 1))
+        val value_2 = objectMapper.writeValueAsString(AnswerResultEntity("ans_2", QUIZ_ID, ROOM_ID, 1, "nickname"))
         redisQueueRepository.add(KEY, value_2)
 
         // when
@@ -114,9 +114,9 @@ class RedisTest {
     @Test
     fun `레디스 큐의 특정 key에 해당하는 큐 삭제 테스트`() {
         // given
-        val value_1 = objectMapper.writeValueAsString(AnswerResultEntity("ans_1", QUIZ_ID, ROOM_ID, 1))
+        val value_1 = objectMapper.writeValueAsString(AnswerResultEntity("ans_1", QUIZ_ID, ROOM_ID, 1, "nickname"))
         redisQueueRepository.add(KEY, value_1)
-        val value_2 = objectMapper.writeValueAsString(AnswerResultEntity("ans_2", QUIZ_ID, ROOM_ID, 1))
+        val value_2 = objectMapper.writeValueAsString(AnswerResultEntity("ans_2", QUIZ_ID, ROOM_ID, 1, "nickname"))
         redisQueueRepository.add(KEY, value_2)
 
         // when
