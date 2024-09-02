@@ -28,7 +28,7 @@ class Room(
     }
 
     fun leave() {
-        require(currCapacity != 0) { BaseException(BaseErrorCode.CAPACITY_CANNOT_BE_NEGATIVE) }
+        require(0 < currCapacity) { BaseException(BaseErrorCode.CAPACITY_CANNOT_BE_NEGATIVE) }
         currCapacity--
     }
 
