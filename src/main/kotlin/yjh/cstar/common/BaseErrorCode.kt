@@ -44,6 +44,11 @@ enum class BaseErrorCode(
     ),
     PASSWORD_INVALID(HttpStatus.BAD_REQUEST, 40012, "비밀번호가 일치하지 않습니다."),
     QUIZ_CATEGORY_INVALID(HttpStatus.BAD_REQUEST, 40020, "지원하지 않는 퀴즈 카테고리 입니다."),
+    QUIZ_FILTER_INVALID(
+        HttpStatus.BAD_REQUEST,
+        40021,
+        "유효하지 않은 퀴즈 필터입니다. 사용 가능한 필터: created(생성한 문제), attempted(시도한 문제), correct(정답을 맞춘 문제)."
+    ),
 
     // 401
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, 4010, "인증이 필요합니다."),
