@@ -9,4 +9,6 @@ interface QuizRepository {
     fun save(quiz: Quiz): Quiz
     fun getQuizzes(quizCategory: String, totalQuestions: Int): List<Quiz>
     fun findAllByCategory(category: Category, pageable: Pageable): Page<Quiz>
+    fun findAllCreatedByMember(writerId: Long, pageable: Pageable): Page<Quiz>
+    fun findAllAttemptedByMember(memberId: Long, pageable: Pageable): Page<Quiz>
 }
