@@ -13,6 +13,44 @@ import kotlin.test.assertNotNull
 class RoomTest {
 
     @Test
+    fun `게임 방 인원 수 감소 실패 테스트 - 0보다 같거나 작을 경우`() {
+        // given
+        val invalidCurrCapacity = listOf(-999, -1, 0)
+
+        invalidCurrCapacity.forEach { invalidCurrCapacity ->
+            val room = Room(
+                maxCapacity = 5,
+                currCapacity = invalidCurrCapacity,
+                status = RoomStatus.WAITING
+            )
+
+            // when
+            val exception = assertThrows<BaseException> {
+                room.leave()
+            }
+
+            // then
+            assertEquals(HttpStatus.CONFLICT, exception.baseErrorCode.httpStatus)
+        }
+    }
+
+    @Test
+    fun `게임 방 인원 수 감소 테스트`() {
+        // given
+        val room = Room(
+            maxCapacity = 5,
+            currCapacity = 3,
+            status = RoomStatus.WAITING
+        )
+
+        // when
+        room.leave()
+
+        // then
+        assertEquals(2, room.currCapacity)
+    }
+
+    @Test
     fun `게임 방 생성 테스트`() {
         // given
         val roomCreateCommand = RoomCreateCommand(maxCapacity = 5)
