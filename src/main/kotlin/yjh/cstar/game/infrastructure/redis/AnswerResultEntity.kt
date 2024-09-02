@@ -7,6 +7,7 @@ class AnswerResultEntity(
     val quizId: Long,
     val roomId: Long,
     val playerId: Long,
+    val nickname: String,
 ) {
 
     companion object {
@@ -15,7 +16,8 @@ class AnswerResultEntity(
                 answer = answerResult.answer,
                 quizId = answerResult.quizId,
                 roomId = answerResult.roomId,
-                playerId = answerResult.playerId
+                playerId = answerResult.playerId,
+                nickname = answerResult.nickname
             )
         }
     }
@@ -25,7 +27,8 @@ class AnswerResultEntity(
             answer = this.answer,
             quizId = this.quizId,
             roomId = this.roomId,
-            playerId = this.playerId
+            playerId = this.playerId,
+            nickname = this.nickname
         )
     }
 }

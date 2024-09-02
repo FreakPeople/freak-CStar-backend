@@ -5,4 +5,5 @@ class AnswerResult(
     val quizId: Long,
     val roomId: Long,
     val playerId: Long,
+    val nickname: String,
 )

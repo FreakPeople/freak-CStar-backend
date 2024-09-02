@@ -39,7 +39,8 @@ class StompController(
             answer = answerMessageRequest.answer,
             quizId = answerMessageRequest.quizId,
             roomId = roomId,
-            playerId = playerId
+            playerId = playerId,
+            nickname = answerMessageRequest.nickname
         )
 
         // 비동기 함수임
