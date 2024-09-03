@@ -31,3 +31,6 @@ spring:
 jwt:
   secret: eWpoLWNzdGFyLWJhY2tlbmQtand0LXNlY3JldC1rZXkteWpoLWNzdGFyLWJhY2tlbmQtand0LXNlY3JldC1rZXkK
   token-validity-in-seconds: 86400
+
+cors:
+  src: http://localhost:3000
