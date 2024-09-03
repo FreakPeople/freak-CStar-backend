@@ -34,3 +34,9 @@ jwt:
 
 cors:
   src: http://localhost:3000
+
+game:
+  engine:
+    threads:
+      max: 300
+      core: 200
