@@ -52,7 +52,10 @@ class GameEngineService(
             while (checkTimeIn(startTime) && notExistWinner) {
                 logger.info { "[WARN] busy waiting..." }
                 gameAnswerQueueService.poll(roomId, quiz.id)
-                    ?.takeIf { it.answer == quiz.answer }
+                    ?.takeIf {
+                        it.answer.replace(" ", "")
+                            .equals(quiz.answer.replace(" ", ""), ignoreCase = true)
+                    }
                     ?.let { result ->
                         updateScore(ranking, result.playerId)
                         nicknames[result.playerId] = result.nickname

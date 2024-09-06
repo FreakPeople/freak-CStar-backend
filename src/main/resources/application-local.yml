@@ -23,6 +23,7 @@ spring:
       data-locations:
         - classpath:/db/init_schema.sql
         - file:src/main/resources/db/v2_alter_member_table_for_unique.sql
+        - file:src/main/resources/data/init_insert_quiz_data.sql
   data:
     redis:
         host: localhost
