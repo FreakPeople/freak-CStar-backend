@@ -1,0 +1,94 @@
+services:
+  mysql:
+    image: mysql:8.0.35
+    container_name: cstar_mysql
+    volumes:
+      - ./volumes/mysql/data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DEV_MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DEV_MYSQL_DATABASE_NAME}
+      MYSQL_USER: ${DEV_MYSQL_USER}
+      MYSQL_PASSWORD: ${DEV_MYSQL_PASSWORD}
+    networks:
+      - cstar
+
+  redis_master:
+    image: bitnami/redis:7.4
+    container_name: redis_master
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_REPLICATION_MODE=master
+      - ALLOW_EMPTY_PASSWORD=yes
+    networks:
+      - cstar
+
+  redis_replica:
+    image: bitnami/redis:latest
+    container_name: redis_replica
+    ports:
+      - "6380:6379"
+    environment:
+      - REDIS_REPLICATION_MODE=slave
+      - REDIS_MASTER_HOST=redis_master
+      - ALLOW_EMPTY_PASSWORD=yes
+    depends_on:
+      - redis_master
+    networks:
+      - cstar
+
+  redis_sentinel_1:
+    image: bitnami/redis-sentinel:latest
+    container_name: redis_sentinel_1
+    ports:
+      - "26379:26379"
+    environment:
+      - REDIS_SENTINEL_DOWN_AFTER_MILLISECONDS=3000
+      - REDIS_MASTER_HOST=redis_master
+      - REDIS_MASTER_PORT_NUMBER=6379
+      - REDIS_MASTER_SET=mymaster
+      - REDIS_SENTINEL_QUORUM=2
+    depends_on:
+      - redis_master
+      - redis_replica
+    networks:
+      - cstar
+
+  redis_sentinel_2:
+    image: bitnami/redis-sentinel:latest
+    container_name: redis_sentinel_2
+    ports:
+      - "26380:26379"
+    environment:
+      - REDIS_SENTINEL_DOWN_AFTER_MILLISECONDS=3000
+      - REDIS_MASTER_HOST=redis_master
+      - REDIS_MASTER_PORT_NUMBER=6379
+      - REDIS_MASTER_SET=mymaster
+      - REDIS_SENTINEL_QUORUM=2
+    depends_on:
+      - redis_master
+      - redis_replica
+    networks:
+      - cstar
+
+  redis_sentinel_3:
+    image: bitnami/redis-sentinel:latest
+    container_name: redis_sentinel_3
+    ports:
+      - "26381:26379"
+    environment:
+      - REDIS_SENTINEL_DOWN_AFTER_MILLISECONDS=3000
+      - REDIS_MASTER_HOST=redis_master
+      - REDIS_MASTER_PORT_NUMBER=6379
+      - REDIS_MASTER_SET=mymaster
+      - REDIS_SENTINEL_QUORUM=2
+    depends_on:
+      - redis_master
+      - redis_replica
+    networks:
+      - cstar
+
+networks:
+  cstar:

@@ -43,10 +43,10 @@ out/
 application-prod.yml
 
 ### 환경설정 파일
-.env
+docker/.env
 
-### 데이터베이스
-/db
+### 도커 volumes 파일
+/docker/volumes
 
 ### 테스트를 위한 http 파일
 request.http
