@@ -26,7 +26,7 @@ services:
       - cstar
 
   redis_replica:
-    image: bitnami/redis:latest
+    image: bitnami/redis:7.4
     container_name: redis_replica
     ports:
       - "6380:6379"
@@ -40,7 +40,7 @@ services:
       - cstar
 
   redis_sentinel_1:
-    image: bitnami/redis-sentinel:latest
+    image: bitnami/redis-sentinel:6.2.14
     container_name: redis_sentinel_1
     ports:
       - "26379:26379"
@@ -57,7 +57,7 @@ services:
       - cstar
 
   redis_sentinel_2:
-    image: bitnami/redis-sentinel:latest
+    image: bitnami/redis-sentinel:6.2.14
     container_name: redis_sentinel_2
     ports:
       - "26380:26379"
@@ -74,7 +74,7 @@ services:
       - cstar
 
   redis_sentinel_3:
-    image: bitnami/redis-sentinel:latest
+    image: bitnami/redis-sentinel:6.2.14
     container_name: redis_sentinel_3
     ports:
       - "26381:26379"
