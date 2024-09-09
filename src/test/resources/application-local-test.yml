@@ -12,12 +12,11 @@ spring:
   test:
     database:
       replace: none
-  sql:
-    init:
-      mode: always
-      data-locations:
-        - file:src/main/resources/db/init_schema.sql
-        - file:src/main/resources/db/v2_alter_member_table_for_unique.sql
+  flyway:
+    enabled: true
+    url: jdbc:tc:mysql:8.0.35:///?useSSL=false&serverTimezone=Asia/Seoul
+    baseline-on-migrate: true
+    locations: classpath:/db
   data:
       redis:
           host: test_container # 임의의 호스트명
