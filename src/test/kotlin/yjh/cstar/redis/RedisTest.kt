@@ -129,4 +129,21 @@ class RedisTest {
         val hasKey = redisTemplate.hasKey(KEY)
         assertFalse(hasKey)
     }
+
+    @Test
+    fun `레디스 Blocking Queue 동작 테스트`() {
+        // given
+        val value = objectMapper.writeValueAsString(AnswerResultEntity("ans_1", QUIZ_ID, ROOM_ID, 1, "nickname"))
+        repeat(5) {
+            redisQueueRepository.add(KEY, value)
+        }
+        val result = mutableListOf<String>()
+
+        // when
+        generateSequence { redisQueueRepository.poll(KEY, 5) }
+            .forEach { result.add(it) }
+
+        // then
+        assertEquals(5, result.size)
+    }
 }
