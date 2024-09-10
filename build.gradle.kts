@@ -38,6 +38,9 @@ dependencies {
     // jpa
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
+    // flyway
+    implementation("org.flywaydb:flyway-mysql")
+
     // mysql
     runtimeOnly("com.mysql:mysql-connector-j")
 
