@@ -2,6 +2,7 @@ package yjh.cstar.game.infrastructure.redis
 
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Repository
+import java.util.concurrent.TimeUnit
 
 @Repository
 class RedisQueueRepository(
@@ -12,8 +13,8 @@ class RedisQueueRepository(
         return redisTemplate.opsForList().rightPush(key, value)
     }
 
-    fun poll(key: String): String? {
-        return redisTemplate.opsForList().leftPop(key)
+    fun poll(key: String, timeout: Long = 60, timeUnit: TimeUnit = TimeUnit.SECONDS): String? {
+        return redisTemplate.opsForList().leftPop(key, timeout, timeUnit)
     }
 
     fun getSize(key: String): Long? {
