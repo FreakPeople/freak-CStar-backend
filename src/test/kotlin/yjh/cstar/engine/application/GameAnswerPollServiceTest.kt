@@ -17,6 +17,8 @@ import yjh.cstar.engine.infrastructure.redis.AnswerResultEntity
 import yjh.cstar.util.RedisUtil
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 
 @ActiveProfiles("local-test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -91,13 +93,13 @@ class GameAnswerPollServiceTest {
         val answerResult = gameAnswerPollService.poll(ROOM_ID, QUIZ_ID)
 
         // then
-        kotlin.test.assertNotNull(answerResult)
-        kotlin.test.assertEquals("answer", answerResult.answer)
-        kotlin.test.assertEquals(ROOM_ID, answerResult.roomId)
-        kotlin.test.assertEquals(QUIZ_ID, answerResult.quizId)
-        kotlin.test.assertEquals(1, answerResult.playerId)
+        assertNotNull(answerResult)
+        assertEquals("answer", answerResult.answer)
+        assertEquals(ROOM_ID, answerResult.roomId)
+        assertEquals(QUIZ_ID, answerResult.quizId)
+        assertEquals(1, answerResult.playerId)
 
         val size = redisTemplate.opsForList().size(KEY)
-        kotlin.test.assertEquals(0, size)
+        assertEquals(0, size)
     }
 }

@@ -9,7 +9,7 @@ class GameAnswerPollService(
     private val gameAnswerPollRepository: GameAnswerPollRepository,
 ) {
     /**
-     * 정답을 메세지 브로커에 전달한다.
+     * 정답을 메세지 브로커로부터 가져온다.
      */
     fun poll(roomId: Long, quizId: Long): AnswerResult? {
         return gameAnswerPollRepository.poll(roomId, quizId)

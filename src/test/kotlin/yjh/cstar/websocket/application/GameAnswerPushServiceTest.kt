@@ -5,6 +5,7 @@ import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.redis.core.RedisTemplate
@@ -17,6 +18,7 @@ import yjh.cstar.game.domain.AnswerResult
 import yjh.cstar.util.RedisUtil
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
+import kotlin.test.assertEquals
 
 @ActiveProfiles("local-test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -86,10 +88,10 @@ class GameAnswerPushServiceTest {
         )
 
         // when
-        org.junit.jupiter.api.assertDoesNotThrow { gameAnswerPushService.push(answerResult) }
+        assertDoesNotThrow { gameAnswerPushService.push(answerResult) }
 
         // then
         val size = redisTemplate.opsForList().size(KEY)
-        kotlin.test.assertEquals(1, size)
+        assertEquals(1, size)
     }
 }
