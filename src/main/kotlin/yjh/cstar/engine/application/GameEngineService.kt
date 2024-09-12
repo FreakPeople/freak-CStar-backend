@@ -3,10 +3,12 @@ package yjh.cstar.game.application
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
+import yjh.cstar.engine.application.port.GameAnswerPollRepository
 import yjh.cstar.game.domain.AnswerResult
 import yjh.cstar.game.presentation.response.QuizInfoResponse
 import yjh.cstar.game.presentation.response.RankingResponse
 import yjh.cstar.quiz.domain.Quiz
+import yjh.cstar.websocket.application.BroadCastService
 import java.time.LocalDateTime
 import java.util.TreeMap
 
@@ -14,7 +16,7 @@ private val logger = KotlinLogging.logger {}
 
 @Service
 class GameEngineService(
-    private val gameAnswerQueueService: GameAnswerQueueService,
+    private val gameAnswerPollRepository: GameAnswerPollRepository,
     private val gameResultService: GameResultService,
     private val broadCastService: BroadCastService,
 ) {
@@ -51,7 +53,7 @@ class GameEngineService(
             var notExistWinner = true
             while (checkTimeIn(startTime) && notExistWinner) {
                 logger.info { "[WARN] busy waiting..." }
-                gameAnswerQueueService.poll(roomId, quiz.id)
+                gameAnswerPollRepository.poll(roomId, quiz.id)
                     ?.takeIf {
                         it.answer.replace(" ", "")
                             .equals(quiz.answer.replace(" ", ""), ignoreCase = true)

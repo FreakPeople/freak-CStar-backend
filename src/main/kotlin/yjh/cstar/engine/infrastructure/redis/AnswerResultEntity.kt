@@ -1,4 +1,4 @@
-package yjh.cstar.game.infrastructure.redis
+package yjh.cstar.engine.infrastructure.redis
 
 import yjh.cstar.game.domain.AnswerResult
 

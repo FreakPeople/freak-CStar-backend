@@ -1,27 +1,27 @@
-package yjh.cstar.game.infrastructure.redis
+package yjh.cstar.util
 
 import org.springframework.data.redis.core.RedisTemplate
-import org.springframework.stereotype.Repository
+import org.springframework.stereotype.Component
 import java.util.concurrent.TimeUnit
 
-@Repository
-class RedisQueueRepository(
+@Component
+class RedisUtil(
     private val redisTemplate: RedisTemplate<String, String>,
 ) {
 
-    fun add(key: String, value: String): Long? {
+    fun rpush(key: String, value: String): Long? {
         return redisTemplate.opsForList().rightPush(key, value)
     }
 
-    fun poll(key: String, timeout: Long = 60, timeUnit: TimeUnit = TimeUnit.SECONDS): String? {
+    fun lpop(key: String, timeout: Long = 60, timeUnit: TimeUnit = TimeUnit.SECONDS): String? {
         return redisTemplate.opsForList().leftPop(key, timeout, timeUnit)
     }
 
-    fun getSize(key: String): Long? {
+    fun size(key: String): Long? {
         return redisTemplate.opsForList().size(key)
     }
 
-    fun deleteAll(key: String) {
+    fun delete(key: String) {
         redisTemplate.delete(key)
     }
 }
