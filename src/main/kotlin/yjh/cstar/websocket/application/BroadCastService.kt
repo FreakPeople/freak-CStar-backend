@@ -1,4 +1,4 @@
-package yjh.cstar.game.application
+package yjh.cstar.websocket.application
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.messaging.simp.SimpMessagingTemplate
@@ -12,7 +12,7 @@ class BroadCastService(
 ) {
 
     fun sendMessage(destination: String, type: String, message: String, data: Any?) {
-        val message: GameMessage = GameMessage(type, message, data)
+        val message = GameMessage(type, message, data)
         val jsonMessage = objectMapper.writeValueAsString(message)
         messagingTemplate.convertAndSend(destination, jsonMessage)
     }
