@@ -9,13 +9,13 @@ import org.springframework.util.StringUtils
 import yjh.cstar.auth.jwt.TokenProvider
 import yjh.cstar.common.BaseErrorCode
 import yjh.cstar.common.BaseException
-import yjh.cstar.game.application.GameAnswerQueueService
 import yjh.cstar.game.domain.AnswerResult
+import yjh.cstar.websocket.application.GameAnswerPushService
 import yjh.cstar.websocket.presentation.request.AnswerMessageRequest
 
 @Controller
 class StompController(
-    private val gameAnswerQueueService: GameAnswerQueueService,
+    private val gameAnswerPushService: GameAnswerPushService,
     private val tokenProvider: TokenProvider,
 ) {
 
@@ -43,8 +43,7 @@ class StompController(
             nickname = answerMessageRequest.nickname
         )
 
-        // 비동기 함수임
-        gameAnswerQueueService.add(answer)
+        gameAnswerPushService.push(answer)
     }
 
     private fun resolveToken(bearerToken: String): String? {

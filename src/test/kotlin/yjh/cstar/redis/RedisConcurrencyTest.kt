@@ -11,9 +11,10 @@ import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.utility.DockerImageName
-import yjh.cstar.game.application.GameAnswerQueueService
+import yjh.cstar.engine.application.GameAnswerPollService
 import yjh.cstar.game.domain.AnswerResult
-import yjh.cstar.game.infrastructure.redis.RedisQueueRepository
+import yjh.cstar.util.RedisUtil
+import yjh.cstar.websocket.application.GameAnswerPushService
 import java.util.Collections
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
@@ -27,10 +28,13 @@ import kotlin.test.assertEquals
 class RedisConcurrencyTest {
 
     @Autowired
-    private lateinit var gameAnswerQueueService: GameAnswerQueueService
+    private lateinit var gameAnswerPushService: GameAnswerPushService
 
     @Autowired
-    private lateinit var redisQueueRepository: RedisQueueRepository
+    private lateinit var gameAnswerPollService: GameAnswerPollService
+
+    @Autowired
+    private lateinit var redisUtil: RedisUtil
 
     companion object {
         private const val ROOM_ID = 1L
@@ -63,12 +67,12 @@ class RedisConcurrencyTest {
 
     @BeforeTest
     fun beforeEach() {
-        redisQueueRepository.deleteAll(KEY)
+        redisUtil.delete(KEY)
     }
 
     @AfterTest
     fun afterEach() {
-        redisQueueRepository.deleteAll(KEY)
+        redisUtil.delete(KEY)
     }
 
     @Test
@@ -92,7 +96,7 @@ class RedisConcurrencyTest {
         executor.submit {
             try {
                 for (idx in 1..100) {
-                    gameAnswerQueueService.add(answerResult)
+                    gameAnswerPushService.push(answerResult)
                 }
             } catch (e: Exception) {
                 println("Error: ${e.message}")
@@ -104,7 +108,7 @@ class RedisConcurrencyTest {
         executor.submit {
             try {
                 for (idx in 1..100) {
-                    receive.add(gameAnswerQueueService.poll(ROOM_ID, QUIZ_ID))
+                    receive.add(gameAnswerPollService.poll(ROOM_ID, QUIZ_ID))
                 }
             } catch (e: Exception) {
                 println("Error: ${e.message}")
@@ -122,7 +126,7 @@ class RedisConcurrencyTest {
         // then
         val pollSize = receive.filter { it != null }
             .size
-        val remainPushSize = redisQueueRepository.getSize(KEY) ?: 0
+        val remainPushSize = redisUtil.size(KEY) ?: 0
 
         assertEquals(100, pollSize + remainPushSize)
     }
@@ -148,7 +152,7 @@ class RedisConcurrencyTest {
         for (idx in 1..numberOfThreads) {
             executor.submit {
                 try {
-                    gameAnswerQueueService.add(answerResult)
+                    gameAnswerPushService.push(answerResult)
                 } catch (e: Exception) {
                     println("Error: ${e.message}")
                 } finally {
@@ -164,7 +168,7 @@ class RedisConcurrencyTest {
         executor.shutdown()
 
         // then
-        val remainPushSize = redisQueueRepository.getSize(KEY) ?: 0
+        val remainPushSize = redisUtil.size(KEY) ?: 0
 
         assertEquals(100, remainPushSize)
     }

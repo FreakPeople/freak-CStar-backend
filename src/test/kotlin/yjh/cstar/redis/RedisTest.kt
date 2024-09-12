@@ -13,8 +13,8 @@ import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.utility.DockerImageName
-import yjh.cstar.game.infrastructure.redis.AnswerResultEntity
-import yjh.cstar.game.infrastructure.redis.RedisQueueRepository
+import yjh.cstar.engine.infrastructure.redis.AnswerResultEntity
+import yjh.cstar.util.RedisUtil
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
@@ -30,7 +30,7 @@ class RedisTest {
     private lateinit var redisTemplate: RedisTemplate<String, String>
 
     @Autowired
-    private lateinit var redisQueueRepository: RedisQueueRepository
+    private lateinit var redisUtil: RedisUtil
 
     @Autowired
     private lateinit var objectMapper: ObjectMapper
@@ -66,24 +66,24 @@ class RedisTest {
 
     @BeforeTest
     fun beforeEach() {
-        redisQueueRepository.deleteAll(KEY)
+        redisUtil.delete(KEY)
     }
 
     @AfterTest
     fun afterEach() {
-        redisQueueRepository.deleteAll(KEY)
+        redisUtil.delete(KEY)
     }
 
     @Test
     fun `레디스 큐에 데이터 삽입 테스트`() {
         // given
         val value_1 = objectMapper.writeValueAsString(AnswerResultEntity("ans_1", QUIZ_ID, ROOM_ID, 1, "nickname"))
-        redisQueueRepository.add(KEY, value_1)
+        redisUtil.rpush(KEY, value_1)
         val value_2 = objectMapper.writeValueAsString(AnswerResultEntity("ans_2", QUIZ_ID, ROOM_ID, 1, "nickname"))
-        redisQueueRepository.add(KEY, value_2)
+        redisUtil.rpush(KEY, value_2)
 
         // when
-        val size = redisQueueRepository.getSize(KEY)
+        val size = redisUtil.size(KEY)
 
         // then
         assertNotNull(size)
@@ -94,14 +94,14 @@ class RedisTest {
     fun `레디스 큐에 데이터 반환 테스트`() {
         // given
         val value_1 = objectMapper.writeValueAsString(AnswerResultEntity("ans_1", QUIZ_ID, ROOM_ID, 1, "nickname"))
-        redisQueueRepository.add(KEY, value_1)
+        redisUtil.rpush(KEY, value_1)
         val value_2 = objectMapper.writeValueAsString(AnswerResultEntity("ans_2", QUIZ_ID, ROOM_ID, 1, "nickname"))
-        redisQueueRepository.add(KEY, value_2)
+        redisUtil.rpush(KEY, value_2)
 
         // when
-        val first = objectMapper.readValue(redisQueueRepository.poll(KEY), AnswerResultEntity::class.java)
-        val second = objectMapper.readValue(redisQueueRepository.poll(KEY), AnswerResultEntity::class.java)
-        val size = redisQueueRepository.getSize(KEY)
+        val first = objectMapper.readValue(redisUtil.lpop(KEY), AnswerResultEntity::class.java)
+        val second = objectMapper.readValue(redisUtil.lpop(KEY), AnswerResultEntity::class.java)
+        val size = redisUtil.size(KEY)
 
         // then
         assertNotNull(first)
@@ -115,12 +115,12 @@ class RedisTest {
     fun `레디스 큐의 특정 key에 해당하는 큐 삭제 테스트`() {
         // given
         val value_1 = objectMapper.writeValueAsString(AnswerResultEntity("ans_1", QUIZ_ID, ROOM_ID, 1, "nickname"))
-        redisQueueRepository.add(KEY, value_1)
+        redisUtil.rpush(KEY, value_1)
         val value_2 = objectMapper.writeValueAsString(AnswerResultEntity("ans_2", QUIZ_ID, ROOM_ID, 1, "nickname"))
-        redisQueueRepository.add(KEY, value_2)
+        redisUtil.rpush(KEY, value_2)
 
         // when
-        redisQueueRepository.deleteAll(KEY)
+        redisUtil.delete(KEY)
 
         // then
         val size = redisTemplate.opsForList().size(KEY)
@@ -135,12 +135,12 @@ class RedisTest {
         // given
         val value = objectMapper.writeValueAsString(AnswerResultEntity("ans_1", QUIZ_ID, ROOM_ID, 1, "nickname"))
         repeat(5) {
-            redisQueueRepository.add(KEY, value)
+            redisUtil.rpush(KEY, value)
         }
         val result = mutableListOf<String>()
 
         // when
-        generateSequence { redisQueueRepository.poll(KEY, 5) }
+        generateSequence { redisUtil.lpop(KEY, 5) }
             .forEach { result.add(it) }
 
         // then
