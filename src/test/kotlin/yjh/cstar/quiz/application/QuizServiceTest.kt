@@ -8,7 +8,6 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import yjh.cstar.IntegrationTest
-import yjh.cstar.category.domain.CategoryType
 import yjh.cstar.common.BaseException
 import yjh.cstar.game.infrastructure.jpa.GameEntity
 import yjh.cstar.game.infrastructure.jpa.GameJpaRepository
@@ -50,7 +49,7 @@ class QuizServiceTest : IntegrationTest() {
         val command = QuizCreateCommand(
             question = "question",
             answer = "answer",
-            categoryId = CategoryType.DATABASE.id
+            categoryId = 2L
         )
         val writerId = 1L
 
@@ -64,7 +63,7 @@ class QuizServiceTest : IntegrationTest() {
         assertNotNull(quiz)
         assertEquals("question", quiz.question)
         assertEquals("answer", quiz.answer)
-        assertEquals(CategoryType.DATABASE.id, quiz.categoryId)
+        assertEquals(2L, quiz.categoryId)
         assertNotNull(quiz.createdAt)
         assertNotNull(quiz.updatedAt)
         assertNull(quiz.deletedAt)
@@ -78,7 +77,7 @@ class QuizServiceTest : IntegrationTest() {
                 writerId = 1L,
                 question = "문제1",
                 answer = "정답1",
-                categoryId = CategoryType.DATABASE.id,
+                categoryId = 3L,
                 createdAt = null,
                 updatedAt = null
             )
@@ -88,7 +87,7 @@ class QuizServiceTest : IntegrationTest() {
                 writerId = 1L,
                 question = "문제2",
                 answer = "정답2",
-                categoryId = CategoryType.DATABASE.id,
+                categoryId = 3L,
                 createdAt = null,
                 updatedAt = null
             )
@@ -98,12 +97,12 @@ class QuizServiceTest : IntegrationTest() {
                 writerId = 1L,
                 question = "문제3",
                 answer = "정답3",
-                categoryId = CategoryType.DATABASE.id,
+                categoryId = 3L,
                 createdAt = null,
                 updatedAt = null
             )
         )
-        val quizCategoryId = 2L
+        val quizCategoryId = 3L
         val totalQuestions = 2
 
         // when
@@ -142,7 +141,7 @@ class QuizServiceTest : IntegrationTest() {
                 writerId = 1L,
                 question = "문제1",
                 answer = "정답1",
-                categoryId = CategoryType.DATABASE.id,
+                categoryId = 3L,
                 createdAt = null,
                 updatedAt = null
             )
@@ -152,7 +151,7 @@ class QuizServiceTest : IntegrationTest() {
                 writerId = 2L,
                 question = "문제2",
                 answer = "정답2",
-                categoryId = CategoryType.DATABASE.id,
+                categoryId = 3L,
                 createdAt = null,
                 updatedAt = null
             )
@@ -162,7 +161,7 @@ class QuizServiceTest : IntegrationTest() {
                 writerId = 1L,
                 question = "문제3",
                 answer = "정답3",
-                categoryId = CategoryType.NETWORK.id,
+                categoryId = 3L,
                 createdAt = null,
                 updatedAt = null
             )
@@ -172,7 +171,7 @@ class QuizServiceTest : IntegrationTest() {
                 writerId = 1L,
                 question = "문제4",
                 answer = "정답4",
-                categoryId = CategoryType.ALGORITHM.id,
+                categoryId = 4L,
                 createdAt = null,
                 updatedAt = null
             )
@@ -180,7 +179,7 @@ class QuizServiceTest : IntegrationTest() {
 
         // when
         val page1 = quizService.retrieveAllByCategory(
-            quizCategoryId = 2L,
+            quizCategoryId = 3L,
             pageable = PageRequest.of(0, 10)
         )
 
@@ -216,7 +215,7 @@ class QuizServiceTest : IntegrationTest() {
                 writerId = 1L,
                 question = "문제11",
                 answer = "정답11",
-                categoryId = CategoryType.NETWORK.id,
+                categoryId = 3L,
                 createdAt = null,
                 updatedAt = null
             )
@@ -226,7 +225,7 @@ class QuizServiceTest : IntegrationTest() {
                 writerId = 1L,
                 question = "문제22",
                 answer = "정답22",
-                categoryId = CategoryType.DATABASE.id,
+                categoryId = 3L,
                 createdAt = null,
                 updatedAt = null
             )
@@ -236,7 +235,7 @@ class QuizServiceTest : IntegrationTest() {
                 writerId = 2L,
                 question = "문제33",
                 answer = "정답33",
-                categoryId = CategoryType.ALGORITHM.id,
+                categoryId = 5L,
                 createdAt = null,
                 updatedAt = null
             )
@@ -264,7 +263,7 @@ class QuizServiceTest : IntegrationTest() {
                 writerId = 2L,
                 question = "문제33",
                 answer = "정답33",
-                categoryId = CategoryType.ALGORITHM.id,
+                categoryId = 5L,
                 createdAt = null,
                 updatedAt = null
             )
@@ -296,7 +295,7 @@ class QuizServiceTest : IntegrationTest() {
                 writerId = 1L,
                 question = "문제111",
                 answer = "정답111",
-                categoryId = CategoryType.ALGORITHM.id,
+                categoryId = 5L,
                 createdAt = null,
                 updatedAt = null
             )
@@ -308,7 +307,7 @@ class QuizServiceTest : IntegrationTest() {
                 writerId = 1L,
                 question = "문제222",
                 answer = "정답222",
-                categoryId = CategoryType.ALGORITHM.id,
+                categoryId = 5L,
                 createdAt = null,
                 updatedAt = null
             )
@@ -320,7 +319,7 @@ class QuizServiceTest : IntegrationTest() {
                 writerId = 1L,
                 question = "문제333",
                 answer = "정답333",
-                categoryId = CategoryType.ALGORITHM.id,
+                categoryId = 5L,
                 createdAt = null,
                 updatedAt = null
             )
@@ -332,7 +331,7 @@ class QuizServiceTest : IntegrationTest() {
                 roomId = 1L,
                 winnerId = 2L,
                 totalQuizCount = 3,
-                categoryId = 2L,
+                categoryId = 3L,
                 startedAt = LocalDateTime.now(),
                 createdAt = null,
                 updatedAt = null

@@ -8,7 +8,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.context.annotation.Import
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.test.context.ActiveProfiles
-import yjh.cstar.category.domain.CategoryType
 import yjh.cstar.config.JpaConfig
 import yjh.cstar.game.infrastructure.jpa.GameEntity
 import yjh.cstar.game.infrastructure.jpa.GameJpaRepository
@@ -154,7 +153,7 @@ class JpaTest {
                 roomId = 1L,
                 winnerId = 1L,
                 totalQuizCount = 5,
-                categoryId = CategoryType.NETWORK.id,
+                categoryId = 2L,
                 startedAt = LocalDateTime.now(),
                 createdAt = LocalDateTime.now(),
                 updatedAt = LocalDateTime.now()
@@ -204,7 +203,7 @@ class JpaTest {
                 writerId = 1L,
                 question = "question",
                 answer = "answer",
-                categoryId = CategoryType.NETWORK.id,
+                categoryId = 2L,
                 createdAt = LocalDateTime.now(),
                 updatedAt = LocalDateTime.now()
             )

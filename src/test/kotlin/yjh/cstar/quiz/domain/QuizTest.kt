@@ -3,7 +3,6 @@ package yjh.cstar.quiz.domain
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
-import yjh.cstar.category.domain.CategoryType
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
@@ -16,7 +15,7 @@ class QuizTest {
         val command = QuizCreateCommand(
             question = "question",
             answer = "answer",
-            categoryId = CategoryType.DATABASE.id
+            categoryId = 5L
         )
         val writerId = 1L
 
@@ -28,6 +27,6 @@ class QuizTest {
         assertEquals(1L, quiz.writerId)
         assertEquals("question", quiz.question)
         assertEquals("answer", quiz.answer)
-        assertEquals(CategoryType.DATABASE.id, quiz.categoryId)
+        assertEquals(5L, quiz.categoryId)
     }
 }
