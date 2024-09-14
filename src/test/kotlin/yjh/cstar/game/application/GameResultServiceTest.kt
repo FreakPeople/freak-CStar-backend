@@ -56,7 +56,8 @@ class GameResultServiceTest : IntegrationTest() {
             gameStartedAt = LocalDateTime.now(),
             roomId = roomId,
             winningPlayerId = 2L,
-            totalQuizSize = 10
+            totalQuizSize = 10,
+            categoryId = 1L
         )
 
         // then
@@ -90,6 +91,7 @@ class GameResultServiceTest : IntegrationTest() {
                 roomId = savedRoom.id,
                 winnerId = 1L,
                 totalQuizCount = 5,
+                categoryId = 1L,
                 startedAt = LocalDateTime.now(),
                 createdAt = LocalDateTime.now(),
                 updatedAt = LocalDateTime.now()
@@ -106,7 +108,8 @@ class GameResultServiceTest : IntegrationTest() {
             gameStartedAt = LocalDateTime.now(),
             roomId = savedRoom.id,
             winningPlayerId = 1L,
-            totalQuizSize = 5
+            totalQuizSize = 5,
+            categoryId = 1L
         )
 
         // then
