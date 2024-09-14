@@ -49,6 +49,7 @@ enum class BaseErrorCode(
         40021,
         "유효하지 않은 퀴즈 필터입니다. 사용 가능한 필터: created(생성한 문제), attempted(시도한 문제), correct(정답을 맞춘 문제)."
     ),
+    EMPTY_QUIZ(HttpStatus.BAD_REQUEST, 40022, "퀴즈가 비어 있습니다."),
 
     // 401
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, 4010, "인증이 필요합니다."),

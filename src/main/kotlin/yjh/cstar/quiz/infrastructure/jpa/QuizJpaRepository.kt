@@ -5,14 +5,13 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
-import yjh.cstar.quiz.domain.Category
 
 interface QuizJpaRepository : JpaRepository<QuizEntity, Long> {
     @Query(
         value = """
             SELECT *
             FROM quiz
-            WHERE category = :quizCategory
+            WHERE category_id = :quizCategoryId
                 AND deleted_at IS NULL
             ORDER BY created_at DESC
             LIMIT :totalQuestions
@@ -20,12 +19,12 @@ interface QuizJpaRepository : JpaRepository<QuizEntity, Long> {
         nativeQuery = true
     )
     fun getQuizzes(
-        @Param("quizCategory") quizCategory: String,
+        @Param("quizCategoryId") quizCategoryId: Long,
         @Param("totalQuestions") totalQuestions: Int,
     ): List<QuizEntity>
 
-    @Query("SELECT q FROM QuizEntity q WHERE q.deletedAt IS NULL AND q.category = :category")
-    fun findAllByCategory(@Param("category") category: Category, pageable: Pageable): Page<QuizEntity>
+    @Query("SELECT q FROM QuizEntity q WHERE q.deletedAt IS NULL AND q.categoryId = :quizCategoryId")
+    fun findAllByCategory(@Param("quizCategoryId") quizCategoryId: Long, pageable: Pageable): Page<QuizEntity>
 
     @Query("SELECT q FROM QuizEntity q WHERE q.deletedAt IS NULL AND q.writerId = :memberId")
     fun findAllCreatedByMember(@Param("memberId") writerId: Long, pageable: Pageable): Page<QuizEntity>

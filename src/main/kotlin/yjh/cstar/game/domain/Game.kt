@@ -7,6 +7,7 @@ class Game(
     val roomId: Long,
     val winnerId: Long,
     var totalQuizCount: Int,
+    val categoryId: Long,
     var startedAt: LocalDateTime,
     var createdAt: LocalDateTime? = null,
     var updatedAt: LocalDateTime? = null,
