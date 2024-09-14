@@ -32,7 +32,7 @@ class GameEntity(
     private val totalQuizCount: Int,
 
     @Column(name = "category_id", nullable = false)
-    val categoryId: Long,
+    private val categoryId: Long,
 
     @Column(name = "started_at", nullable = false)
     private var startedAt: LocalDateTime,

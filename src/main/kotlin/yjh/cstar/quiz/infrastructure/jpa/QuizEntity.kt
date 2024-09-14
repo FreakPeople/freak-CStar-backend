@@ -32,7 +32,7 @@ class QuizEntity(
     val answer: String,
 
     @Column(name = "category_id", nullable = false)
-    val categoryId: Long,
+    private val categoryId: Long,
 
     @CreatedDate
     @Column(name = "created_at", nullable = false)
