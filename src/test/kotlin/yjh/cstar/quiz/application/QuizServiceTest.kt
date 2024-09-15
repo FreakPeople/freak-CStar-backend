@@ -24,6 +24,9 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
+import yjh.cstar.category.domain.CategoryType
+import yjh.cstar.category.infrastructure.jpa.CategoryEntity
+import yjh.cstar.category.infrastructure.jpa.CategoryJpaRepository
 
 @DisplayName("[Application 테스트] QuizService")
 class QuizServiceTest : IntegrationTest() {
@@ -33,6 +36,9 @@ class QuizServiceTest : IntegrationTest() {
 
     @Autowired
     private lateinit var quizJpaRepository: QuizJpaRepository
+
+    @Autowired
+    private lateinit var categoryJpaRepository: CategoryJpaRepository
 
     @Autowired
     private lateinit var gameJpaRepository: GameJpaRepository
@@ -72,12 +78,15 @@ class QuizServiceTest : IntegrationTest() {
     @Test
     fun `퀴즈 문제 조회 테스트`() {
         // given
+        val categoryId = categoryJpaRepository.save(CategoryEntity(category = CategoryType.NETWORK))
+            .toModel().id
+
         quizJpaRepository.save(
             QuizEntity(
                 writerId = 1L,
                 question = "문제1",
                 answer = "정답1",
-                categoryId = 3L,
+                categoryId = categoryId,
                 createdAt = null,
                 updatedAt = null
             )
@@ -87,7 +96,7 @@ class QuizServiceTest : IntegrationTest() {
                 writerId = 1L,
                 question = "문제2",
                 answer = "정답2",
-                categoryId = 3L,
+                categoryId = categoryId,
                 createdAt = null,
                 updatedAt = null
             )
@@ -97,17 +106,17 @@ class QuizServiceTest : IntegrationTest() {
                 writerId = 1L,
                 question = "문제3",
                 answer = "정답3",
-                categoryId = 3L,
+                categoryId = categoryId,
                 createdAt = null,
                 updatedAt = null
             )
         )
-        val quizCategoryId = 3L
+
         val totalQuestions = 2
 
         // when
         val quizzes = quizService.getQuizzes(
-            quizCategoryId = quizCategoryId,
+            quizCategoryId = categoryId,
             totalQuestions = totalQuestions
         )
 
@@ -136,12 +145,15 @@ class QuizServiceTest : IntegrationTest() {
     @Test
     fun `퀴즈 카테고리별로 퀴즈를 조회하는 테스트`() {
         // given
+        val categoryId = categoryJpaRepository.save(CategoryEntity(category = CategoryType.NETWORK))
+            .toModel().id
+
         quizJpaRepository.save(
             QuizEntity(
                 writerId = 1L,
                 question = "문제1",
                 answer = "정답1",
-                categoryId = 3L,
+                categoryId = categoryId,
                 createdAt = null,
                 updatedAt = null
             )
@@ -151,7 +163,7 @@ class QuizServiceTest : IntegrationTest() {
                 writerId = 2L,
                 question = "문제2",
                 answer = "정답2",
-                categoryId = 3L,
+                categoryId = categoryId,
                 createdAt = null,
                 updatedAt = null
             )
@@ -161,7 +173,7 @@ class QuizServiceTest : IntegrationTest() {
                 writerId = 1L,
                 question = "문제3",
                 answer = "정답3",
-                categoryId = 3L,
+                categoryId = categoryId,
                 createdAt = null,
                 updatedAt = null
             )
@@ -171,7 +183,7 @@ class QuizServiceTest : IntegrationTest() {
                 writerId = 1L,
                 question = "문제4",
                 answer = "정답4",
-                categoryId = 4L,
+                categoryId = 99999L,
                 createdAt = null,
                 updatedAt = null
             )
@@ -179,12 +191,12 @@ class QuizServiceTest : IntegrationTest() {
 
         // when
         val page1 = quizService.retrieveAllByCategory(
-            quizCategoryId = 3L,
+            quizCategoryId = categoryId,
             pageable = PageRequest.of(0, 10)
         )
 
         // then
-        assertEquals(2, page1.content.size)
+        assertEquals(3, page1.content.size)
     }
 
     @Test
