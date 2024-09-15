@@ -8,6 +8,9 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import yjh.cstar.IntegrationTest
+import yjh.cstar.category.domain.CategoryType
+import yjh.cstar.category.infrastructure.jpa.CategoryEntity
+import yjh.cstar.category.infrastructure.jpa.CategoryJpaRepository
 import yjh.cstar.common.BaseException
 import yjh.cstar.game.infrastructure.jpa.GameEntity
 import yjh.cstar.game.infrastructure.jpa.GameJpaRepository
@@ -24,9 +27,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
-import yjh.cstar.category.domain.CategoryType
-import yjh.cstar.category.infrastructure.jpa.CategoryEntity
-import yjh.cstar.category.infrastructure.jpa.CategoryJpaRepository
 
 @DisplayName("[Application 테스트] QuizService")
 class QuizServiceTest : IntegrationTest() {
