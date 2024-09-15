@@ -1,4 +1,4 @@
-package yjh.cstar.game.application
+package yjh.cstar.engine.application
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.scheduling.annotation.Async
@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service
 import yjh.cstar.common.BaseErrorCode
 import yjh.cstar.common.BaseException
 import yjh.cstar.engine.application.port.GameAnswerPollRepository
+import yjh.cstar.game.application.GameResultService
 import yjh.cstar.game.domain.AnswerResult
 import yjh.cstar.game.presentation.response.QuizInfoResponse
 import yjh.cstar.game.presentation.response.RankingResponse
@@ -20,6 +21,9 @@ private val logger = KotlinLogging.logger {}
 class GameEngineService(
     private val gameAnswerPollRepository: GameAnswerPollRepository,
     private val gameResultService: GameResultService,
+    private val rankingService: RankingService,
+    private val answerValidationService: AnswerValidationService,
+    private val scoreManagementService: ScoreManagementService,
     private val broadCastService: BroadCastService,
 ) {
 
@@ -59,25 +63,23 @@ class GameEngineService(
                 logger.info { "[WARN] busy waiting..." }
                 gameAnswerPollRepository.poll(roomId, quiz.id)
                     ?.takeIf {
-                        it.answer.replace(" ", "")
-                            .equals(quiz.answer.replace(" ", ""), ignoreCase = true)
+                        answerValidationService.validateAnswer(it.answer, quiz.answer)
                     }
                     ?.let { result ->
-                        updateScore(ranking, result.playerId)
+                        scoreManagementService.updateScore(ranking, result.playerId)
                         nicknames[result.playerId] = result.nickname
                         broadcastResult(destination, result)
-                        broadcastRanking(ranking, nicknames, destination)
+                        val rankingMessage = rankingService.generateRanking(ranking, nicknames)
+                        broadcastRanking(destination, rankingMessage)
                         notExistWinner = false
                     }
             }
 
-            if (!notExistWinner) {
-                continue
-            }
+            if (!notExistWinner) continue
             broadCastService.sendMessage(destination, "guide", "시간 초과! 다음 문제로 넘어갑니다!", null)
         }
 
-        val winningPlayerId = calculateGameResult(ranking)
+        val winningPlayerId = rankingService.calculateGameResult(ranking)
 
         broadCastService.sendMessage(destination, "guide", "문제가 다 끝났습니다. 게임 결과는?! 두구두구", null)
         broadCastService.sendMessage(
@@ -91,30 +93,15 @@ class GameEngineService(
         logger.info { "[INFO] 게임 엔진 스레드 종료 - roomId : $roomId" }
     }
 
-    private fun calculateGameResult(ranking: TreeMap<Long, Int>) = ranking.maxByOrNull { it.value }?.key ?: -1
-
     private fun broadcastResult(destination: String, result: AnswerResult) {
         broadCastService.sendMessage(destination, "winner", "[${result.nickname}]님이 맞췄습니다!", result.playerId)
     }
 
     private fun broadcastRanking(
-        ranking: TreeMap<Long, Int>,
-        nicknames: MutableMap<Long, String>,
         destination: String,
+        rankingMessage: String,
     ) {
-        val sortedRankingDescending = ranking.entries.sortedByDescending { it.value }
-        val result = StringBuilder()
-        for ((index, entry) in sortedRankingDescending.withIndex()) {
-            val playerNickname = nicknames[entry.key]
-            val score = entry.value
-            result.append("[${index + 1}등 $playerNickname-$score]  ")
-        }
-        broadCastService.sendMessage(destination, "rank", "현재 랭킹 정보 입니다.", RankingResponse(result.toString()))
-    }
-
-    private fun updateScore(ranking: TreeMap<Long, Int>, playerId: Long) {
-        val score = ranking.getOrDefault(playerId, 0)
-        ranking[playerId] = score + 1
+        broadCastService.sendMessage(destination, "rank", "현재 랭킹 정보 입니다.", RankingResponse(rankingMessage))
     }
 
     private fun checkTimeIn(startTime: Long): Boolean {
