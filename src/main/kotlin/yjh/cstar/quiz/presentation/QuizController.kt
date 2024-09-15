@@ -36,10 +36,10 @@ class QuizController(
 
     @GetMapping("/quizzes")
     fun retrieveAllByCategory(
-        @RequestParam category: String,
+        @RequestParam categoryId: Long,
         @PageableDefault(size = 10) pageable: Pageable,
     ): ResponseEntity<Response<Page<QuizResponse>>> {
-        val responses = quizService.retrieveAllByCategory(category, pageable).map { QuizResponse.from(it) }
+        val responses = quizService.retrieveAllByCategory(categoryId, pageable).map { QuizResponse.from(it) }
         return ResponseEntity.ok(Response(data = responses))
     }
 

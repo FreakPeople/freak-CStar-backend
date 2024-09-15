@@ -31,6 +31,9 @@ class GameEntity(
     @Column(name = "total_quiz_count", nullable = false)
     private val totalQuizCount: Int,
 
+    @Column(name = "category_id", nullable = false)
+    private val categoryId: Long,
+
     @Column(name = "started_at", nullable = false)
     private var startedAt: LocalDateTime,
 
@@ -52,6 +55,7 @@ class GameEntity(
                 roomId = game.roomId,
                 winnerId = game.winnerId,
                 totalQuizCount = game.totalQuizCount,
+                categoryId = game.categoryId,
                 startedAt = game.startedAt,
                 createdAt = game.createdAt,
                 updatedAt = game.updatedAt,
@@ -65,6 +69,7 @@ class GameEntity(
             roomId = this.roomId,
             winnerId = this.winnerId,
             totalQuizCount = this.totalQuizCount,
+            categoryId = this.categoryId,
             startedAt = this.startedAt,
             createdAt = this.createdAt,
             updatedAt = this.updatedAt,

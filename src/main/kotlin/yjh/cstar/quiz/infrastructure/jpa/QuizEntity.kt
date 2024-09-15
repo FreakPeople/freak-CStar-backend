@@ -3,8 +3,6 @@ package yjh.cstar.quiz.infrastructure.jpa
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EntityListeners
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
@@ -12,7 +10,6 @@ import jakarta.persistence.Table
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
-import yjh.cstar.quiz.domain.Category
 import yjh.cstar.quiz.domain.Quiz
 import java.time.LocalDateTime
 
@@ -34,9 +31,8 @@ class QuizEntity(
     @Column(name = "answer", nullable = false)
     val answer: String,
 
-    @Column(name = "category", nullable = false)
-    @Enumerated(EnumType.STRING)
-    val category: Category,
+    @Column(name = "category_id", nullable = false)
+    private val categoryId: Long,
 
     @CreatedDate
     @Column(name = "created_at", nullable = false)
@@ -56,7 +52,7 @@ class QuizEntity(
                 writerId = quiz.writerId,
                 question = quiz.question,
                 answer = quiz.answer,
-                category = quiz.category,
+                categoryId = quiz.categoryId,
                 createdAt = quiz.createdAt,
                 updatedAt = quiz.updatedAt,
                 deletedAt = quiz.deletedAt
@@ -70,7 +66,7 @@ class QuizEntity(
             writerId = this.writerId,
             question = this.question,
             answer = this.answer,
-            category = this.category,
+            categoryId = this.categoryId,
             createdAt = this.createdAt,
             updatedAt = this.updatedAt,
             deletedAt = this.deletedAt

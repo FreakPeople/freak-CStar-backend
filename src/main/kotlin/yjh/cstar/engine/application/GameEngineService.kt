@@ -3,6 +3,8 @@ package yjh.cstar.game.application
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
+import yjh.cstar.common.BaseErrorCode
+import yjh.cstar.common.BaseException
 import yjh.cstar.engine.application.port.GameAnswerPollRepository
 import yjh.cstar.game.domain.AnswerResult
 import yjh.cstar.game.presentation.response.QuizInfoResponse
@@ -28,6 +30,8 @@ class GameEngineService(
     @Async("GameEngineThreadPool")
     fun start(quizzes: List<Quiz>, roomId: Long) {
         logger.info { "[INFO] 게임 엔진 스레드 시작 - roomId : $roomId" }
+
+        val categoryId = quizzes.firstOrNull()?.categoryId ?: throw BaseException(BaseErrorCode.EMPTY_QUIZ)
 
         val ranking = TreeMap<Long, Int>()
         val nicknames = mutableMapOf<Long, String>()
@@ -83,7 +87,7 @@ class GameEngineService(
             winningPlayerId
         )
 
-        gameResultService.create(ranking, gameStartedAt, roomId, winningPlayerId, quizzes.size)
+        gameResultService.create(ranking, gameStartedAt, roomId, winningPlayerId, quizzes.size, categoryId)
         logger.info { "[INFO] 게임 엔진 스레드 종료 - roomId : $roomId" }
     }
 

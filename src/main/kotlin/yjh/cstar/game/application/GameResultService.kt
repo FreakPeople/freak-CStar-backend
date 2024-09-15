@@ -23,12 +23,14 @@ class GameResultService(
         roomId: Long,
         winningPlayerId: Long,
         totalQuizSize: Int,
+        categoryId: Long,
     ) {
         // 게임 전체 결과
         val game = Game(
             roomId = roomId,
             winnerId = winningPlayerId,
             totalQuizCount = totalQuizSize,
+            categoryId = categoryId,
             startedAt = gameStartedAt
         )
         val savedGame = gameRepository.save(game)

@@ -17,7 +17,7 @@ class GameService(
     fun start(command: GameStartCommand) {
         roomService.startGame(command.roomId)
 
-        val quizzes = quizService.getQuizzes(command.quizCategory, command.totalQuestions)
+        val quizzes = quizService.getQuizzes(command.quizCategoryId, command.totalQuestions)
 
         // 실제 퀴즈 실행하는 비동기 메서드
         gameEngineService.start(quizzes, command.roomId)

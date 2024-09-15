@@ -8,12 +8,14 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import yjh.cstar.IntegrationTest
+import yjh.cstar.category.domain.CategoryType
+import yjh.cstar.category.infrastructure.jpa.CategoryEntity
+import yjh.cstar.category.infrastructure.jpa.CategoryJpaRepository
 import yjh.cstar.common.BaseException
 import yjh.cstar.game.infrastructure.jpa.GameEntity
 import yjh.cstar.game.infrastructure.jpa.GameJpaRepository
 import yjh.cstar.game.infrastructure.jpa.GameResultEntity
 import yjh.cstar.game.infrastructure.jpa.GameResultJpaRepository
-import yjh.cstar.quiz.domain.Category
 import yjh.cstar.quiz.domain.QuizCreateCommand
 import yjh.cstar.quiz.infrastructure.jpa.GameQuizEntity
 import yjh.cstar.quiz.infrastructure.jpa.GameQuizId
@@ -36,6 +38,9 @@ class QuizServiceTest : IntegrationTest() {
     private lateinit var quizJpaRepository: QuizJpaRepository
 
     @Autowired
+    private lateinit var categoryJpaRepository: CategoryJpaRepository
+
+    @Autowired
     private lateinit var gameJpaRepository: GameJpaRepository
 
     @Autowired
@@ -50,7 +55,7 @@ class QuizServiceTest : IntegrationTest() {
         val command = QuizCreateCommand(
             question = "question",
             answer = "answer",
-            category = Category.ALGORITHM
+            categoryId = 2L
         )
         val writerId = 1L
 
@@ -64,7 +69,7 @@ class QuizServiceTest : IntegrationTest() {
         assertNotNull(quiz)
         assertEquals("question", quiz.question)
         assertEquals("answer", quiz.answer)
-        assertEquals(Category.ALGORITHM, quiz.category)
+        assertEquals(2L, quiz.categoryId)
         assertNotNull(quiz.createdAt)
         assertNotNull(quiz.updatedAt)
         assertNull(quiz.deletedAt)
@@ -73,12 +78,15 @@ class QuizServiceTest : IntegrationTest() {
     @Test
     fun `퀴즈 문제 조회 테스트`() {
         // given
+        val categoryId = categoryJpaRepository.save(CategoryEntity(category = CategoryType.NETWORK))
+            .toModel().id
+
         quizJpaRepository.save(
             QuizEntity(
                 writerId = 1L,
                 question = "문제1",
                 answer = "정답1",
-                category = Category.ALGORITHM,
+                categoryId = categoryId,
                 createdAt = null,
                 updatedAt = null
             )
@@ -88,7 +96,7 @@ class QuizServiceTest : IntegrationTest() {
                 writerId = 1L,
                 question = "문제2",
                 answer = "정답2",
-                category = Category.ALGORITHM,
+                categoryId = categoryId,
                 createdAt = null,
                 updatedAt = null
             )
@@ -98,17 +106,17 @@ class QuizServiceTest : IntegrationTest() {
                 writerId = 1L,
                 question = "문제3",
                 answer = "정답3",
-                category = Category.ALGORITHM,
+                categoryId = categoryId,
                 createdAt = null,
                 updatedAt = null
             )
         )
-        val quizCategory = "알고리즘"
+
         val totalQuestions = 2
 
         // when
         val quizzes = quizService.getQuizzes(
-            quizCategory = quizCategory,
+            quizCategoryId = categoryId,
             totalQuestions = totalQuestions
         )
 
@@ -119,13 +127,13 @@ class QuizServiceTest : IntegrationTest() {
     @Test
     fun `퀴즈 조회시 잘못된 카테고리 이름 입력`() {
         // given
-        val quizCategory = "알고리x"
+        val quizCategoryId = 999L
         val totalQuestions = 2
 
         // when
         val exception = assertThrows<BaseException> {
             quizService.getQuizzes(
-                quizCategory = quizCategory,
+                quizCategoryId = quizCategoryId,
                 totalQuestions = totalQuestions
             )
         }
@@ -137,12 +145,15 @@ class QuizServiceTest : IntegrationTest() {
     @Test
     fun `퀴즈 카테고리별로 퀴즈를 조회하는 테스트`() {
         // given
+        val categoryId = categoryJpaRepository.save(CategoryEntity(category = CategoryType.NETWORK))
+            .toModel().id
+
         quizJpaRepository.save(
             QuizEntity(
                 writerId = 1L,
                 question = "문제1",
                 answer = "정답1",
-                category = Category.ALGORITHM,
+                categoryId = categoryId,
                 createdAt = null,
                 updatedAt = null
             )
@@ -152,7 +163,7 @@ class QuizServiceTest : IntegrationTest() {
                 writerId = 2L,
                 question = "문제2",
                 answer = "정답2",
-                category = Category.ALGORITHM,
+                categoryId = categoryId,
                 createdAt = null,
                 updatedAt = null
             )
@@ -162,7 +173,7 @@ class QuizServiceTest : IntegrationTest() {
                 writerId = 1L,
                 question = "문제3",
                 answer = "정답3",
-                category = Category.DATABASE,
+                categoryId = categoryId,
                 createdAt = null,
                 updatedAt = null
             )
@@ -172,7 +183,7 @@ class QuizServiceTest : IntegrationTest() {
                 writerId = 1L,
                 question = "문제4",
                 answer = "정답4",
-                category = Category.NETWORK,
+                categoryId = 99999L,
                 createdAt = null,
                 updatedAt = null
             )
@@ -180,23 +191,23 @@ class QuizServiceTest : IntegrationTest() {
 
         // when
         val page1 = quizService.retrieveAllByCategory(
-            quizCategory = "알고리즘",
+            quizCategoryId = categoryId,
             pageable = PageRequest.of(0, 10)
         )
 
         // then
-        assertEquals(2, page1.content.size)
+        assertEquals(3, page1.content.size)
     }
 
     @Test
     fun `퀴즈 카테고리별로 퀴즈를 조회 할 때, 잘못된 카테고리 이름 입력 시 BAD_REQUEST 에러 발생 테스트`() {
         // given
-        val quizCategory = "운영체제임"
+        val quizCategoryId = 999L
 
         // when
         val exception = assertThrows<BaseException> {
             quizService.retrieveAllByCategory(
-                quizCategory = quizCategory,
+                quizCategoryId = quizCategoryId,
                 pageable = PageRequest.of(0, 10)
             )
         }
@@ -216,7 +227,7 @@ class QuizServiceTest : IntegrationTest() {
                 writerId = 1L,
                 question = "문제11",
                 answer = "정답11",
-                category = Category.NETWORK,
+                categoryId = 3L,
                 createdAt = null,
                 updatedAt = null
             )
@@ -226,7 +237,7 @@ class QuizServiceTest : IntegrationTest() {
                 writerId = 1L,
                 question = "문제22",
                 answer = "정답22",
-                category = Category.DATABASE,
+                categoryId = 3L,
                 createdAt = null,
                 updatedAt = null
             )
@@ -236,7 +247,7 @@ class QuizServiceTest : IntegrationTest() {
                 writerId = 2L,
                 question = "문제33",
                 answer = "정답33",
-                category = Category.ALGORITHM,
+                categoryId = 5L,
                 createdAt = null,
                 updatedAt = null
             )
@@ -264,7 +275,7 @@ class QuizServiceTest : IntegrationTest() {
                 writerId = 2L,
                 question = "문제33",
                 answer = "정답33",
-                category = Category.ALGORITHM,
+                categoryId = 5L,
                 createdAt = null,
                 updatedAt = null
             )
@@ -296,7 +307,7 @@ class QuizServiceTest : IntegrationTest() {
                 writerId = 1L,
                 question = "문제111",
                 answer = "정답111",
-                category = Category.ALGORITHM,
+                categoryId = 5L,
                 createdAt = null,
                 updatedAt = null
             )
@@ -308,7 +319,7 @@ class QuizServiceTest : IntegrationTest() {
                 writerId = 1L,
                 question = "문제222",
                 answer = "정답222",
-                category = Category.ALGORITHM,
+                categoryId = 5L,
                 createdAt = null,
                 updatedAt = null
             )
@@ -320,7 +331,7 @@ class QuizServiceTest : IntegrationTest() {
                 writerId = 1L,
                 question = "문제333",
                 answer = "정답333",
-                category = Category.ALGORITHM,
+                categoryId = 5L,
                 createdAt = null,
                 updatedAt = null
             )
@@ -332,6 +343,7 @@ class QuizServiceTest : IntegrationTest() {
                 roomId = 1L,
                 winnerId = 2L,
                 totalQuizCount = 3,
+                categoryId = 3L,
                 startedAt = LocalDateTime.now(),
                 createdAt = null,
                 updatedAt = null

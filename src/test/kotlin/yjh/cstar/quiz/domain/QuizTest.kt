@@ -15,7 +15,7 @@ class QuizTest {
         val command = QuizCreateCommand(
             question = "question",
             answer = "answer",
-            category = Category.NETWORK
+            categoryId = 5L
         )
         val writerId = 1L
 
@@ -27,6 +27,6 @@ class QuizTest {
         assertEquals(1L, quiz.writerId)
         assertEquals("question", quiz.question)
         assertEquals("answer", quiz.answer)
-        assertEquals(Category.NETWORK, quiz.category)
+        assertEquals(5L, quiz.categoryId)
     }
 }

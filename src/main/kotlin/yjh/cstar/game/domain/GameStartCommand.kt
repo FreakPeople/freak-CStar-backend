@@ -2,6 +2,6 @@ package yjh.cstar.game.domain
 
 class GameStartCommand(
     val roomId: Long,
-    val quizCategory: String,
+    val quizCategoryId: Long,
     val totalQuestions: Int,
 )

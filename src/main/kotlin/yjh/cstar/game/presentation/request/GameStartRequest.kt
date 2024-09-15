@@ -4,12 +4,12 @@ import yjh.cstar.game.domain.GameStartCommand
 
 data class GameStartRequest(
     val roomId: Long,
-    val quizCategory: String,
+    val quizCategoryId: Long,
     val totalQuestions: Int,
 )
 
 fun GameStartRequest.toCommand() = GameStartCommand(
     roomId = roomId,
-    quizCategory = quizCategory,
+    quizCategoryId = quizCategoryId,
     totalQuestions = totalQuestions
 )

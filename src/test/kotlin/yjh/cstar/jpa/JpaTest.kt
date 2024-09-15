@@ -15,7 +15,6 @@ import yjh.cstar.game.infrastructure.jpa.GameResultEntity
 import yjh.cstar.game.infrastructure.jpa.GameResultJpaRepository
 import yjh.cstar.member.infrastructure.jpa.MemberEntity
 import yjh.cstar.member.infrastructure.jpa.MemberJpaRepository
-import yjh.cstar.quiz.domain.Category
 import yjh.cstar.quiz.infrastructure.jpa.GameQuizEntity
 import yjh.cstar.quiz.infrastructure.jpa.GameQuizId
 import yjh.cstar.quiz.infrastructure.jpa.GameQuizJpaRepository
@@ -154,6 +153,7 @@ class JpaTest {
                 roomId = 1L,
                 winnerId = 1L,
                 totalQuizCount = 5,
+                categoryId = 2L,
                 startedAt = LocalDateTime.now(),
                 createdAt = LocalDateTime.now(),
                 updatedAt = LocalDateTime.now()
@@ -203,7 +203,7 @@ class JpaTest {
                 writerId = 1L,
                 question = "question",
                 answer = "answer",
-                category = Category.NETWORK,
+                categoryId = 2L,
                 createdAt = LocalDateTime.now(),
                 updatedAt = LocalDateTime.now()
             )
