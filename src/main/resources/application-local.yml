@@ -24,11 +24,6 @@ spring:
     password: local_password
     baseline-on-migrate: true
     locations: classpath:/db
-  sql:
-    init:
-      mode: always
-      data-locations:
-        - classpath:/data/init_insert_quiz_data.sql
   data:
     redis:
         host: localhost
