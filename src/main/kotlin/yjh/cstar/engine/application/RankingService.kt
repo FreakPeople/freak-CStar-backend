@@ -1,22 +1,24 @@
 package yjh.cstar.engine.application
 
 import org.springframework.stereotype.Service
-import java.util.TreeMap
+import yjh.cstar.engine.domain.Ranking
 
 @Service
 class RankingService() {
-    fun generateRanking(ranking: TreeMap<Long, Int>, nicknames: Map<Long, String>): String {
-        val sortedRankingDescending = ranking.entries.sortedByDescending { it.value }
+    fun getRankingMessage(ranking: Ranking, nicknames: Map<Long, String>): String {
+        val sortedRankingDescending = ranking.sortByScore()
         val result = StringBuilder()
-        for ((index, entry) in sortedRankingDescending.withIndex()) {
-            val playerNickname = nicknames[entry.key]
-            val score = entry.value
+
+        val sortedList = sortedRankingDescending.entries.sortedByDescending { it.key }
+        for ((index, entry) in sortedList.withIndex()) {
+            val score = entry.key
+            val playerNickname = nicknames[entry.value.toLong()]
             result.append("[${index + 1}등 $playerNickname-$score]  ")
         }
         return result.toString()
     }
 
-    fun calculateGameResult(ranking: TreeMap<Long, Int>): Long {
-        return ranking.maxByOrNull { it.value }?.key ?: -1
+    fun getWinnerId(ranking: Ranking): Long {
+        return ranking.getWinnerId()
     }
 }

@@ -6,9 +6,8 @@ import yjh.cstar.game.application.port.GameRepository
 import yjh.cstar.game.application.port.GameResultRepository
 import yjh.cstar.game.domain.Game
 import yjh.cstar.game.domain.GameResult
+import yjh.cstar.game.presentation.request.RankingCreateRequest
 import yjh.cstar.room.application.RoomService
-import java.time.LocalDateTime
-import java.util.TreeMap
 
 @Service
 class GameResultService(
@@ -17,35 +16,17 @@ class GameResultService(
     private val roomService: RoomService,
 ) {
     @Transactional
-    fun create(
-        ranking: TreeMap<Long, Int>,
-        gameStartedAt: LocalDateTime,
-        roomId: Long,
-        winningPlayerId: Long,
-        totalQuizSize: Int,
-        categoryId: Long,
-    ) {
-        // 게임 전체 결과
+    fun create(request: RankingCreateRequest) {
         val game = Game(
-            roomId = roomId,
-            winnerId = winningPlayerId,
-            totalQuizCount = totalQuizSize,
-            categoryId = categoryId,
-            startedAt = gameStartedAt
+            roomId = request.roomId,
+            winnerId = request.winningPlayerId,
+            totalQuizCount = request.totalQuizSize,
+            categoryId = request.categoryId,
+            startedAt = request.gameStartedAt
         )
         val savedGame = gameRepository.save(game)
 
-        // 한 사람당 게임 결과
-        val players: List<Long> = roomService.retrieveCurrParticipant(roomId)
-
-        players.forEach {
-            val currentValue = ranking.getOrDefault(it, 0)
-            ranking[it] = currentValue
-        }
-
-        val sortedEntries = ranking.entries.sortedByDescending { it.value }
-
-        for ((idx, result) in sortedEntries.withIndex()) {
+        for ((idx, result) in request.sortedRanking.entries.withIndex()) {
             val rank = idx + 1
             val playerId = result.key
             val score = result.value
@@ -53,12 +34,13 @@ class GameResultService(
             val gameResult = GameResult(
                 gameId = savedGame.id,
                 playerId = playerId,
-                totalCount = totalQuizSize,
+                totalCount = request.totalQuizSize,
                 correctCount = score,
                 ranking = rank
             )
             gameResultRepository.save(gameResult)
         }
+
         roomService.endGameAndResetRoom(savedGame.roomId)
     }
 }

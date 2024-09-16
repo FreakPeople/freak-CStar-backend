@@ -6,14 +6,15 @@ import org.springframework.stereotype.Service
 import yjh.cstar.common.BaseErrorCode
 import yjh.cstar.common.BaseException
 import yjh.cstar.engine.application.port.GameAnswerPollRepository
+import yjh.cstar.engine.domain.Ranking
 import yjh.cstar.game.application.GameResultService
 import yjh.cstar.game.domain.AnswerResult
+import yjh.cstar.game.presentation.request.RankingCreateRequest
 import yjh.cstar.game.presentation.response.QuizInfoResponse
 import yjh.cstar.game.presentation.response.RankingResponse
 import yjh.cstar.quiz.domain.Quiz
 import yjh.cstar.websocket.application.BroadCastService
 import java.time.LocalDateTime
-import java.util.TreeMap
 
 private val logger = KotlinLogging.logger {}
 
@@ -23,7 +24,6 @@ class GameEngineService(
     private val gameResultService: GameResultService,
     private val rankingService: RankingService,
     private val answerValidationService: AnswerValidationService,
-    private val scoreManagementService: ScoreManagementService,
     private val broadCastService: BroadCastService,
 ) {
 
@@ -32,12 +32,12 @@ class GameEngineService(
     }
 
     @Async("GameEngineThreadPool")
-    fun start(quizzes: List<Quiz>, roomId: Long) {
+    fun start(players: List<Long>, quizzes: List<Quiz>, roomId: Long) {
         logger.info { "[INFO] 게임 엔진 스레드 시작 - roomId : $roomId" }
 
         val categoryId = quizzes.firstOrNull()?.categoryId ?: throw BaseException(BaseErrorCode.EMPTY_QUIZ)
 
-        val ranking = TreeMap<Long, Int>()
+        val ranking = Ranking(players)
         val nicknames = mutableMapOf<Long, String>()
 
         val destination = "/topic/rooms/$roomId"
@@ -66,10 +66,10 @@ class GameEngineService(
                         answerValidationService.validateAnswer(it.answer, quiz.answer)
                     }
                     ?.let { result ->
-                        scoreManagementService.updateScore(ranking, result.playerId)
+                        ranking.updateScore(result.playerId)
                         nicknames[result.playerId] = result.nickname
                         broadcastResult(destination, result)
-                        val rankingMessage = rankingService.generateRanking(ranking, nicknames)
+                        val rankingMessage = rankingService.getRankingMessage(ranking, nicknames)
                         broadcastRanking(destination, rankingMessage)
                         notExistWinner = false
                     }
@@ -79,7 +79,7 @@ class GameEngineService(
             broadCastService.sendMessage(destination, "guide", "시간 초과! 다음 문제로 넘어갑니다!", null)
         }
 
-        val winningPlayerId = rankingService.calculateGameResult(ranking)
+        val winningPlayerId = rankingService.getWinnerId(ranking)
 
         broadCastService.sendMessage(destination, "guide", "문제가 다 끝났습니다. 게임 결과는?! 두구두구", null)
         broadCastService.sendMessage(
@@ -89,7 +89,19 @@ class GameEngineService(
             winningPlayerId
         )
 
-        gameResultService.create(ranking, gameStartedAt, roomId, winningPlayerId, quizzes.size, categoryId)
+        // 게임 결과 집계
+        val sortedRanking = ranking.sortByScore()
+
+        val rankingCreateRequest = RankingCreateRequest(
+            sortedRanking,
+            roomId,
+            winningPlayerId,
+            quizzes.size,
+            categoryId,
+            gameStartedAt
+        )
+        gameResultService.create(rankingCreateRequest)
+
         logger.info { "[INFO] 게임 엔진 스레드 종료 - roomId : $roomId" }
     }
 
