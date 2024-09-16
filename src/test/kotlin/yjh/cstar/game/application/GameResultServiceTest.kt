@@ -9,6 +9,7 @@ import yjh.cstar.common.BaseException
 import yjh.cstar.game.infrastructure.jpa.GameEntity
 import yjh.cstar.game.infrastructure.jpa.GameJpaRepository
 import yjh.cstar.game.infrastructure.jpa.GameResultJpaRepository
+import yjh.cstar.game.presentation.request.RankingCreateRequest
 import yjh.cstar.room.domain.RoomStatus
 import yjh.cstar.room.infrastructure.jpa.RoomEntity
 import yjh.cstar.room.infrastructure.jpa.RoomJpaRepository
@@ -45,20 +46,22 @@ class GameResultServiceTest : IntegrationTest() {
             )
         ).toModel().id
 
-        val ranking = TreeMap<Long, Int>()
-        ranking[2L] = 5
-        ranking[3L] = 3
-        ranking[1L] = 2
+        val playerScores = TreeMap<Long, Int>().apply {
+            put(2L, 5)
+            put(3L, 3)
+            put(1L, 2)
+        }
 
-        // when
-        gameResultService.create(
-            ranking = ranking,
-            gameStartedAt = LocalDateTime.now(),
-            roomId = roomId,
-            winningPlayerId = 2L,
-            totalQuizSize = 10,
-            categoryId = 1L
+        val rankingCreateRequest = RankingCreateRequest(
+            playerScores,
+            roomId,
+            2L,
+            10,
+            1L,
+            LocalDateTime.now()
         )
+        // when
+        gameResultService.create(rankingCreateRequest)
 
         // then
         // 1. Game
@@ -98,19 +101,21 @@ class GameResultServiceTest : IntegrationTest() {
             )
         ).toModel()
 
-        val ranking = TreeMap<Long, Int>().apply {
-            put(1L, 3)
-            put(2L, 2)
+        val playerScores = TreeMap<Long, Int>().apply {
+            put(2L, 5)
+            put(3L, 3)
+            put(1L, 2)
         }
 
-        gameResultService.create(
-            ranking = ranking,
-            gameStartedAt = LocalDateTime.now(),
-            roomId = savedRoom.id,
-            winningPlayerId = 1L,
-            totalQuizSize = 5,
-            categoryId = 1L
+        val rankingCreateRequest = RankingCreateRequest(
+            playerScores,
+            savedRoom.id,
+            1L,
+            5,
+            1L,
+            LocalDateTime.now()
         )
+        gameResultService.create(rankingCreateRequest)
 
         // then
         val updatedRoom = roomJpaRepository.findByIdOrNull(savedRoom.id)
