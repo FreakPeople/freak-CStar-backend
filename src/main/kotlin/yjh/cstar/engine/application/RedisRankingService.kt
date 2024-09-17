@@ -43,7 +43,8 @@ class RedisRankingService(
 
         val winningPair = rankings.first()
         return winningPair.first
-            ?.takeLast(1)
+            ?.split(":")
+            ?.getOrNull(1)
             ?.toLong()
             ?: -1L
     }

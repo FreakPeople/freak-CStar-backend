@@ -120,7 +120,7 @@ class RedisRankingServiceTest {
     }
 
     @Test
-    fun `최상위 랭킹 승자 가져오기 테스트`() {
+    fun `최상위 랭킹 승자 가져오기 테스트 1`() {
         // given
         val value1 = RedisRankingService.VALUE_PREFIX + 1L
         val value2 = RedisRankingService.VALUE_PREFIX + 2L
@@ -135,5 +135,33 @@ class RedisRankingServiceTest {
         // then
         assertNotNull(result)
         assertEquals(3L, result)
+    }
+
+    @Test
+    fun `최상위 랭킹 승자 가져오기 테스트 2`() {
+        // given
+        val value1 = RedisRankingService.VALUE_PREFIX + 1L
+        val value2 = RedisRankingService.VALUE_PREFIX + 2L
+        val value3 = RedisRankingService.VALUE_PREFIX + 333L
+        redisTemplate.opsForZSet().incrementScore(KEY, value1, 1.toDouble())
+        redisTemplate.opsForZSet().incrementScore(KEY, value3, 100.toDouble())
+        redisTemplate.opsForZSet().incrementScore(KEY, value2, 2.toDouble())
+
+        // then
+        val result = redisRankingService.getWinnerId(ROOM_ID)
+
+        // then
+        assertNotNull(result)
+        assertEquals(333L, result)
+    }
+
+    @Test
+    fun `최상위 랭킹 승자 가져올 때 플레이어가 없는경우 -1 반환`() {
+        // then
+        val result = redisRankingService.getWinnerId(ROOM_ID)
+
+        // then
+        assertNotNull(result)
+        assertEquals(-1L, result)
     }
 }
