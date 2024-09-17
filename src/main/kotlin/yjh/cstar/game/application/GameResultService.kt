@@ -31,7 +31,7 @@ class GameResultService(
             val rank = idx + 1
             val playerId = sortedRanking[idx].first
                 ?.split(":")
-                ?.first()
+                ?.getOrNull(1)
                 ?.toLong()
             val score = sortedRanking[idx].second?.toInt()
 
