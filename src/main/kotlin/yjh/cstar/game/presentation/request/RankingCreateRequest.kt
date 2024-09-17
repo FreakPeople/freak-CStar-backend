@@ -1,10 +1,9 @@
 package yjh.cstar.game.presentation.request
 
 import java.time.LocalDateTime
-import java.util.*
 
 data class RankingCreateRequest(
-    val sortedRanking: TreeMap<Long, Int>,
+    val ranking: List<Pair<String?, Double?>>,
     val roomId: Long,
     val winningPlayerId: Long,
     val totalQuizSize: Int,

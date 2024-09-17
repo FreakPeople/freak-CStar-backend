@@ -14,7 +14,6 @@ import yjh.cstar.room.domain.RoomStatus
 import yjh.cstar.room.infrastructure.jpa.RoomEntity
 import yjh.cstar.room.infrastructure.jpa.RoomJpaRepository
 import java.time.LocalDateTime
-import java.util.TreeMap
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
@@ -46,14 +45,13 @@ class GameResultServiceTest : IntegrationTest() {
             )
         ).toModel().id
 
-        val playerScores = TreeMap<Long, Int>().apply {
-            put(2L, 5)
-            put(3L, 3)
-            put(1L, 2)
-        }
-
+        val ranking = listOf(
+            "player:2" to 5.0,
+            "player:3" to 3.0,
+            "player:1" to 2.0
+        )
         val rankingCreateRequest = RankingCreateRequest(
-            playerScores,
+            ranking,
             roomId,
             2L,
             10,
@@ -101,14 +99,13 @@ class GameResultServiceTest : IntegrationTest() {
             )
         ).toModel()
 
-        val playerScores = TreeMap<Long, Int>().apply {
-            put(2L, 5)
-            put(3L, 3)
-            put(1L, 2)
-        }
-
+        val ranking = listOf(
+            "player:2" to 5.0,
+            "player:3" to 3.0,
+            "player:1" to 2.0
+        )
         val rankingCreateRequest = RankingCreateRequest(
-            playerScores,
+            ranking,
             savedRoom.id,
             1L,
             5,
@@ -129,5 +126,10 @@ class GameResultServiceTest : IntegrationTest() {
             assertEquals(0, updatedRoomCurrCapacity)
             assertEquals(RoomStatus.WAITING, updatedRoomStatus)
         }
+    }
+
+    @Test
+    fun name() {
+        println("hello world")
     }
 }

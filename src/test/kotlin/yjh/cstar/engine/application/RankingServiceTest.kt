@@ -20,18 +20,16 @@ class RankingServiceTest : IntegrationTest() {
     @Test
     fun `퀴즈별 플레이어 랭킹 계산 테스트`() {
         // given
-        val players = listOf(1L, 2L, 3L)
-        val playerScores = TreeMap<Long, Int>().apply {
-            put(1L, 2)
-            put(2L, 3)
-            put(3L, 1)
-        }
+        val ranking = listOf(
+            "player:2" to 3.0,
+            "player:1" to 2.0,
+            "player:3" to 1.0
+        )
         val nicknames = mutableMapOf<Long, String>().apply {
             put(1L, "플레이어1")
             put(2L, "플레이어2")
             put(3L, "플레이어3")
         }
-        val ranking = Ranking(players, playerScores)
 
         // when
         val rankingMessage = rankingService.getRankingMessage(ranking, nicknames)

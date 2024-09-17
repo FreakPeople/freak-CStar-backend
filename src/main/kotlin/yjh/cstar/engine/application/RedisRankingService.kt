@@ -33,9 +33,18 @@ class RedisRankingService(
         return redisUtil.zrevrange(key, 0, -1)
     }
 
-    fun getWinnerId(roomId: Long): String? {
+    fun getWinnerId(roomId: Long): Long? {
         val key = KEY_PREFIX + roomId
-        return redisUtil.zrevrange(key, 0, -1)
-            .firstOrNull()?.first
+        val rankings = redisUtil.zrevrange(key, 0, -1)
+
+        if (rankings.size == 0) {
+            return -1L
+        }
+
+        val winningPair = rankings.first()
+        return winningPair.first
+            ?.takeLast(1)
+            ?.toLong()
+            ?: -1L
     }
 }

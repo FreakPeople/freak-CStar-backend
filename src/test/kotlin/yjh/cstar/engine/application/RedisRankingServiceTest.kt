@@ -18,7 +18,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
-
 @ActiveProfiles("local-test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DisplayName("[Application 테스트] RedisRankingService")
@@ -135,6 +134,6 @@ class RedisRankingServiceTest {
 
         // then
         assertNotNull(result)
-        assertEquals(RedisRankingService.VALUE_PREFIX + 3L, result)
+        assertEquals(3L, result)
     }
 }
