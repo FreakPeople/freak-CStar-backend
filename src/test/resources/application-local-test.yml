@@ -2,6 +2,10 @@ spring:
   datasource:
     url: jdbc:tc:mysql:8.0.35:///?useSSL=false&serverTimezone=Asia/Seoul
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+  data:
+    redis:
+      host: test_container # 임의의 호스트명
+      port: 9999 # 임의의 포트번호
   jpa:
     hibernate:
       ddl-auto: none
@@ -13,14 +17,11 @@ spring:
     database:
       replace: none
   flyway:
-    enabled: true
-    url: jdbc:tc:mysql:8.0.35:///?useSSL=false&serverTimezone=Asia/Seoul
-    baseline-on-migrate: true
-    locations: classpath:/db
-  data:
-      redis:
-          host: test_container # 임의의 호스트명
-          port: 6379 # 임의의 포트번호
+    enabled: false # 테스트 환경에서는 flyway를 사용하지 않습니다.
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:/testdb/schema.sql # 운영 DB 수정 시 함께 수정 필요 합니다.
 jwt:
   secret: eWpoLWNzdGFyLWJhY2tlbmQtand0LXNlY3JldC1rZXkteWpoLWNzdGFyLWJhY2tlbmQtand0LXNlY3JldC1rZXkK
   token-validity-in-seconds: 86400
