@@ -127,9 +127,4 @@ class GameResultServiceTest : IntegrationTest() {
             assertEquals(RoomStatus.WAITING, updatedRoomStatus)
         }
     }
-
-    @Test
-    fun name() {
-        println("hello world")
-    }
 }
