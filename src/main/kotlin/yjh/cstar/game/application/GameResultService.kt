@@ -26,10 +26,18 @@ class GameResultService(
         )
         val savedGame = gameRepository.save(game)
 
-        for ((idx, result) in request.sortedRanking.entries.withIndex()) {
+        val sortedRanking = request.ranking
+        for (idx in sortedRanking.indices) {
             val rank = idx + 1
-            val playerId = result.key
-            val score = result.value
+            val playerId = sortedRanking[idx].first
+                ?.split(":")
+                ?.getOrNull(1)
+                ?.toLong()
+            val score = sortedRanking[idx].second?.toInt()
+
+            if (playerId == null || score == null) {
+                continue
+            }
 
             val gameResult = GameResult(
                 gameId = savedGame.id,

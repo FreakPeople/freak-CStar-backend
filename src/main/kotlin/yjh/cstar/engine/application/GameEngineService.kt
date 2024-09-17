@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service
 import yjh.cstar.common.BaseErrorCode
 import yjh.cstar.common.BaseException
 import yjh.cstar.engine.application.port.GameAnswerPollRepository
-import yjh.cstar.engine.domain.Ranking
 import yjh.cstar.game.application.GameResultService
 import yjh.cstar.game.domain.AnswerResult
 import yjh.cstar.game.presentation.request.RankingCreateRequest
@@ -25,6 +24,7 @@ class GameEngineService(
     private val rankingService: RankingService,
     private val answerValidationService: AnswerValidationService,
     private val broadCastService: BroadCastService,
+    private val redisRankingService: RedisRankingService,
 ) {
 
     companion object {
@@ -37,7 +37,8 @@ class GameEngineService(
 
         val categoryId = quizzes.firstOrNull()?.categoryId ?: throw BaseException(BaseErrorCode.EMPTY_QUIZ)
 
-        val ranking = Ranking(players)
+        redisRankingService.init(roomId, players)
+
         val nicknames = mutableMapOf<Long, String>()
 
         val destination = "/topic/rooms/$roomId"
@@ -61,14 +62,19 @@ class GameEngineService(
             var notExistWinner = true
             while (checkTimeIn(startTime) && notExistWinner) {
                 logger.info { "[WARN] busy waiting..." }
+                broadCastService.sendMessage(destination, "countdown", "", null)
+
                 gameAnswerPollRepository.poll(roomId, quiz.id)
                     ?.takeIf {
                         answerValidationService.validateAnswer(it.answer, quiz.answer)
                     }
                     ?.let { result ->
-                        ranking.updateScore(result.playerId)
+                        redisRankingService.increaseScore(roomId, result.playerId)
                         nicknames[result.playerId] = result.nickname
+                        println(nicknames)
                         broadcastResult(destination, result)
+
+                        val ranking = redisRankingService.getRanking(roomId)
                         val rankingMessage = rankingService.getRankingMessage(ranking, nicknames)
                         broadcastRanking(destination, rankingMessage)
                         notExistWinner = false
@@ -79,9 +85,10 @@ class GameEngineService(
             broadCastService.sendMessage(destination, "guide", "시간 초과! 다음 문제로 넘어갑니다!", null)
         }
 
-        val winningPlayerId = rankingService.getWinnerId(ranking)
+        val winningPlayerId = redisRankingService.getWinnerId(roomId) ?: -1
 
         broadCastService.sendMessage(destination, "guide", "문제가 다 끝났습니다. 게임 결과는?! 두구두구", null)
+        println(nicknames)
         broadCastService.sendMessage(
             destination,
             "champion",
@@ -89,11 +96,10 @@ class GameEngineService(
             winningPlayerId
         )
 
-        // 게임 결과 집계
-        val sortedRanking = ranking.sortByScore()
+        val ranking = redisRankingService.getRanking(roomId)
 
         val rankingCreateRequest = RankingCreateRequest(
-            sortedRanking,
+            ranking,
             roomId,
             winningPlayerId,
             quizzes.size,
