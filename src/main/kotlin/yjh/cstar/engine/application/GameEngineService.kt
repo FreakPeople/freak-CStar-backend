@@ -37,7 +37,6 @@ class GameEngineService(
 
         val categoryId = quizzes.firstOrNull()?.categoryId ?: throw BaseException(BaseErrorCode.EMPTY_QUIZ)
 
-        // val ranking = Ranking(players)
         redisRankingService.init(roomId, players)
 
         val nicknames = mutableMapOf<Long, String>()
@@ -63,17 +62,18 @@ class GameEngineService(
             var notExistWinner = true
             while (checkTimeIn(startTime) && notExistWinner) {
                 logger.info { "[WARN] busy waiting..." }
+                broadCastService.sendMessage(destination, "countdown", "", null)
+
                 gameAnswerPollRepository.poll(roomId, quiz.id)
                     ?.takeIf {
                         answerValidationService.validateAnswer(it.answer, quiz.answer)
                     }
                     ?.let { result ->
-                        // ranking.updateScore(result.playerId)
                         redisRankingService.increaseScore(roomId, result.playerId)
                         nicknames[result.playerId] = result.nickname
+                        println(nicknames)
                         broadcastResult(destination, result)
 
-                        // 해당 부분은 rankingService output관련 클래스로 만들어주면 좋을 것 같음.
                         val ranking = redisRankingService.getRanking(roomId)
                         val rankingMessage = rankingService.getRankingMessage(ranking, nicknames)
                         broadcastRanking(destination, rankingMessage)
@@ -86,18 +86,15 @@ class GameEngineService(
         }
 
         val winningPlayerId = redisRankingService.getWinnerId(roomId) ?: -1
-        // val winningPlayerId = rankingService.getWinnerId(ranking)
 
         broadCastService.sendMessage(destination, "guide", "문제가 다 끝났습니다. 게임 결과는?! 두구두구", null)
+        println(nicknames)
         broadCastService.sendMessage(
             destination,
             "champion",
             "최종 1등은 ?! [${nicknames[winningPlayerId]}]입니다!",
             winningPlayerId
         )
-
-        // 게임 결과 집계
-        // val sortedRanking = ranking.sortByScore()
 
         val ranking = redisRankingService.getRanking(roomId)
 

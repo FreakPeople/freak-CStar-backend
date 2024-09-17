@@ -29,7 +29,10 @@ class GameResultService(
         val sortedRanking = request.ranking
         for (idx in sortedRanking.indices) {
             val rank = idx + 1
-            val playerId = sortedRanking[idx].first?.takeLast(1)?.toLong()
+            val playerId = sortedRanking[idx].first
+                ?.split(":")
+                ?.first()
+                ?.toLong()
             val score = sortedRanking[idx].second?.toInt()
 
             if (playerId == null || score == null) {
