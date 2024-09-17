@@ -24,4 +24,18 @@ class RedisUtil(
     fun delete(key: String) {
         redisTemplate.delete(key)
     }
+
+    fun zadd(key: String, value: String, score: Double) {
+        redisTemplate.opsForZSet().add(key, value, score)
+    }
+
+    fun zincrby(key: String, value: String, delta: Double) {
+        redisTemplate.opsForZSet().incrementScore(key, value, delta)
+    }
+
+    fun zrevrange(key: String, min: Long, max: Long): List<Pair<String?, Double?>> {
+        return redisTemplate.opsForZSet().reverseRangeWithScores(key, min, max)
+            ?.map { it.value to it.score }
+            ?: emptyList()
+    }
 }
