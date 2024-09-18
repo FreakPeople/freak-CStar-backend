@@ -19,6 +19,7 @@ class GameAnswerPushRepositoryAdapter(
         val key = "roomId : " + roomId.toString() + ", " + "quizId : " + quizId.toString()
         val answerResultEntity = AnswerResultEntity.from(answerResult)
         val value = objectMapper.writeValueAsString(answerResultEntity)
-        redisUtil.rpush(key, value)
+        val ttl = 300L
+        redisUtil.rpush(key, value, ttl)
     }
 }

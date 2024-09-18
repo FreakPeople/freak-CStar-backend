@@ -12,6 +12,7 @@ import yjh.cstar.game.presentation.request.RankingCreateRequest
 import yjh.cstar.game.presentation.response.QuizInfoResponse
 import yjh.cstar.game.presentation.response.RankingResponse
 import yjh.cstar.quiz.domain.Quiz
+import yjh.cstar.util.RedisUtil
 import yjh.cstar.websocket.application.BroadCastService
 import java.time.LocalDateTime
 
@@ -25,6 +26,7 @@ class GameEngineService(
     private val answerValidationService: AnswerValidationService,
     private val broadCastService: BroadCastService,
     private val redisRankingService: RedisRankingService,
+    private val redisUtil: RedisUtil,
 ) {
 
     companion object {
@@ -57,6 +59,8 @@ class GameEngineService(
                 "${quizNo}번 문제 입니다.",
                 QuizInfoResponse(quiz.id, quiz.question)
             )
+
+            redisUtil.delete("roomId : " + roomId + ", " + "quizId : " + quiz.id)
 
             val startTime = System.currentTimeMillis()
             var notExistWinner = true
