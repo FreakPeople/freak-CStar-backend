@@ -9,8 +9,12 @@ class RedisUtil(
     private val redisTemplate: RedisTemplate<String, String>,
 ) {
 
-    fun rpush(key: String, value: String): Long? {
-        return redisTemplate.opsForList().rightPush(key, value)
+    fun rpush(key: String, value: String, ttl: Long? = 9999): Long? {
+        val listSize = redisTemplate.opsForList().rightPush(key, value)
+        ttl?.let {
+            redisTemplate.expire(key, ttl, TimeUnit.SECONDS)
+        }
+        return listSize
     }
 
     fun lpop(key: String, timeout: Long = 60, timeUnit: TimeUnit = TimeUnit.SECONDS): String? {
