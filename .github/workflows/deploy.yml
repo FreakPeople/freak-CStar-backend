@@ -39,7 +39,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Docker 이미지 생성
-        run: docker build -t cstar-backend-server ./docker
+        run: docker build -t cstar-backend-server -f ./docker/app/Dockerfile .
 
       - name: Docker 이미지에 Tag 붙이기(이미지 이름은 ECR 레포지토리 주소랑 일치해야함)
         run: docker tag cstar-backend-server ${{ steps.login-ecr.outputs.registry }}/cstar-backend-server:latest
