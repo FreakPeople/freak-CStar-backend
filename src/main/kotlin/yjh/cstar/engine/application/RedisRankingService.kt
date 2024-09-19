@@ -1,6 +1,7 @@
 package yjh.cstar.engine.application
 
 import org.springframework.stereotype.Service
+import yjh.cstar.engine.domain.Players
 import yjh.cstar.util.RedisUtil
 
 @Service
@@ -15,9 +16,9 @@ class RedisRankingService(
         val INCREASE_SCORE = 1
     }
 
-    fun init(roomId: Long, players: List<Long>) {
+    fun init(roomId: Long, players: Players) {
         val key = KEY_PREFIX + roomId
-        players.forEach {
+        players.ids.forEach {
             redisUtil.zadd(key, VALUE_PREFIX + it, INIT_SCORE.toDouble())
         }
     }

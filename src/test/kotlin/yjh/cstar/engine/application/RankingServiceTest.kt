@@ -6,6 +6,8 @@ import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import yjh.cstar.IntegrationTest
 import yjh.cstar.common.BaseException
+import yjh.cstar.engine.domain.Player
+import yjh.cstar.engine.domain.Players
 import yjh.cstar.engine.domain.Ranking
 import java.util.TreeMap
 import kotlin.test.assertEquals
@@ -25,14 +27,15 @@ class RankingServiceTest : IntegrationTest() {
             "player:1" to 2.0,
             "player:3" to 1.0
         )
-        val nicknames = mutableMapOf<Long, String>().apply {
-            put(1L, "플레이어1")
-            put(2L, "플레이어2")
-            put(3L, "플레이어3")
+        val ids = listOf(1L, 2L, 3L)
+        val players = mutableMapOf<Long, Player>().apply {
+            put(1L, Player(1L, "플레이어1"))
+            put(2L, Player(2L, "플레이어2"))
+            put(3L, Player(3L, "플레이어3"))
         }
 
         // when
-        val rankingMessage = rankingService.getRankingMessage(ranking, nicknames)
+        val rankingMessage = rankingService.getRankingMessage(ranking, Players(ids, players))
 
         // then
         val expected = "[1등 플레이어2-3]  [2등 플레이어1-2]  [3등 플레이어3-1]  "
