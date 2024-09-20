@@ -12,6 +12,7 @@ import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.utility.DockerImageName
+import yjh.cstar.engine.domain.Players
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
@@ -71,7 +72,7 @@ class RedisRankingServiceTest {
     @Test
     fun `회원 랭킹 초기화 테스트`() {
         // given
-        val players = listOf(1L, 2L, 3L, 4L, 5L)
+        val players = Players(listOf(1L, 2L, 3L, 4L, 5L))
 
         // when
         redisRankingService.init(ROOM_ID, players)
