@@ -19,6 +19,10 @@ class MemberRepositoryAdapter(
         return memberJpaRepository.findByEmail(email)?.toModel()
     }
 
+    override fun findByIdIn(playerIds: List<Long>): List<Member> {
+        return memberJpaRepository.findAllById(playerIds).map { it.toModel() }
+    }
+
     override fun save(member: Member): Member {
         return memberJpaRepository.save(MemberEntity.from(member)).toModel()
     }

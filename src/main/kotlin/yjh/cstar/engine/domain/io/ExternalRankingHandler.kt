@@ -1,13 +1,14 @@
-package yjh.cstar.engine.application
+package yjh.cstar.engine.domain.io
 
 import org.springframework.stereotype.Service
-import yjh.cstar.engine.domain.Players
+import yjh.cstar.engine.domain.player.Players
+import yjh.cstar.engine.domain.ranking.Ranking
 import yjh.cstar.util.RedisUtil
 
 @Service
-class RedisRankingService(
+class ExternalRankingHandler(
     private val redisUtil: RedisUtil,
-) {
+) : RankingHandler {
 
     companion object {
         val KEY_PREFIX = "quiz-game-score:"
@@ -16,25 +17,22 @@ class RedisRankingService(
         val INCREASE_SCORE = 1
     }
 
-    fun init(roomId: Long, players: Players) {
+    override fun init(roomId: Long, players: Players) {
         val key = KEY_PREFIX + roomId
-        players.ids.forEach {
+        redisUtil.delete(key)
+        val ids: List<Long> = players.getPlayerIds()
+        ids.forEach {
             redisUtil.zadd(key, VALUE_PREFIX + it, INIT_SCORE.toDouble())
         }
     }
 
-    fun increaseScore(roomId: Long, playerId: Long) {
+    override fun increaseScore(roomId: Long, playerId: Long) {
         val key = KEY_PREFIX + roomId
         val value = VALUE_PREFIX + playerId
         redisUtil.zincrby(key, value, INCREASE_SCORE.toDouble())
     }
 
-    fun getRanking(roomId: Long): List<Pair<String?, Double?>> {
-        val key = KEY_PREFIX + roomId
-        return redisUtil.zrevrange(key, 0, -1)
-    }
-
-    fun getWinnerId(roomId: Long): Long? {
+    override fun getWinner(roomId: Long): Long {
         val key = KEY_PREFIX + roomId
         val rankings = redisUtil.zrevrange(key, 0, -1)
 
@@ -48,5 +46,11 @@ class RedisRankingService(
             ?.getOrNull(1)
             ?.toLong()
             ?: -1L
+    }
+
+    override fun getRanking(roomId: Long): Ranking {
+        val key = KEY_PREFIX + roomId
+        val ranking = redisUtil.zrevrange(key, 0, -1) //  List<Pair<String?, Double?>>
+        return Ranking.of(ranking)
     }
 }

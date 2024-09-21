@@ -26,14 +26,11 @@ class GameResultService(
         )
         val savedGame = gameRepository.save(game)
 
-        val sortedRanking = request.ranking
-        for (idx in sortedRanking.indices) {
+        val sortedRanking: LinkedHashMap<String, Int> = request.ranking.getRanking()
+        for ((idx, entry) in sortedRanking.entries.withIndex()) {
+            val (key, score) = entry
             val rank = idx + 1
-            val playerId = sortedRanking[idx].first
-                ?.split(":")
-                ?.getOrNull(1)
-                ?.toLong()
-            val score = sortedRanking[idx].second?.toInt()
+            val playerId = key.split(":").get(1).toLong()
 
             if (playerId == null || score == null) {
                 continue
