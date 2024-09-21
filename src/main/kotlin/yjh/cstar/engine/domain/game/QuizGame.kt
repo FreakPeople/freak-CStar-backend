@@ -54,6 +54,7 @@ class QuizGame(
                 val roundStartTime = getCurrentTime()
                 while (true) {
                     logger.info { "[INFO] 정답 대기중..." }
+                    outputHandler.sendCountdown(destination)
 
                     if (isTimeOut(roundStartTime)) {
                         outputHandler.sendTimeOut(destination)

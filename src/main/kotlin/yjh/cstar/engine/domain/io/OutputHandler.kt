@@ -18,5 +18,7 @@ interface OutputHandler {
 
     fun sendTimeOut(destination: String)
 
+    fun sendCountdown(destination: String)
+
     fun resetPlayerAnswer(roomId: Long, quizId: Long)
 }

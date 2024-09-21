@@ -63,6 +63,10 @@ class ExternalOutputHandler(
         broadCastService.sendMessage(destination, "champion", "최종 1등은 ?! [$nickname]입니다!", playerId)
     }
 
+    override fun sendCountdown(destination: String) {
+        broadCastService.sendMessage(destination, "countdown", "1초 경과", null)
+    }
+
     override fun resetPlayerAnswer(roomId: Long, quizId: Long) {
         redisUtil.delete("roomId : " + roomId + ", " + "quizId : " + quizId)
     }
