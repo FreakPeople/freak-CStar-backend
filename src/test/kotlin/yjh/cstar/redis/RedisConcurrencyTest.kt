@@ -11,7 +11,7 @@ import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.utility.DockerImageName
-import yjh.cstar.engine.application.GameAnswerPollService
+import yjh.cstar.engine.application.port.GameAnswerPollRepository
 import yjh.cstar.game.domain.AnswerResult
 import yjh.cstar.util.RedisUtil
 import yjh.cstar.websocket.application.GameAnswerPushService
@@ -24,14 +24,14 @@ import kotlin.test.assertEquals
 
 @ActiveProfiles("local-test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DisplayName("[Redis 동시성 테스트] GameAnswerQueueService")
+@DisplayName("[Redis 동시성 테스트] GameAnswerPollRepository")
 class RedisConcurrencyTest {
 
     @Autowired
     private lateinit var gameAnswerPushService: GameAnswerPushService
 
     @Autowired
-    private lateinit var gameAnswerPollService: GameAnswerPollService
+    private lateinit var gameAnswerPollRepository: GameAnswerPollRepository
 
     @Autowired
     private lateinit var redisUtil: RedisUtil
@@ -108,7 +108,7 @@ class RedisConcurrencyTest {
         executor.submit {
             try {
                 for (idx in 1..100) {
-                    receive.add(gameAnswerPollService.poll(ROOM_ID, QUIZ_ID))
+                    receive.add(gameAnswerPollRepository.poll(ROOM_ID, QUIZ_ID))
                 }
             } catch (e: Exception) {
                 println("Error: ${e.message}")

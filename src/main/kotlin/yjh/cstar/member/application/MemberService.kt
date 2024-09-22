@@ -24,6 +24,10 @@ class MemberService(
         return memberRepository.findById(myId) ?: throw BaseException(BaseErrorCode.NOT_FOUND_MEMBER)
     }
 
+    fun retrieveAll(playerIds: List<Long>): List<Member> {
+        return memberRepository.findByIdIn(playerIds)
+    }
+
     @Transactional
     fun create(command: MemberCreateCommand): Long {
         checkEmailDuplicated(command.email)

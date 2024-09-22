@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import yjh.cstar.IntegrationTest
 import yjh.cstar.common.BaseErrorCode
 import yjh.cstar.common.BaseException
+import yjh.cstar.engine.domain.ranking.Ranking
 import yjh.cstar.game.infrastructure.jpa.GameEntity
 import yjh.cstar.game.infrastructure.jpa.GameJpaRepository
 import yjh.cstar.game.infrastructure.jpa.GameResultJpaRepository
@@ -45,13 +46,13 @@ class GameResultServiceTest : IntegrationTest() {
             )
         ).toModel().id
 
-        val ranking = listOf(
-            "player:2" to 5.0,
-            "player:3" to 3.0,
-            "player:1" to 2.0
+        val ranking = linkedMapOf(
+            "player:2" to 5,
+            "player:3" to 3,
+            "player:1" to 2
         )
         val rankingCreateRequest = RankingCreateRequest(
-            ranking,
+            Ranking(ranking),
             roomId,
             2L,
             10,
@@ -99,13 +100,13 @@ class GameResultServiceTest : IntegrationTest() {
             )
         ).toModel()
 
-        val ranking = listOf(
-            "player:2" to 5.0,
-            "player:3" to 3.0,
-            "player:1" to 2.0
+        val ranking = linkedMapOf(
+            "player:2" to 5,
+            "player:3" to 3,
+            "player:1" to 2
         )
         val rankingCreateRequest = RankingCreateRequest(
-            ranking,
+            Ranking(ranking),
             savedRoom.id,
             1L,
             5,
