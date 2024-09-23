@@ -1,12 +1,13 @@
-package yjh.cstar.engine.domain.io
+package yjh.cstar.engine.infrastructure
 
 import org.springframework.stereotype.Service
+import yjh.cstar.engine.application.port.RankingHandler
 import yjh.cstar.engine.domain.player.Players
 import yjh.cstar.engine.domain.ranking.Ranking
 import yjh.cstar.util.RedisUtil
 
 @Service
-class ExternalRankingHandler(
+class RedisRankingHandler(
     private val redisUtil: RedisUtil,
 ) : RankingHandler {
 
@@ -17,7 +18,7 @@ class ExternalRankingHandler(
         val INCREASE_SCORE = 1
     }
 
-    override fun init(roomId: Long, players: Players) {
+    override fun initRankingBoard(roomId: Long, players: Players) {
         val key = KEY_PREFIX + roomId
         redisUtil.delete(key)
         val ids: List<Long> = players.getPlayerIds()
@@ -26,7 +27,7 @@ class ExternalRankingHandler(
         }
     }
 
-    override fun increaseScore(roomId: Long, playerId: Long) {
+    override fun assignScoreToPlayer(roomId: Long, playerId: Long) {
         val key = KEY_PREFIX + roomId
         val value = VALUE_PREFIX + playerId
         redisUtil.zincrby(key, value, INCREASE_SCORE.toDouble())

@@ -13,14 +13,11 @@ class GameEngineService(
 ) {
 
     @Async("GameEngineThreadPool")
-    fun start(
-        players: Map<Long, String>,
-        quizzes: List<QuizDto>,
-        roomId: Long,
-        categoryId: Long,
-    ) {
+    fun start(players: Map<Long, String>, quizzes: List<QuizDto>, roomId: Long, categoryId: Long) {
         logger.info { "[INFO] 게임 엔진 스레드 시작 - roomId : $roomId" }
+
         quizGameService.play(players, quizzes, roomId, categoryId)
+
         logger.info { "[INFO] 게임 엔진 스레드 종료 - roomId : $roomId" }
     }
 }
