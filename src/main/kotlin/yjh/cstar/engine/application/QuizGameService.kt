@@ -17,12 +17,7 @@ class QuizGameService(
     private val gameResultService: GameResultService,
 ) {
 
-    fun play(
-        players: Map<Long, String>,
-        quizzes: List<QuizDto>,
-        roomId: Long,
-        categoryId: Long,
-    ) {
+    fun play(players: Map<Long, String>, quizzes: List<QuizDto>, roomId: Long, categoryId: Long) {
         val gameInfo = GameInfo.of(players, quizzes, roomId, categoryId)
         val quizGame = QuizGame(gameInfo, inputHandler, outputHandler, rankingHandler, gameResultService)
 
