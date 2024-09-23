@@ -6,8 +6,7 @@ import yjh.cstar.engine.application.port.AnswerProvider
 import yjh.cstar.engine.application.port.GameNotifier
 import yjh.cstar.engine.application.port.RankingHandler
 import yjh.cstar.engine.domain.player.Players
-import yjh.cstar.engine.domain.quiz.PlayerAnswer
-import yjh.cstar.engine.domain.quiz.Quiz
+import yjh.cstar.engine.domain.quiz.Quizzes
 import yjh.cstar.engine.domain.ranking.Ranking
 import yjh.cstar.game.application.GameResultService
 import yjh.cstar.game.presentation.request.RankingCreateRequest
@@ -42,9 +41,8 @@ class QuizGame(
         gameNotifier.notifyGameStartComments(destination, gameInfo.roomId)
 
         try {
-            for (idx in quizzes.indices) {
-                val quiz = quizzes[idx]
-                val quizNo = idx + 1
+            for ((index, quiz) in quizzes.getQuizList().withIndex()) {
+                val quizNo = index + 1
                 val quizId = quiz.id
 
                 answerProvider.initializePlayerAnswerToReceive(roomId, quizId)
@@ -54,6 +52,7 @@ class QuizGame(
                 val roundStartTime = getCurrentTime()
                 while (true) {
                     logger.info { "[INFO] 정답 대기중..." }
+
                     gameNotifier.notifyCountdown(destination)
 
                     if (isTimeOut(roundStartTime)) {
@@ -61,18 +60,19 @@ class QuizGame(
                         break
                     }
 
-                    val playerAnswer: PlayerAnswer? = answerProvider.receivePlayerAnswer(roomId, quizId)
-                    if (playerAnswer == null) {
-                        continue
-                    }
+                    /**
+                     * 1초 동안 플레이어 응답을 대기합니다.(Blocking)
+                     */
+                    val playerAnswer = answerProvider.receivePlayerAnswer(roomId, quizId)
+                        ?: continue
 
-                    if (quiz.isCorrectAnswer(playerAnswer)) {
-                        rankingHandler.assignScoreToPlayer(roomId, playerAnswer.playerId)
-                        val ranking = rankingHandler.getRanking(roomId)
-                        gameNotifier.notifyRanking(destination, players, ranking)
+                    if (playerAnswer.isCorrect(quiz)) {
+                        val roundWinnerId = playerAnswer.playerId
 
-                        val playerId = playerAnswer.playerId
-                        gameNotifier.notifyRoundResult(destination, playerId, players.getNickname(playerId))
+                        rankingHandler.assignScoreToPlayer(roomId, roundWinnerId)
+                        notifyRanking()
+
+                        notifyRoundResult(roundWinnerId)
                         break
                     }
                 }
@@ -80,8 +80,7 @@ class QuizGame(
 
             findAndSendWinner(players)
 
-            val ranking = rankingHandler.getRanking(roomId)
-            saveGameResult(ranking, quizzes, gameStartedAt)
+            recordGameResult(gameStartedAt)
         } catch (e: BaseException) {
             logger.error { e }
         } catch (e: Exception) {
@@ -89,15 +88,25 @@ class QuizGame(
         }
     }
 
+    private fun recordGameResult(gameStartedAt: LocalDateTime) {
+        val ranking = rankingHandler.getRanking(roomId)
+        saveGameResult(ranking, quizzes, gameStartedAt)
+    }
+
+    private fun saveGameResult(ranking: Ranking, quizzes: Quizzes, gameStartedAt: LocalDateTime) {
+        val winnerId = findWinner()
+        val rankingCreateRequest = RankingCreateRequest(
+            ranking,
+            roomId,
+            winnerId,
+            quizzes.getSize(),
+            categoryId,
+            gameStartedAt
+        )
+        gameResultService.create(rankingCreateRequest)
+    }
+
     private fun isTimeOut(startTime: Long) = getDuration(startTime) >= TIME_LIMIT_MILLIS
-
-    private fun getCurrentTime() = System.currentTimeMillis()
-
-    private fun getCurrentAt() = LocalDateTime.now()
-
-    private fun getDuration(pastTime: Long) = getCurrentTime() - pastTime
-
-    private fun findWinner() = rankingHandler.getWinner(roomId)
 
     private fun findAndSendWinner(players: Players) {
         val winnerId = findWinner()
@@ -105,16 +114,20 @@ class QuizGame(
         gameNotifier.notifyGameResult(destination, winnerId, winnerNickname)
     }
 
-    private fun saveGameResult(ranking: Ranking, quizzes: List<Quiz>, gameStartedAt: LocalDateTime) {
-        val winnerId = findWinner()
-        val rankingCreateRequest = RankingCreateRequest(
-            ranking,
-            roomId,
-            winnerId,
-            quizzes.size,
-            categoryId,
-            gameStartedAt
-        )
-        gameResultService.create(rankingCreateRequest)
+    private fun notifyRoundResult(roundWinnerId: Long) {
+        gameNotifier.notifyRoundResult(destination, roundWinnerId, players.getNickname(roundWinnerId))
     }
+
+    private fun notifyRanking() {
+        val ranking = rankingHandler.getRanking(roomId)
+        gameNotifier.notifyRanking(destination, players, ranking)
+    }
+
+    private fun findWinner() = rankingHandler.getWinner(roomId)
+
+    private fun getCurrentTime() = System.currentTimeMillis()
+
+    private fun getCurrentAt() = LocalDateTime.now()
+
+    private fun getDuration(pastTime: Long) = getCurrentTime() - pastTime
 }
