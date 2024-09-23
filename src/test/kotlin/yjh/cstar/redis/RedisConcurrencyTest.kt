@@ -109,7 +109,7 @@ class RedisConcurrencyTest {
         executor.submit {
             try {
                 for (idx in 1..100) {
-                    receive.add(redisQueueAnswerProvider.getPlayerAnswer(ROOM_ID, QUIZ_ID))
+                    receive.add(redisQueueAnswerProvider.receivePlayerAnswer(ROOM_ID, QUIZ_ID))
                 }
             } catch (e: Exception) {
                 println("Error: ${e.message}")

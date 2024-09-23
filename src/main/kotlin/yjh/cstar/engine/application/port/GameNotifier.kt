@@ -6,17 +6,17 @@ import yjh.cstar.engine.domain.ranking.Ranking
 
 interface GameNotifier {
 
-    fun sendGameStartComments(destination: String, roomId: Long)
+    fun notifyGameStartComments(destination: String, roomId: Long)
 
-    fun sendQuizQuestion(destination: String, quizNo: Int, quiz: Quiz)
+    fun notifyQuizQuestion(destination: String, quizNo: Int, quiz: Quiz)
 
-    fun sendRoundResult(destination: String, playerId: Long, nickname: String)
+    fun notifyRoundResult(destination: String, playerId: Long, nickname: String)
 
-    fun sendRanking(destination: String, players: Players, ranking: Ranking)
+    fun notifyRanking(destination: String, players: Players, ranking: Ranking)
 
-    fun sendGameResult(destination: String, playerId: Long, nickname: String)
+    fun notifyGameResult(destination: String, playerId: Long, nickname: String)
 
-    fun sendTimeOut(destination: String)
+    fun notifyTimeOut(destination: String)
 
-    fun sendCountdown(destination: String)
+    fun notifyCountdown(destination: String)
 }

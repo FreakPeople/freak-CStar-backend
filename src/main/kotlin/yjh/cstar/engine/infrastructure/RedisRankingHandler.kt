@@ -18,7 +18,7 @@ class RedisRankingHandler(
         val INCREASE_SCORE = 1
     }
 
-    override fun init(roomId: Long, players: Players) {
+    override fun initRankingBoard(roomId: Long, players: Players) {
         val key = KEY_PREFIX + roomId
         redisUtil.delete(key)
         val ids: List<Long> = players.getPlayerIds()
@@ -27,7 +27,7 @@ class RedisRankingHandler(
         }
     }
 
-    override fun increaseScore(roomId: Long, playerId: Long) {
+    override fun assignScoreToPlayer(roomId: Long, playerId: Long) {
         val key = KEY_PREFIX + roomId
         val value = VALUE_PREFIX + playerId
         redisUtil.zincrby(key, value, INCREASE_SCORE.toDouble())

@@ -14,7 +14,7 @@ class WebsocketGameNotifier(
     private val broadCastService: BroadCastService,
 ) : GameNotifier {
 
-    override fun sendGameStartComments(destination: String, roomId: Long) {
+    override fun notifyGameStartComments(destination: String, roomId: Long) {
         broadCastService.sendMessage(destination, "start", "게임 시작 합니다. $roomId", null)
         broadCastService.sendMessage(destination, "guide", "GAME START!", null)
         broadCastService.sendMessage(
@@ -25,7 +25,7 @@ class WebsocketGameNotifier(
         )
     }
 
-    override fun sendQuizQuestion(destination: String, quizNo: Int, quiz: Quiz) {
+    override fun notifyQuizQuestion(destination: String, quizNo: Int, quiz: Quiz) {
         broadCastService.sendMessage(
             destination,
             "quiz",
@@ -34,11 +34,11 @@ class WebsocketGameNotifier(
         )
     }
 
-    override fun sendRoundResult(destination: String, playerId: Long, nickname: String) {
+    override fun notifyRoundResult(destination: String, playerId: Long, nickname: String) {
         broadCastService.sendMessage(destination, "winner", "[$nickname]님이 맞췄습니다!", playerId)
     }
 
-    override fun sendRanking(destination: String, players: Players, ranking: Ranking) {
+    override fun notifyRanking(destination: String, players: Players, ranking: Ranking) {
         val result = StringBuilder()
 
         val sortedRanking = ranking.getRanking() // "player:1 - 10"
@@ -54,15 +54,15 @@ class WebsocketGameNotifier(
         broadCastService.sendMessage(destination, "rank", "현재 랭킹 정보 입니다.", result)
     }
 
-    override fun sendTimeOut(destination: String) {
+    override fun notifyTimeOut(destination: String) {
         broadCastService.sendMessage(destination, "guide", "시간 초과! 다음 문제로 넘어갑니다!", null)
     }
 
-    override fun sendGameResult(destination: String, playerId: Long, nickname: String) {
+    override fun notifyGameResult(destination: String, playerId: Long, nickname: String) {
         broadCastService.sendMessage(destination, "champion", "최종 1등은 ?! [$nickname]입니다!", playerId)
     }
 
-    override fun sendCountdown(destination: String) {
+    override fun notifyCountdown(destination: String) {
         broadCastService.sendMessage(destination, "countdown", "1초 경과", null)
     }
 }

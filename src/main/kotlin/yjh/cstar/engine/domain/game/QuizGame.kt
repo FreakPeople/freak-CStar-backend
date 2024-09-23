@@ -34,12 +34,12 @@ class QuizGame(
     }
 
     override fun initialize() {
-        rankingHandler.init(roomId, players)
+        rankingHandler.initRankingBoard(roomId, players)
     }
 
     override fun run() {
         val gameStartedAt = getCurrentAt()
-        gameNotifier.sendGameStartComments(destination, gameInfo.roomId)
+        gameNotifier.notifyGameStartComments(destination, gameInfo.roomId)
 
         try {
             for (idx in quizzes.indices) {
@@ -47,32 +47,32 @@ class QuizGame(
                 val quizNo = idx + 1
                 val quizId = quiz.id
 
-                answerProvider.resetPlayerAnswer(roomId, quizId)
+                answerProvider.initializePlayerAnswerToReceive(roomId, quizId)
 
-                gameNotifier.sendQuizQuestion(destination, quizNo, quiz)
+                gameNotifier.notifyQuizQuestion(destination, quizNo, quiz)
 
                 val roundStartTime = getCurrentTime()
                 while (true) {
                     logger.info { "[INFO] 정답 대기중..." }
-                    gameNotifier.sendCountdown(destination)
+                    gameNotifier.notifyCountdown(destination)
 
                     if (isTimeOut(roundStartTime)) {
-                        gameNotifier.sendTimeOut(destination)
+                        gameNotifier.notifyTimeOut(destination)
                         break
                     }
 
-                    val playerAnswer: PlayerAnswer? = answerProvider.getPlayerAnswer(roomId, quizId)
+                    val playerAnswer: PlayerAnswer? = answerProvider.receivePlayerAnswer(roomId, quizId)
                     if (playerAnswer == null) {
                         continue
                     }
 
                     if (quiz.isCorrectAnswer(playerAnswer)) {
-                        rankingHandler.increaseScore(roomId, playerAnswer.playerId)
+                        rankingHandler.assignScoreToPlayer(roomId, playerAnswer.playerId)
                         val ranking = rankingHandler.getRanking(roomId)
-                        gameNotifier.sendRanking(destination, players, ranking)
+                        gameNotifier.notifyRanking(destination, players, ranking)
 
                         val playerId = playerAnswer.playerId
-                        gameNotifier.sendRoundResult(destination, playerId, players.getNickname(playerId))
+                        gameNotifier.notifyRoundResult(destination, playerId, players.getNickname(playerId))
                         break
                     }
                 }
@@ -102,7 +102,7 @@ class QuizGame(
     private fun findAndSendWinner(players: Players) {
         val winnerId = findWinner()
         val winnerNickname = players.getNickname(winnerId)
-        gameNotifier.sendGameResult(destination, winnerId, winnerNickname)
+        gameNotifier.notifyGameResult(destination, winnerId, winnerNickname)
     }
 
     private fun saveGameResult(ranking: Ranking, quizzes: List<Quiz>, gameStartedAt: LocalDateTime) {
