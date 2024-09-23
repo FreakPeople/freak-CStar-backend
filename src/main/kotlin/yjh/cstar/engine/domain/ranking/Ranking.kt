@@ -2,7 +2,7 @@ package yjh.cstar.engine.domain.ranking
 
 // <String, Int> "player:1", 10
 class Ranking(
-    private val ranking: LinkedHashMap<String, Int>
+    private val ranking: LinkedHashMap<String, Int>,
 ) {
 
     companion object {
@@ -15,7 +15,7 @@ class Ranking(
         }
     }
 
-    fun getRanking() = ranking.toList()
+    fun getRanking(): LinkedHashMap<String, Int> = ranking.toList()
         .sortedByDescending { it.second }
         .toMap(LinkedHashMap())
 }

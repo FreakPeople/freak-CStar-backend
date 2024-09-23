@@ -3,7 +3,7 @@ package yjh.cstar.engine.domain.quiz
 class Quiz(
     val id: Long,
     val question: String,
-    val answer: String
+    val answer: String,
 ) {
 
     companion object {
