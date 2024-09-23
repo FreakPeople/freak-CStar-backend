@@ -1,19 +1,18 @@
-package yjh.cstar.engine.domain.io
+package yjh.cstar.engine.infrastructure
 
 import org.springframework.stereotype.Service
+import yjh.cstar.engine.application.port.GameNotifier
 import yjh.cstar.engine.domain.game.QuizGame
 import yjh.cstar.engine.domain.player.Players
 import yjh.cstar.engine.domain.quiz.Quiz
 import yjh.cstar.engine.domain.ranking.Ranking
 import yjh.cstar.game.presentation.response.QuizInfoResponse
-import yjh.cstar.util.RedisUtil
 import yjh.cstar.websocket.application.BroadCastService
 
 @Service
-class ExternalOutputHandler(
+class WebsocketGameNotifier(
     private val broadCastService: BroadCastService,
-    private val redisUtil: RedisUtil,
-) : OutputHandler {
+) : GameNotifier {
 
     override fun sendGameStartComments(destination: String, roomId: Long) {
         broadCastService.sendMessage(destination, "start", "게임 시작 합니다. $roomId", null)
@@ -65,9 +64,5 @@ class ExternalOutputHandler(
 
     override fun sendCountdown(destination: String) {
         broadCastService.sendMessage(destination, "countdown", "1초 경과", null)
-    }
-
-    override fun resetPlayerAnswer(roomId: Long, quizId: Long) {
-        redisUtil.delete("roomId : " + roomId + ", " + "quizId : " + quizId)
     }
 }

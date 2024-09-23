@@ -1,4 +1,4 @@
-package yjh.cstar.engine.domain.io
+package yjh.cstar.engine.application.port
 
 import yjh.cstar.engine.domain.player.Players
 import yjh.cstar.engine.domain.ranking.Ranking

@@ -1,12 +1,13 @@
-package yjh.cstar.engine.domain.io
+package yjh.cstar.engine.infrastructure
 
 import org.springframework.stereotype.Service
+import yjh.cstar.engine.application.port.RankingHandler
 import yjh.cstar.engine.domain.player.Players
 import yjh.cstar.engine.domain.ranking.Ranking
 import yjh.cstar.util.RedisUtil
 
 @Service
-class ExternalRankingHandler(
+class RedisRankingHandler(
     private val redisUtil: RedisUtil,
 ) : RankingHandler {
 

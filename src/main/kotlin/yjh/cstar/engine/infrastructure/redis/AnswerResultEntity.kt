@@ -1,5 +1,6 @@
 package yjh.cstar.engine.infrastructure.redis
 
+import yjh.cstar.engine.domain.quiz.PlayerAnswer
 import yjh.cstar.game.domain.AnswerResult
 
 class AnswerResultEntity(
@@ -22,13 +23,12 @@ class AnswerResultEntity(
         }
     }
 
-    fun toModel(): AnswerResult {
-        return AnswerResult(
-            answer = this.answer,
-            quizId = this.quizId,
+    fun toModel2(): PlayerAnswer {
+        return PlayerAnswer(
             roomId = this.roomId,
             playerId = this.playerId,
-            nickname = this.nickname
+            quizId = this.quizId,
+            playerAnswer = answer
         )
     }
 }

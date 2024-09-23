@@ -11,7 +11,8 @@ import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.utility.DockerImageName
-import yjh.cstar.engine.application.port.GameAnswerPollRepository
+import yjh.cstar.engine.domain.quiz.PlayerAnswer
+import yjh.cstar.engine.infrastructure.RedisQueueAnswerProvider
 import yjh.cstar.game.domain.AnswerResult
 import yjh.cstar.util.RedisUtil
 import yjh.cstar.websocket.application.GameAnswerPushService
@@ -31,7 +32,7 @@ class RedisConcurrencyTest {
     private lateinit var gameAnswerPushService: GameAnswerPushService
 
     @Autowired
-    private lateinit var gameAnswerPollRepository: GameAnswerPollRepository
+    private lateinit var redisQueueAnswerProvider: RedisQueueAnswerProvider
 
     @Autowired
     private lateinit var redisUtil: RedisUtil
@@ -82,7 +83,7 @@ class RedisConcurrencyTest {
         val startLatch = CountDownLatch(1)
         val doneLatch = CountDownLatch(numberOfThreads)
         val executor = Executors.newFixedThreadPool(numberOfThreads)
-        val receive = Collections.synchronizedList(mutableListOf<AnswerResult>())
+        val receive = Collections.synchronizedList(mutableListOf<PlayerAnswer>())
 
         val answerResult = AnswerResult(
             answer = "정답",
@@ -108,7 +109,7 @@ class RedisConcurrencyTest {
         executor.submit {
             try {
                 for (idx in 1..100) {
-                    receive.add(gameAnswerPollRepository.poll(ROOM_ID, QUIZ_ID))
+                    receive.add(redisQueueAnswerProvider.getPlayerAnswer(ROOM_ID, QUIZ_ID))
                 }
             } catch (e: Exception) {
                 println("Error: ${e.message}")

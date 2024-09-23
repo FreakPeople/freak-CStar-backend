@@ -2,9 +2,9 @@ package yjh.cstar.engine.domain.game
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import yjh.cstar.common.BaseException
-import yjh.cstar.engine.domain.io.InputHandler
-import yjh.cstar.engine.domain.io.OutputHandler
-import yjh.cstar.engine.domain.io.RankingHandler
+import yjh.cstar.engine.application.port.AnswerProvider
+import yjh.cstar.engine.application.port.GameNotifier
+import yjh.cstar.engine.application.port.RankingHandler
 import yjh.cstar.engine.domain.player.Players
 import yjh.cstar.engine.domain.quiz.PlayerAnswer
 import yjh.cstar.engine.domain.quiz.Quiz
@@ -17,8 +17,8 @@ private val logger = KotlinLogging.logger {}
 
 class QuizGame(
     private val gameInfo: GameInfo,
-    private val inputHandler: InputHandler,
-    private val outputHandler: OutputHandler,
+    private val answerProvider: AnswerProvider,
+    private val gameNotifier: GameNotifier,
     private val rankingHandler: RankingHandler,
     private val gameResultService: GameResultService,
 ) : GameInitializable, GameRunnable {
@@ -39,7 +39,7 @@ class QuizGame(
 
     override fun run() {
         val gameStartedAt = getCurrentAt()
-        outputHandler.sendGameStartComments(destination, gameInfo.roomId)
+        gameNotifier.sendGameStartComments(destination, gameInfo.roomId)
 
         try {
             for (idx in quizzes.indices) {
@@ -47,21 +47,21 @@ class QuizGame(
                 val quizNo = idx + 1
                 val quizId = quiz.id
 
-                outputHandler.resetPlayerAnswer(roomId, quizId)
+                answerProvider.resetPlayerAnswer(roomId, quizId)
 
-                outputHandler.sendQuizQuestion(destination, quizNo, quiz)
+                gameNotifier.sendQuizQuestion(destination, quizNo, quiz)
 
                 val roundStartTime = getCurrentTime()
                 while (true) {
                     logger.info { "[INFO] 정답 대기중..." }
-                    outputHandler.sendCountdown(destination)
+                    gameNotifier.sendCountdown(destination)
 
                     if (isTimeOut(roundStartTime)) {
-                        outputHandler.sendTimeOut(destination)
+                        gameNotifier.sendTimeOut(destination)
                         break
                     }
 
-                    val playerAnswer: PlayerAnswer? = inputHandler.getPlayerAnswer(roomId, quizId)
+                    val playerAnswer: PlayerAnswer? = answerProvider.getPlayerAnswer(roomId, quizId)
                     if (playerAnswer == null) {
                         continue
                     }
@@ -69,10 +69,10 @@ class QuizGame(
                     if (quiz.isCorrectAnswer(playerAnswer)) {
                         rankingHandler.increaseScore(roomId, playerAnswer.playerId)
                         val ranking = rankingHandler.getRanking(roomId)
-                        outputHandler.sendRanking(destination, players, ranking)
+                        gameNotifier.sendRanking(destination, players, ranking)
 
                         val playerId = playerAnswer.playerId
-                        outputHandler.sendRoundResult(destination, playerId, players.getNickname(playerId))
+                        gameNotifier.sendRoundResult(destination, playerId, players.getNickname(playerId))
                         break
                     }
                 }
@@ -102,7 +102,7 @@ class QuizGame(
     private fun findAndSendWinner(players: Players) {
         val winnerId = findWinner()
         val winnerNickname = players.getNickname(winnerId)
-        outputHandler.sendGameResult(destination, winnerId, winnerNickname)
+        gameNotifier.sendGameResult(destination, winnerId, winnerNickname)
     }
 
     private fun saveGameResult(ranking: Ranking, quizzes: List<Quiz>, gameStartedAt: LocalDateTime) {

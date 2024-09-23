@@ -1,10 +1,10 @@
-package yjh.cstar.engine.domain.io
+package yjh.cstar.engine.application.port
 
 import yjh.cstar.engine.domain.player.Players
 import yjh.cstar.engine.domain.quiz.Quiz
 import yjh.cstar.engine.domain.ranking.Ranking
 
-interface OutputHandler {
+interface GameNotifier {
 
     fun sendGameStartComments(destination: String, roomId: Long)
 
@@ -19,6 +19,4 @@ interface OutputHandler {
     fun sendTimeOut(destination: String)
 
     fun sendCountdown(destination: String)
-
-    fun resetPlayerAnswer(roomId: Long, quizId: Long)
 }
