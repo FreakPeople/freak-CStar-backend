@@ -15,12 +15,12 @@ class UserDetailService(
 ) : UserDetailsService {
 
     override fun loadUserByUsername(email: String): UserDetails {
-        val member =
-            memberJpaRepository.findByEmail(email)?.toModel() ?: throw BaseException(BaseErrorCode.NOT_FOUND_MEMBER)
-        return createUser(email, member)
+        val member = memberJpaRepository.findByEmail(email)?.toModel()
+            ?: throw BaseException(BaseErrorCode.NOT_FOUND_MEMBER)
+        return createUser(member)
     }
 
-    private fun createUser(email: String, member: Member): User {
+    private fun createUser(member: Member): User {
         return User(
             member.email,
             member.password,
