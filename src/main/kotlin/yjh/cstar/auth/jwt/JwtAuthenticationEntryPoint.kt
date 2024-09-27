@@ -27,9 +27,11 @@ class JwtAuthenticationEntryPoint(
             message = BaseErrorCode.UNAUTHORIZED.message
         )
 
-        response.setContentType("application/json")
-        response.setCharacterEncoding("UTF-8")
-        response.setStatus(401)
-        response.getWriter().write(objectMapper.writeValueAsString(errorData))
+        response.apply {
+            contentType = "application/json"
+            characterEncoding = "UTF-8"
+            status = 401
+            writer.write(objectMapper.writeValueAsString(errorData))
+        }
     }
 }
