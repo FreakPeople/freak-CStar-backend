@@ -1,6 +1,5 @@
 package yjh.cstar.websocket.presentation
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.context.event.EventListener
 import org.springframework.messaging.MessageHeaders
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor
@@ -14,8 +13,7 @@ import org.springframework.web.socket.messaging.SessionSubscribeEvent
 import org.springframework.web.socket.messaging.SessionUnsubscribeEvent
 import yjh.cstar.auth.jwt.TokenProvider
 import yjh.cstar.room.application.RoomService
-
-private val logger = KotlinLogging.logger {}
+import yjh.cstar.util.Logger
 
 @Component
 class StompWebSocketEventHandler(
@@ -29,12 +27,12 @@ class StompWebSocketEventHandler(
 
     @EventListener
     fun handleWebSocketSessionConnectEventListener(event: SessionConnectEvent) {
-        logger.info { "연결 중... 세션 ID: ${getSessionId(event)}" }
+        Logger.info("연결 중... 세션 ID: ${getSessionId(event)}")
     }
 
     @EventListener
     fun handleWebSocketSessionConnectedEventListener(event: SessionConnectedEvent) {
-        logger.info { "연결 완료. 세션 ID: ${getSessionId(event)}" }
+        Logger.info("연결 완료. 세션 ID: ${getSessionId(event)}")
 
         val session = getSessionId(event)
         val roomId = getRoomId(event)
@@ -44,17 +42,17 @@ class StompWebSocketEventHandler(
 
     @EventListener
     fun handleWebSocketSessionSubscribeEventListener(event: SessionSubscribeEvent) {
-        logger.info { "구독 : ${getDestination(event)}" }
+        Logger.info("구독 : ${getDestination(event)}")
     }
 
     @EventListener
     fun handleWebSocketSessionUnsubscribeEventListener(event: SessionUnsubscribeEvent) {
-        logger.info { "구독 취소 : ${getDestination(event)}" }
+        Logger.info("구독 취소 : ${getDestination(event)}")
     }
 
     @EventListener
     fun handleWebSocketSessionDisconnectEventListener(event: SessionDisconnectEvent) {
-        logger.info { "연결 종료" }
+        Logger.info("연결 종료")
 
         val session = getSessionId(event)
 
@@ -62,7 +60,7 @@ class StompWebSocketEventHandler(
             val roomId = sessions.getOrDefault(it, -1)
             sessions.remove(it)
             roomService.leave(roomId)
-            logger.info { "roomService.leave() 호출" }
+            Logger.info("roomService.leave() 호출")
         }
     }
 

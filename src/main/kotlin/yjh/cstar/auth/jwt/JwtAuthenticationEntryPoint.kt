@@ -1,7 +1,6 @@
 package yjh.cstar.auth.jwt
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.core.AuthenticationException
@@ -9,8 +8,7 @@ import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.stereotype.Component
 import yjh.cstar.common.BaseErrorCode
 import yjh.cstar.common.ErrorResponse
-
-private val logger = KotlinLogging.logger {}
+import yjh.cstar.util.Logger
 
 @Component
 class JwtAuthenticationEntryPoint(
@@ -21,7 +19,7 @@ class JwtAuthenticationEntryPoint(
         response: HttpServletResponse,
         authException: AuthenticationException,
     ) {
-        logger.error { "[ERROR] ${authException.message}" }
+        Logger.error("[ERROR] ${authException.message}")
 
         val errorData = ErrorResponse(
             status = BaseErrorCode.UNAUTHORIZED,

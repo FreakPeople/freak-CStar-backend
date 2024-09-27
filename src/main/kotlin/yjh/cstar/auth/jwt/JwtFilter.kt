@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.util.StringUtils
 import org.springframework.web.filter.GenericFilterBean
+import yjh.cstar.util.Logger
 
 class JwtFilter(
     private val tokenProvider: TokenProvider,
@@ -28,9 +29,9 @@ class JwtFilter(
         if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
             val authentication = tokenProvider.getAuthentication(jwt)
             SecurityContextHolder.getContext().authentication = authentication
-            logger.debug { "Security Context에 '${authentication.name}' 인증 정보를 저장했습니다, uri: $requestURI" }
+            Logger.info("Security Context에 '${authentication.name}' 인증 정보를 저장했습니다, uri: $requestURI")
         } else {
-            logger.debug { "유효한 JWT 토큰이 없습니다, uri: $requestURI" }
+            Logger.info("유효한 JWT 토큰이 없습니다, uri: $requestURI")
         }
 
         filterChain.doFilter(servletRequest, servletResponse)

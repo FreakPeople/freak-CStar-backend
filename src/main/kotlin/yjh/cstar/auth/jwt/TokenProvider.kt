@@ -1,6 +1,5 @@
 package yjh.cstar.auth.jwt
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.MalformedJwtException
@@ -18,10 +17,9 @@ import org.springframework.security.core.userdetails.User
 import org.springframework.stereotype.Component
 import yjh.cstar.common.BaseErrorCode
 import yjh.cstar.common.BaseException
+import yjh.cstar.util.Logger
 import java.security.Key
-import java.util.Date
-
-private val logger = KotlinLogging.logger {}
+import java.util.*
 
 @Component
 class TokenProvider(
@@ -81,15 +79,15 @@ class TokenProvider(
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token)
             return true
         } catch (e: SecurityException) {
-            logger.info { "잘못된 JWT 서명입니다." }
+            Logger.info("잘못된 JWT 서명입니다.")
         } catch (e: MalformedJwtException) {
-            logger.info { "잘못된 JWT 서명입니다." }
+            Logger.info("잘못된 JWT 서명입니다.")
         } catch (e: ExpiredJwtException) {
-            logger.info { "만료된 JWT 토큰입니다." }
+            Logger.info("만료된 JWT 토큰입니다.")
         } catch (e: UnsupportedJwtException) {
-            logger.info { "지원되지 않는 JWT 토큰입니다." }
+            Logger.info("지원되지 않는 JWT 토큰입니다.")
         } catch (e: IllegalArgumentException) {
-            logger.info { "JWT 토큰이 잘못되었습니다." }
+            Logger.info("JWT 토큰이 잘못되었습니다.")
         }
         return false
     }

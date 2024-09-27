@@ -1,6 +1,5 @@
 package yjh.cstar.engine.domain.game
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import yjh.cstar.common.BaseException
 import yjh.cstar.engine.application.port.AnswerProvider
 import yjh.cstar.engine.application.port.GameNotifier
@@ -10,9 +9,8 @@ import yjh.cstar.engine.domain.quiz.Quizzes
 import yjh.cstar.engine.domain.ranking.Ranking
 import yjh.cstar.game.application.GameResultService
 import yjh.cstar.game.presentation.request.RankingCreateRequest
+import yjh.cstar.util.Logger
 import java.time.LocalDateTime
-
-private val logger = KotlinLogging.logger {}
 
 class QuizGame(
     private val gameInfo: GameInfo,
@@ -51,7 +49,7 @@ class QuizGame(
 
                 val roundStartTime = getCurrentTime()
                 while (true) {
-                    logger.info { "[INFO] 정답 대기중..." }
+                    Logger.info("[INFO] 정답 대기중...")
 
                     gameNotifier.notifyCountdown(destination)
 
@@ -82,9 +80,9 @@ class QuizGame(
 
             recordGameResult(gameStartedAt)
         } catch (e: BaseException) {
-            logger.error { e }
+            Logger.error(e)
         } catch (e: Exception) {
-            logger.error { "[ERROR] 프로그램 내부에 문제가 생겼습니다." }
+            Logger.error("[ERROR] 프로그램 내부에 문제가 생겼습니다.")
         }
     }
 
