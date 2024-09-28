@@ -1,6 +1,6 @@
 package yjh.cstar.game.domain
 
-import yjh.cstar.engine.infrastructure.RedisRankingHandler
+import yjh.cstar.play.infrastructure.RedisRankingHandler
 
 class GameResults(
     val records: List<GameResult>,

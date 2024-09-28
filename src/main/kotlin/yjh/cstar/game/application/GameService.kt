@@ -2,10 +2,10 @@ package yjh.cstar.game.application
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import yjh.cstar.engine.application.GameEngineService
-import yjh.cstar.engine.domain.quiz.QuizDto
 import yjh.cstar.game.domain.GameStartCommand
 import yjh.cstar.member.application.MemberService
+import yjh.cstar.play.application.GameEngineService
+import yjh.cstar.play.domain.quiz.QuizDto
 import yjh.cstar.quiz.application.QuizService
 import yjh.cstar.room.application.RoomService
 

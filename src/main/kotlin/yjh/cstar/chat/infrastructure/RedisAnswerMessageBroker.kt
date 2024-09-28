@@ -2,10 +2,10 @@ package yjh.cstar.chat.infrastructure
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.stereotype.Repository
-import yjh.cstar.util.RedisUtil
 import yjh.cstar.chat.application.port.AnswerMessageBroker
 import yjh.cstar.chat.domain.PlayerAnswer
 import yjh.cstar.chat.infrastructure.redis.PlayerAnswerEntity
+import yjh.cstar.util.RedisUtil
 
 @Repository
 class RedisAnswerMessageBroker(

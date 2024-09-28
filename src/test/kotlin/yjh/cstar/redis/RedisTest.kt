@@ -13,7 +13,7 @@ import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.utility.DockerImageName
-import yjh.cstar.engine.infrastructure.redis.PlayerAnswerEntity
+import yjh.cstar.play.infrastructure.redis.PlayerAnswerEntity
 import yjh.cstar.util.RedisUtil
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest

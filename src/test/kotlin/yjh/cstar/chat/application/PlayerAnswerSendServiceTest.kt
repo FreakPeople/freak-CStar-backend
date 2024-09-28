@@ -14,9 +14,9 @@ import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.utility.DockerImageName
-import yjh.cstar.util.RedisUtil
 import yjh.cstar.chat.domain.PlayerAnswer
 import yjh.cstar.chat.infrastructure.RedisAnswerMessageBroker
+import yjh.cstar.util.RedisUtil
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
