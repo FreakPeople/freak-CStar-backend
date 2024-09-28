@@ -26,7 +26,7 @@ import kotlin.test.assertEquals
 
 @ActiveProfiles("local-test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DisplayName("[Redis 동시성 테스트] GameAnswerPollRepository")
+@DisplayName("[Redis 동시성 테스트] RedisConcurrency")
 class RedisConcurrencyTest {
 
     @Autowired

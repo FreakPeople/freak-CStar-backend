@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus
 import yjh.cstar.common.BaseException
 import kotlin.test.assertEquals
 
-@DisplayName("[Domain 테스트] MemberCreateCommand")
+@DisplayName("[Domain 테스트] emberRankingCreateCommand")
 class MemberRankingCreateCommandTest {
 
     @Test

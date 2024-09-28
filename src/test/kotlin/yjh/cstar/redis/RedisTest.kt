@@ -13,6 +13,7 @@ import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.utility.DockerImageName
+import yjh.cstar.chat.infrastructure.RedisAnswerMessageBroker
 import yjh.cstar.play.infrastructure.redis.PlayerAnswerEntity
 import yjh.cstar.util.RedisUtil
 import kotlin.test.AfterTest
@@ -38,7 +39,7 @@ class RedisTest {
     companion object {
         private const val ROOM_ID = 1L
         private const val QUIZ_ID = 1L
-        private const val KEY = "roomId : " + ROOM_ID + ", " + "quizId : " + QUIZ_ID
+        private val KEY = RedisAnswerMessageBroker.getKey(ROOM_ID, QUIZ_ID)
 
         private val redis: GenericContainer<*> = GenericContainer(DockerImageName.parse("redis:latest"))
             .withExposedPorts(6379)

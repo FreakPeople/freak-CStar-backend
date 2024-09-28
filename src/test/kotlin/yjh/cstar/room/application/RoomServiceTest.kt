@@ -6,7 +6,6 @@ import org.springframework.data.domain.PageRequest
 import yjh.cstar.IntegrationTest
 import yjh.cstar.common.BaseErrorCode
 import yjh.cstar.common.BaseException
-import yjh.cstar.game.infrastructure.jpa.GameJpaRepository
 import yjh.cstar.member.infrastructure.jpa.MemberEntity
 import yjh.cstar.member.infrastructure.jpa.MemberJpaRepository
 import yjh.cstar.room.domain.RoomCreateCommand
@@ -36,9 +35,6 @@ class RoomServiceTest : IntegrationTest() {
 
     @Autowired
     private lateinit var memberJpaRepository: MemberJpaRepository
-
-    @Autowired
-    private lateinit var gameJpaRepository: GameJpaRepository
 
     @Test
     fun `게임 방 전체 조회 테스트`() {

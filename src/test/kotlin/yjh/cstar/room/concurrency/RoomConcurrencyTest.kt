@@ -20,7 +20,7 @@ import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
-@DisplayName("[동시성 테스트] RoomController")
+@DisplayName("[동시성 테스트] RoomConcurrency")
 @ActiveProfiles("local-test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class RoomConcurrencyTest {
