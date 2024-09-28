@@ -1,4 +1,4 @@
-package yjh.cstar.websocket.presentation
+package yjh.cstar.chat.presentation
 
 import org.springframework.context.event.EventListener
 import org.springframework.messaging.MessageHeaders

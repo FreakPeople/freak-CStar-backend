@@ -1,8 +1,8 @@
-package yjh.cstar.websocket.application
+package yjh.cstar.chat.application
 
 import org.springframework.stereotype.Service
-import yjh.cstar.websocket.application.port.AnswerMessageBroker
-import yjh.cstar.websocket.domain.PlayerAnswer
+import yjh.cstar.chat.application.port.AnswerMessageBroker
+import yjh.cstar.chat.domain.PlayerAnswer
 
 @Service
 class PlayerAnswerSendService(

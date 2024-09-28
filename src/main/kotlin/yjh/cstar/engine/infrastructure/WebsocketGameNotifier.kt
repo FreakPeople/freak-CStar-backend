@@ -7,7 +7,7 @@ import yjh.cstar.engine.domain.player.Players
 import yjh.cstar.engine.domain.quiz.Quiz
 import yjh.cstar.engine.domain.ranking.Ranking
 import yjh.cstar.game.presentation.response.QuizInfoResponse
-import yjh.cstar.websocket.application.BroadCastService
+import yjh.cstar.chat.application.BroadCastService
 
 @Service
 class WebsocketGameNotifier(

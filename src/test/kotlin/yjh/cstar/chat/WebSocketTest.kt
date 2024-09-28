@@ -1,4 +1,4 @@
-package yjh.cstar.websocket
+package yjh.cstar.chat
 
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName

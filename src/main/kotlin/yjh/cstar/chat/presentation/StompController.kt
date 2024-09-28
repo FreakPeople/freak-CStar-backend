@@ -1,4 +1,4 @@
-package yjh.cstar.websocket.presentation
+package yjh.cstar.chat.presentation
 
 import org.springframework.messaging.handler.annotation.DestinationVariable
 import org.springframework.messaging.handler.annotation.Header
@@ -9,9 +9,9 @@ import org.springframework.util.StringUtils
 import yjh.cstar.auth.jwt.TokenProvider
 import yjh.cstar.common.BaseErrorCode
 import yjh.cstar.common.BaseException
-import yjh.cstar.websocket.application.PlayerAnswerSendService
-import yjh.cstar.websocket.presentation.request.AnswerMessageRequest
-import yjh.cstar.websocket.presentation.request.toPlayerAnswer
+import yjh.cstar.chat.application.PlayerAnswerSendService
+import yjh.cstar.chat.presentation.request.AnswerMessageRequest
+import yjh.cstar.chat.presentation.request.toPlayerAnswer
 
 @Controller
 class StompController(

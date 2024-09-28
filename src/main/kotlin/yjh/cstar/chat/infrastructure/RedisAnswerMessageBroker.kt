@@ -1,11 +1,11 @@
-package yjh.cstar.websocket.infrastructure
+package yjh.cstar.chat.infrastructure
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.stereotype.Repository
 import yjh.cstar.util.RedisUtil
-import yjh.cstar.websocket.application.port.AnswerMessageBroker
-import yjh.cstar.websocket.domain.PlayerAnswer
-import yjh.cstar.websocket.infrastructure.redis.PlayerAnswerEntity
+import yjh.cstar.chat.application.port.AnswerMessageBroker
+import yjh.cstar.chat.domain.PlayerAnswer
+import yjh.cstar.chat.infrastructure.redis.PlayerAnswerEntity
 
 @Repository
 class RedisAnswerMessageBroker(

@@ -1,4 +1,4 @@
-package yjh.cstar.websocket.application
+package yjh.cstar.chat.application
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.messaging.simp.SimpMessagingTemplate

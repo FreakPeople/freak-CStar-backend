@@ -15,8 +15,8 @@ import yjh.cstar.engine.domain.quiz.PlayerAnswer
 import yjh.cstar.engine.infrastructure.RedisQueueAnswerProvider
 import yjh.cstar.util.Logger
 import yjh.cstar.util.RedisUtil
-import yjh.cstar.websocket.application.PlayerAnswerSendService
-import yjh.cstar.websocket.infrastructure.RedisAnswerMessageBroker
+import yjh.cstar.chat.application.PlayerAnswerSendService
+import yjh.cstar.chat.infrastructure.RedisAnswerMessageBroker
 import java.util.Collections
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
@@ -86,7 +86,7 @@ class RedisConcurrencyTest {
         val executor = Executors.newFixedThreadPool(numberOfThreads)
         val receive = Collections.synchronizedList(mutableListOf<PlayerAnswer>())
 
-        val answerResult = yjh.cstar.websocket.domain.PlayerAnswer(
+        val answerResult = yjh.cstar.chat.domain.PlayerAnswer(
             answer = "정답",
             quizId = QUIZ_ID,
             roomId = ROOM_ID,
@@ -141,7 +141,7 @@ class RedisConcurrencyTest {
         val doneLatch = CountDownLatch(numberOfThreads)
         val executor = Executors.newFixedThreadPool(numberOfThreads)
 
-        val answerResult = yjh.cstar.websocket.domain.PlayerAnswer(
+        val answerResult = yjh.cstar.chat.domain.PlayerAnswer(
             answer = "정답",
             quizId = QUIZ_ID,
             roomId = ROOM_ID,

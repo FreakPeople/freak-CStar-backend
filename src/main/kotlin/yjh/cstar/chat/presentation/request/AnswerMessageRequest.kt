@@ -1,6 +1,6 @@
-package yjh.cstar.websocket.presentation.request
+package yjh.cstar.chat.presentation.request
 
-import yjh.cstar.websocket.domain.PlayerAnswer
+import yjh.cstar.chat.domain.PlayerAnswer
 
 data class AnswerMessageRequest(
     val answer: String,

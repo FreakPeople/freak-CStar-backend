@@ -1,4 +1,4 @@
-package yjh.cstar.websocket.domain
+package yjh.cstar.chat.domain
 
 class PlayerAnswer(
     val answer: String,

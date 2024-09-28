@@ -1,4 +1,4 @@
-package yjh.cstar.websocket.application
+package yjh.cstar.chat.application
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.AfterAll
@@ -15,8 +15,8 @@ import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.utility.DockerImageName
 import yjh.cstar.util.RedisUtil
-import yjh.cstar.websocket.domain.PlayerAnswer
-import yjh.cstar.websocket.infrastructure.RedisAnswerMessageBroker
+import yjh.cstar.chat.domain.PlayerAnswer
+import yjh.cstar.chat.infrastructure.RedisAnswerMessageBroker
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals

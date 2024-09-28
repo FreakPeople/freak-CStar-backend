@@ -1,6 +1,6 @@
-package yjh.cstar.websocket.infrastructure.redis
+package yjh.cstar.chat.infrastructure.redis
 
-import yjh.cstar.websocket.domain.PlayerAnswer
+import yjh.cstar.chat.domain.PlayerAnswer
 
 class PlayerAnswerEntity(
     val answer: String,
