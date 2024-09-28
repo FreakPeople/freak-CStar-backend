@@ -28,13 +28,18 @@ class AuthController(
     ): ResponseEntity<Response<JwtTokenResponse>> {
         val (email, inputPassword) = request
 
-        val member = memberService.retrieve(email = email)
+        val member = memberService.retrieve(email)
+            .also { matchesOrThrow(inputPassword, it.password) }
 
-        require(passwordEncoder.matches(inputPassword, member.password)) {
+        val accessToken = tokenProvider.createToken(member.id, email)
+        val jwtTokenResponse = JwtTokenResponse(accessToken)
+
+        return ResponseEntity.ok(Response(data = jwtTokenResponse))
+    }
+
+    private fun matchesOrThrow(inputPassword: String, memberPassword: String) {
+        require(passwordEncoder.matches(inputPassword, memberPassword)) {
             throw BaseException(BaseErrorCode.PASSWORD_INVALID)
         }
-
-        val jwtTokenResponse = JwtTokenResponse(accessToken = tokenProvider.createToken(member.id, email))
-        return ResponseEntity.ok(Response(data = jwtTokenResponse))
     }
 }
