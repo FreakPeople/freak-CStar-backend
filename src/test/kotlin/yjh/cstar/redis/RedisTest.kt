@@ -13,7 +13,7 @@ import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.utility.DockerImageName
-import yjh.cstar.engine.infrastructure.redis.AnswerResultEntity
+import yjh.cstar.engine.infrastructure.redis.PlayerAnswerEntity
 import yjh.cstar.util.RedisUtil
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -77,9 +77,9 @@ class RedisTest {
     @Test
     fun `레디스 큐에 데이터 삽입 테스트`() {
         // given
-        val value_1 = objectMapper.writeValueAsString(AnswerResultEntity("ans_1", QUIZ_ID, ROOM_ID, 1, "nickname"))
+        val value_1 = objectMapper.writeValueAsString(PlayerAnswerEntity("ans_1", QUIZ_ID, ROOM_ID, 1, "nickname"))
         redisUtil.rpush(KEY, value_1)
-        val value_2 = objectMapper.writeValueAsString(AnswerResultEntity("ans_2", QUIZ_ID, ROOM_ID, 1, "nickname"))
+        val value_2 = objectMapper.writeValueAsString(PlayerAnswerEntity("ans_2", QUIZ_ID, ROOM_ID, 1, "nickname"))
         redisUtil.rpush(KEY, value_2)
 
         // when
@@ -93,14 +93,14 @@ class RedisTest {
     @Test
     fun `레디스 큐에 데이터 반환 테스트`() {
         // given
-        val value_1 = objectMapper.writeValueAsString(AnswerResultEntity("ans_1", QUIZ_ID, ROOM_ID, 1, "nickname"))
+        val value_1 = objectMapper.writeValueAsString(PlayerAnswerEntity("ans_1", QUIZ_ID, ROOM_ID, 1, "nickname"))
         redisUtil.rpush(KEY, value_1)
-        val value_2 = objectMapper.writeValueAsString(AnswerResultEntity("ans_2", QUIZ_ID, ROOM_ID, 1, "nickname"))
+        val value_2 = objectMapper.writeValueAsString(PlayerAnswerEntity("ans_2", QUIZ_ID, ROOM_ID, 1, "nickname"))
         redisUtil.rpush(KEY, value_2)
 
         // when
-        val first = objectMapper.readValue(redisUtil.lpop(KEY), AnswerResultEntity::class.java)
-        val second = objectMapper.readValue(redisUtil.lpop(KEY), AnswerResultEntity::class.java)
+        val first = objectMapper.readValue(redisUtil.lpop(KEY), PlayerAnswerEntity::class.java)
+        val second = objectMapper.readValue(redisUtil.lpop(KEY), PlayerAnswerEntity::class.java)
         val size = redisUtil.size(KEY)
 
         // then
@@ -114,9 +114,9 @@ class RedisTest {
     @Test
     fun `레디스 큐의 특정 key에 해당하는 큐 삭제 테스트`() {
         // given
-        val value_1 = objectMapper.writeValueAsString(AnswerResultEntity("ans_1", QUIZ_ID, ROOM_ID, 1, "nickname"))
+        val value_1 = objectMapper.writeValueAsString(PlayerAnswerEntity("ans_1", QUIZ_ID, ROOM_ID, 1, "nickname"))
         redisUtil.rpush(KEY, value_1)
-        val value_2 = objectMapper.writeValueAsString(AnswerResultEntity("ans_2", QUIZ_ID, ROOM_ID, 1, "nickname"))
+        val value_2 = objectMapper.writeValueAsString(PlayerAnswerEntity("ans_2", QUIZ_ID, ROOM_ID, 1, "nickname"))
         redisUtil.rpush(KEY, value_2)
 
         // when
@@ -133,7 +133,7 @@ class RedisTest {
     @Test
     fun `레디스 Blocking Queue 동작 테스트`() {
         // given
-        val value = objectMapper.writeValueAsString(AnswerResultEntity("ans_1", QUIZ_ID, ROOM_ID, 1, "nickname"))
+        val value = objectMapper.writeValueAsString(PlayerAnswerEntity("ans_1", QUIZ_ID, ROOM_ID, 1, "nickname"))
         repeat(5) {
             redisUtil.rpush(KEY, value)
         }

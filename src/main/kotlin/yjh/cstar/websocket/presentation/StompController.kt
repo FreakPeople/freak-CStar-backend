@@ -9,13 +9,13 @@ import org.springframework.util.StringUtils
 import yjh.cstar.auth.jwt.TokenProvider
 import yjh.cstar.common.BaseErrorCode
 import yjh.cstar.common.BaseException
-import yjh.cstar.game.domain.AnswerResult
-import yjh.cstar.websocket.application.GameAnswerPushService
+import yjh.cstar.websocket.application.PlayerAnswerSendService
 import yjh.cstar.websocket.presentation.request.AnswerMessageRequest
+import yjh.cstar.websocket.presentation.request.toPlayerAnswer
 
 @Controller
 class StompController(
-    private val gameAnswerPushService: GameAnswerPushService,
+    private val playerAnswerSendService: PlayerAnswerSendService,
     private val tokenProvider: TokenProvider,
 ) {
 
@@ -35,15 +35,8 @@ class StompController(
         require(answerMessageRequest.answer.isNotBlank()) { BaseException(BaseErrorCode.EMPTY_ANSWER) }
         require(answerMessageRequest.quizId > 0) { BaseException(BaseErrorCode.INVALID_QUIZ_ID) }
 
-        val answer = AnswerResult(
-            answer = answerMessageRequest.answer,
-            quizId = answerMessageRequest.quizId,
-            roomId = roomId,
-            playerId = playerId,
-            nickname = answerMessageRequest.nickname
-        )
-
-        gameAnswerPushService.push(answer)
+        val playerAnswer = answerMessageRequest.toPlayerAnswer(roomId, playerId)
+        playerAnswerSendService.send(playerAnswer)
     }
 
     private fun resolveToken(bearerToken: String): String? {

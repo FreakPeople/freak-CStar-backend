@@ -135,4 +135,3 @@ class QuizGame(
 
     private fun getDuration(pastTime: Long) = getCurrentTime() - pastTime
 }
-

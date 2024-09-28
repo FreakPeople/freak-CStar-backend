@@ -12,6 +12,7 @@ import yjh.cstar.room.domain.RoomStatus
 import yjh.cstar.room.infrastructure.jpa.RoomEntity
 import yjh.cstar.room.infrastructure.jpa.RoomJpaRepository
 import yjh.cstar.room.presentation.RoomController
+import yjh.cstar.util.Logger
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
 import kotlin.test.AfterTest
@@ -86,7 +87,7 @@ class RoomConcurrencyTest {
                 try {
                     roomController.join(roomId, authentication)
                 } catch (e: Exception) {
-                    println("Error: ${e.message}")
+                    Logger.error(e)
                 } finally {
                     doneLatch.countDown()
                 }

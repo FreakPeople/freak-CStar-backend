@@ -11,7 +11,13 @@ class PlayerAnswerTest {
     @Test
     fun `같은 정답인지 비교 테스트`() {
         // given
-        val playerAnswer = PlayerAnswer(1L, 1L, 1L, "정답")
+        val playerAnswer = PlayerAnswer(
+            answer = "정답",
+            quizId = 1L,
+            roomId = 1L,
+            playerId = 1L,
+            nickname = "닉네임"
+        )
         val quiz = Quiz(1L, "질문", "정답")
 
         // when
@@ -24,7 +30,13 @@ class PlayerAnswerTest {
     @Test
     fun `같은 정답이랑 다른지 비교 테스트`() {
         // given
-        val playerAnswer = PlayerAnswer(1L, 1L, 1L, "정답")
+        val playerAnswer = PlayerAnswer(
+            answer = "정답",
+            quizId = 1L,
+            roomId = 1L,
+            playerId = 1L,
+            nickname = "닉네임"
+        )
         val quiz = Quiz(1L, "질문", "잘못된 정답")
 
         // when

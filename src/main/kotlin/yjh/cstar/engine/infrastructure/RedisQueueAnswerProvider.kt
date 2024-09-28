@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.stereotype.Service
 import yjh.cstar.engine.application.port.AnswerProvider
 import yjh.cstar.engine.domain.quiz.PlayerAnswer
-import yjh.cstar.engine.infrastructure.redis.AnswerResultEntity
+import yjh.cstar.engine.infrastructure.redis.PlayerAnswerEntity
 import yjh.cstar.util.RedisUtil
 
 @Service
@@ -16,7 +16,7 @@ class RedisQueueAnswerProvider(
     override fun receivePlayerAnswer(roomId: Long, quizId: Long): PlayerAnswer? {
         val key = generateKey(roomId, quizId)
         return redisUtil.lpop(key, 1)?.let {
-            objectMapper.readValue(it, AnswerResultEntity::class.java).toModel2()
+            objectMapper.readValue(it, PlayerAnswerEntity::class.java).toModel()
         }
     }
 
