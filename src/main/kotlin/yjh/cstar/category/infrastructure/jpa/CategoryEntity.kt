@@ -34,6 +34,7 @@ class CategoryEntity(
             )
         }
     }
+
     fun toModel(): Category {
         return Category(
             id = this.id,
