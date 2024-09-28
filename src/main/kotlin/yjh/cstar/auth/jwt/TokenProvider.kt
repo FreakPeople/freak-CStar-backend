@@ -31,7 +31,7 @@ class TokenProvider(
     private var key: Key? = null
 
     companion object {
-        private const val MEMBER_ID = "memberId"
+        private const val MEMBER_ID = "member_id"
         private const val AUTHORITIES_KEY = "auth"
     }
 
