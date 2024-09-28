@@ -1,6 +1,5 @@
 package yjh.cstar.room.application
 
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -19,13 +18,10 @@ class RoomService(
     private val roomJoinRepository: RoomJoinRepository,
 ) {
 
-    fun retrieve(id: Long): Room {
-        return roomRepository.findByIdOrNull(id) ?: throw BaseException(BaseErrorCode.NOT_FOUND_ROOM)
-    }
+    fun retrieve(id: Long) = roomRepository.findByIdOrNull(id)
+        ?: throw BaseException(BaseErrorCode.NOT_FOUND_ROOM)
 
-    fun retrieveAll(pageable: Pageable): Page<Room> {
-        return roomRepository.findAll(pageable)
-    }
+    fun retrieveAll(pageable: Pageable) = roomRepository.findAll(pageable)
 
     fun retrieveCurrParticipant(roomId: Long): List<Long> {
         val room = retrieve(roomId)
@@ -34,23 +30,21 @@ class RoomService(
 
     @Transactional
     fun create(command: RoomCreateCommand): Long {
-        val room = Room.create(command)
-        return roomRepository.save(room).id
+        val savedRoom = Room.create(command)
+            .let { roomRepository.save(it) }
+        return savedRoom.id
     }
 
     @Transactional
-    fun join(roomId: Long, memberId: Long): Long {
+    fun join(roomId: Long, playerId: Long): Long {
         val room = retrieve(roomId)
         room.entrance()
         roomRepository.save(room)
 
-        val roomJoin = RoomJoin(
-            roomId = roomId,
-            playerId = memberId
-        )
+        val roomJoin = RoomJoin.create(roomId, playerId)
         roomJoinRepository.save(roomJoin)
 
-        return roomId
+        return room.id
     }
 
     @Transactional

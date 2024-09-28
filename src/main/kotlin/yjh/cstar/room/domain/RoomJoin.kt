@@ -11,4 +11,13 @@ class RoomJoin(
     init {
         joinedAt = LocalDateTime.now()
     }
+
+    companion object {
+        fun create(roomId: Long, playerId: Long): RoomJoin {
+            return RoomJoin(
+                roomId = roomId,
+                playerId = playerId
+            )
+        }
+    }
 }
