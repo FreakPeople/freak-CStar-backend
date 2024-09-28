@@ -37,7 +37,7 @@ cors:
   src: http://localhost:3000
 
 game:
-  engine:
+  play:
     threads:
       max: 300
       core: 200

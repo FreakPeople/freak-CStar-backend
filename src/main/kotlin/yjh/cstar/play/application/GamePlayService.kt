@@ -6,7 +6,7 @@ import yjh.cstar.play.domain.quiz.QuizDto
 import yjh.cstar.util.Logger
 
 @Service
-class GameEngineService(
+class GamePlayService(
     private val quizGameService: QuizGameService,
 ) {
 

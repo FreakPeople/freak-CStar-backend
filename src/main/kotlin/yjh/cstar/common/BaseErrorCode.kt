@@ -14,7 +14,7 @@ import yjh.cstar.room.domain.Validator.Companion.MIN_CAPACITY
  * 10 ~ 19 : Member 도메인
  * 20 ~ 29 : Quiz 도메인
  * 30 ~ 39 : Game 도메인
- * 40 ~ 49 : Engine 도메인
+ * 40 ~ 49 : Play 도메인
  * 50 ~ 59 : Websocket 도메인
  */
 enum class BaseErrorCode(
@@ -52,6 +52,6 @@ enum class BaseErrorCode(
     QUIZ_FILTER_INVALID(HttpStatus.BAD_REQUEST, 40021, "유효하지 않은 퀴즈 필터입니다."),
 
     // Game
-    // Engine
+    // Play
     // Websocket
 }
