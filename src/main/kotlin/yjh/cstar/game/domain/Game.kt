@@ -12,4 +12,17 @@ class Game(
     var createdAt: LocalDateTime? = null,
     var updatedAt: LocalDateTime? = null,
     val deletedAt: LocalDateTime? = null,
-)
+) {
+
+    companion object {
+        fun create(command: GameResultCreateCommand): Game {
+            return Game(
+                roomId = command.roomId,
+                winnerId = command.winningPlayerId,
+                totalQuizCount = command.totalQuizSize,
+                categoryId = command.categoryId,
+                startedAt = command.gameStartedAt
+            )
+        }
+    }
+}

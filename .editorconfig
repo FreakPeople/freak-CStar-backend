@@ -12,3 +12,6 @@ no-wildcard-imports = enabled
 
 [{*.{kt, kts}}]
 ij_kotlin_allow_trailing_comma = true
+
+[{*.yml, *.yaml}]
+indent_size = 2

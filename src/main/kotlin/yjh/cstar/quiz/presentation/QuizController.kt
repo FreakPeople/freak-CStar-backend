@@ -30,8 +30,10 @@ class QuizController(
         @RequestBody request: QuizCreateRequest,
         authentication: Authentication,
     ): ResponseEntity<Response<Long>> {
-        val memberId = tokenProvider.getMemberId(authentication)
-        return ResponseEntity.ok(Response(data = quizService.create(request.toCommand(), memberId)))
+        val memberId = getPrincipalId(authentication)
+
+        val createdQuizId = quizService.create(request.toCommand(), memberId)
+        return ResponseEntity.ok(Response(data = createdQuizId))
     }
 
     @GetMapping("/quizzes")
@@ -39,7 +41,8 @@ class QuizController(
         @RequestParam categoryId: Long,
         @PageableDefault(size = 10) pageable: Pageable,
     ): ResponseEntity<Response<Page<QuizResponse>>> {
-        val responses = quizService.retrieveAllByCategory(categoryId, pageable).map { QuizResponse.from(it) }
+        val responses = quizService.retrieveAllByCategory(categoryId, pageable)
+            .map { QuizResponse.from(it) }
         return ResponseEntity.ok(Response(data = responses))
     }
 
@@ -49,9 +52,14 @@ class QuizController(
         @PageableDefault(size = 10) pageable: Pageable,
         authentication: Authentication,
     ): ResponseEntity<Response<Page<QuizResponse>>> {
-        val memberId = tokenProvider.getMemberId(authentication)
+        val memberId = getPrincipalId(authentication)
+
         val responses = quizService.retrieveAllByQuizFilterType(memberId, quizFilterType, pageable)
             .map { QuizResponse.from(it) }
         return ResponseEntity.ok(Response(data = responses))
+    }
+
+    private fun getPrincipalId(authentication: Authentication): Long {
+        return tokenProvider.getMemberId(authentication)
     }
 }

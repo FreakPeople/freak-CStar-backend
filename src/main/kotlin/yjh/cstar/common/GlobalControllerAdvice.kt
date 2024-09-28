@@ -1,18 +1,16 @@
 package yjh.cstar.common
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
-
-private val logger = KotlinLogging.logger {}
+import yjh.cstar.util.Logger
 
 @RestControllerAdvice
 class GlobalControllerAdvice {
 
     @ExceptionHandler(BaseException::class)
     fun handleBaseException(e: BaseException): ResponseEntity<ErrorResponse> {
-        logger.error { "[ERROR] $e" }
+        Logger.error("[ERROR] $e")
         val errorCode = e.baseErrorCode
         return ResponseEntity.ok(
             ErrorResponse(
@@ -25,7 +23,7 @@ class GlobalControllerAdvice {
 
     @ExceptionHandler(Exception::class)
     fun handleException(e: Exception): ResponseEntity<ErrorResponse> {
-        logger.error { "[ERROR] $e" }
+        Logger.error("[ERROR] $e")
         return ResponseEntity.ok(
             ErrorResponse(
                 status = BaseErrorCode.INTERNAL_SERVER_ERROR,

@@ -1,7 +1,6 @@
 package yjh.cstar.auth.jwt
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.access.AccessDeniedException
@@ -9,8 +8,7 @@ import org.springframework.security.web.access.AccessDeniedHandler
 import org.springframework.stereotype.Component
 import yjh.cstar.common.BaseErrorCode
 import yjh.cstar.common.ErrorResponse
-
-private val logger = KotlinLogging.logger {}
+import yjh.cstar.util.Logger
 
 @Component
 class JwtAccessDeniedHandler(
@@ -22,7 +20,7 @@ class JwtAccessDeniedHandler(
         response: HttpServletResponse,
         accessDeniedException: AccessDeniedException,
     ) {
-        logger.error { "[ERROR] ${accessDeniedException.message}" }
+        Logger.error("[ERROR] ${accessDeniedException.message}")
 
         val errorData = ErrorResponse(
             status = BaseErrorCode.FORBIDDEN,
@@ -30,9 +28,11 @@ class JwtAccessDeniedHandler(
             message = BaseErrorCode.FORBIDDEN.message
         )
 
-        response.setContentType("application/json")
-        response.setCharacterEncoding("UTF-8")
-        response.setStatus(403)
-        response.getWriter().write(objectMapper.writeValueAsString(errorData))
+        response.apply {
+            contentType = "application/json"
+            characterEncoding = "UTF-8"
+            status = 403
+            writer.write(objectMapper.writeValueAsString(errorData))
+        }
     }
 }

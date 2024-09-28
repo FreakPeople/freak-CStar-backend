@@ -10,14 +10,14 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
 @Configuration
 class AsyncConfig {
 
-    @Value("\${game.engine.threads.core}")
+    @Value("\${game.play.threads.core}")
     lateinit var core: String
 
-    @Value("\${game.engine.threads.max}")
+    @Value("\${game.play.threads.max}")
     lateinit var max: String
 
-    @Bean("GameEngineThreadPool")
-    fun gameEngineThreadPool(): ThreadPoolTaskExecutor {
+    @Bean("GamePlayThreadPool")
+    fun gamePlayThreadPool(): ThreadPoolTaskExecutor {
         return ThreadPoolTaskExecutor().apply {
             corePoolSize = core.toInt()
             maxPoolSize = max.toInt()

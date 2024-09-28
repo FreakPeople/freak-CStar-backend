@@ -16,17 +16,13 @@ class MemberService(
     private val passwordEncryptor: PasswordEncryptor,
 ) {
 
-    fun retrieve(email: String): Member {
-        return memberRepository.findByEmail(email) ?: throw BaseException(BaseErrorCode.NOT_FOUND_MEMBER)
-    }
+    fun retrieve(email: String) = memberRepository.findByEmail(email)
+        ?: throw BaseException(BaseErrorCode.NOT_FOUND_MEMBER)
 
-    fun retrieveMe(myId: Long): Member {
-        return memberRepository.findById(myId) ?: throw BaseException(BaseErrorCode.NOT_FOUND_MEMBER)
-    }
+    fun retrieveMe(myId: Long) = memberRepository.findById(myId)
+        ?: throw BaseException(BaseErrorCode.NOT_FOUND_MEMBER)
 
-    fun retrieveAll(playerIds: List<Long>): List<Member> {
-        return memberRepository.findByIdIn(playerIds)
-    }
+    fun retrieveAll(playerIds: List<Long>) = memberRepository.findByIdIn(playerIds)
 
     @Transactional
     fun create(command: MemberCreateCommand): Long {
@@ -35,9 +31,10 @@ class MemberService(
 
         val encodedPassword = passwordEncryptor.encode(command.password)
 
-        val member = Member.create(command, encodedPassword)
+        val savedMember = Member.create(command, encodedPassword)
+            .let { memberRepository.save(it) }
 
-        return memberRepository.save(member).id
+        return savedMember.id
     }
 
     private fun checkNicknameDuplicated(nickname: String) {

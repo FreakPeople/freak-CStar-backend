@@ -8,17 +8,22 @@ import java.util.concurrent.TimeUnit
 class RedisUtil(
     private val redisTemplate: RedisTemplate<String, String>,
 ) {
+    companion object {
+        private const val BASE_TTL = 9999L
+        private const val BASE_TIME_OUT = 60L
+        private val BASE_TIME_UNIT = TimeUnit.SECONDS
+    }
 
-    fun rpush(key: String, value: String, ttl: Long? = 9999): Long? {
+    fun rpush(key: String, value: String, ttl: Long = BASE_TTL): Long? {
         val listSize = redisTemplate.opsForList().rightPush(key, value)
         ttl?.let {
-            redisTemplate.expire(key, ttl, TimeUnit.SECONDS)
+            redisTemplate.expire(key, ttl, BASE_TIME_UNIT)
         }
         return listSize
     }
 
-    fun lpop(key: String, timeout: Long = 60, timeUnit: TimeUnit = TimeUnit.SECONDS): String? {
-        return redisTemplate.opsForList().leftPop(key, timeout, timeUnit)
+    fun lpop(key: String, timeout: Long = BASE_TIME_OUT): String? {
+        return redisTemplate.opsForList().leftPop(key, timeout, BASE_TIME_UNIT)
     }
 
     fun size(key: String): Long? {

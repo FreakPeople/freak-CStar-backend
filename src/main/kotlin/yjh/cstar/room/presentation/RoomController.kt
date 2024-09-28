@@ -29,7 +29,8 @@ class RoomController(
     fun create(
         @RequestBody request: RoomCreateRequest,
     ): ResponseEntity<Response<Long>> {
-        return ResponseEntity.ok(Response(data = roomService.create(request.toCommand())))
+        val createdRoomId = roomService.create(request.toCommand())
+        return ResponseEntity.ok(Response(data = createdRoomId))
     }
 
     @GetMapping("/rooms/{id}")
@@ -44,7 +45,8 @@ class RoomController(
     fun retrieveAll(
         @PageableDefault(size = 10) pageable: Pageable,
     ): ResponseEntity<Response<Page<RoomResponse>>> {
-        val responses = roomService.retrieveAll(pageable).map { RoomResponse.from(it) }
+        val responses = roomService.retrieveAll(pageable)
+            .map { RoomResponse.from(it) }
         return ResponseEntity.ok(Response(data = responses))
     }
 

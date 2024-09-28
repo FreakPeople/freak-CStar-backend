@@ -8,8 +8,8 @@ import yjh.cstar.member.application.port.PasswordEncryptor
 class PasswordEncryptorAdapter(
     private val passwordEncoder: PasswordEncoder,
 ) : PasswordEncryptor {
-    override fun encode(rawPassword: String): String {
-        return passwordEncoder.encode(rawPassword)
+    override fun encode(password: String): String {
+        return passwordEncoder.encode(password)
     }
 
     override fun isMatches(rawPassword: String, encodedPassword: String): Boolean {

@@ -10,6 +10,7 @@ enum class CategoryType(val description: String) {
     NETWORK("네트워크"),
     OPERATING_SYSTEM("운영체제"),
     ;
+
     companion object {
         fun create(quizCategory: String): CategoryType =
             entries.firstOrNull { it.description == quizCategory }

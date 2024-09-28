@@ -8,6 +8,7 @@ import org.springframework.test.context.ActiveProfiles
 import yjh.cstar.member.application.MemberService
 import yjh.cstar.member.domain.MemberCreateCommand
 import yjh.cstar.member.infrastructure.jpa.MemberJpaRepository
+import yjh.cstar.util.Logger
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
 import kotlin.test.AfterTest
@@ -59,7 +60,7 @@ class MemberConcurrencyTest {
                         )
                     )
                 } catch (e: Exception) {
-                    println("Error: ${e.message}")
+                    Logger.error(e)
                 } finally {
                     doneLatch.countDown()
                 }
@@ -97,7 +98,7 @@ class MemberConcurrencyTest {
                         )
                     )
                 } catch (e: Exception) {
-                    println("Error: ${e.message}")
+                    Logger.error(e)
                 } finally {
                     doneLatch.countDown()
                 }

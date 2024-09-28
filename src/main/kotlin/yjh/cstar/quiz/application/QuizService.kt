@@ -27,8 +27,9 @@ class QuizService(
 
     @Transactional
     fun create(command: QuizCreateCommand, writerId: Long): Long {
-        val quiz = Quiz.create(command, writerId)
-        return quizRepository.save(quiz).id
+        val savedQuiz = Quiz.create(command, writerId)
+            .let { quizRepository.save(it) }
+        return savedQuiz.id
     }
 
     fun retrieveAllByCategory(quizCategoryId: Long, pageable: Pageable): Page<Quiz> {

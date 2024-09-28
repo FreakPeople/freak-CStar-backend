@@ -11,11 +11,12 @@ import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.utility.DockerImageName
-import yjh.cstar.engine.domain.quiz.PlayerAnswer
-import yjh.cstar.engine.infrastructure.RedisQueueAnswerProvider
-import yjh.cstar.game.domain.AnswerResult
+import yjh.cstar.chat.application.PlayerAnswerSendService
+import yjh.cstar.chat.infrastructure.RedisAnswerMessageBroker
+import yjh.cstar.play.domain.player.PlayerAnswer
+import yjh.cstar.play.infrastructure.RedisQueueAnswerProvider
+import yjh.cstar.util.Logger
 import yjh.cstar.util.RedisUtil
-import yjh.cstar.websocket.application.GameAnswerPushService
 import java.util.Collections
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
@@ -25,11 +26,11 @@ import kotlin.test.assertEquals
 
 @ActiveProfiles("local-test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DisplayName("[Redis 동시성 테스트] GameAnswerPollRepository")
+@DisplayName("[Redis 동시성 테스트] RedisConcurrency")
 class RedisConcurrencyTest {
 
     @Autowired
-    private lateinit var gameAnswerPushService: GameAnswerPushService
+    private lateinit var playerAnswerSendService: PlayerAnswerSendService
 
     @Autowired
     private lateinit var redisQueueAnswerProvider: RedisQueueAnswerProvider
@@ -40,7 +41,7 @@ class RedisConcurrencyTest {
     companion object {
         private const val ROOM_ID = 1L
         private const val QUIZ_ID = 1L
-        private const val KEY = "roomId : " + ROOM_ID + ", " + "quizId : " + QUIZ_ID
+        private val KEY = RedisAnswerMessageBroker.getKey(ROOM_ID, QUIZ_ID)
 
         private val redis: GenericContainer<*> = GenericContainer(DockerImageName.parse("redis:latest"))
             .withExposedPorts(6379)
@@ -85,7 +86,7 @@ class RedisConcurrencyTest {
         val executor = Executors.newFixedThreadPool(numberOfThreads)
         val receive = Collections.synchronizedList(mutableListOf<PlayerAnswer>())
 
-        val answerResult = AnswerResult(
+        val answerResult = yjh.cstar.chat.domain.PlayerAnswer(
             answer = "정답",
             quizId = QUIZ_ID,
             roomId = ROOM_ID,
@@ -97,10 +98,10 @@ class RedisConcurrencyTest {
         executor.submit {
             try {
                 for (idx in 1..100) {
-                    gameAnswerPushService.push(answerResult)
+                    playerAnswerSendService.send(answerResult)
                 }
             } catch (e: Exception) {
-                println("Error: ${e.message}")
+                Logger.error(e)
             } finally {
                 doneLatch.countDown()
             }
@@ -112,7 +113,7 @@ class RedisConcurrencyTest {
                     receive.add(redisQueueAnswerProvider.receivePlayerAnswer(ROOM_ID, QUIZ_ID))
                 }
             } catch (e: Exception) {
-                println("Error: ${e.message}")
+                Logger.error(e)
             } finally {
                 doneLatch.countDown()
             }
@@ -140,7 +141,7 @@ class RedisConcurrencyTest {
         val doneLatch = CountDownLatch(numberOfThreads)
         val executor = Executors.newFixedThreadPool(numberOfThreads)
 
-        val answerResult = AnswerResult(
+        val answerResult = yjh.cstar.chat.domain.PlayerAnswer(
             answer = "정답",
             quizId = QUIZ_ID,
             roomId = ROOM_ID,
@@ -153,9 +154,9 @@ class RedisConcurrencyTest {
         for (idx in 1..numberOfThreads) {
             executor.submit {
                 try {
-                    gameAnswerPushService.push(answerResult)
+                    playerAnswerSendService.send(answerResult)
                 } catch (e: Exception) {
-                    println("Error: ${e.message}")
+                    Logger.error(e)
                 } finally {
                     doneLatch.countDown()
                 }
