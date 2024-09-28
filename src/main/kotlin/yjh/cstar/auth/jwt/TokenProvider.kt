@@ -100,7 +100,7 @@ class TokenProvider(
     fun getMemberId(token: String): Long {
         val claims = Jwts.parserBuilder().setSigningKey(key)
             .build().parseClaimsJws(token)
-        return claims.body["memberId"].toString().toLong()
+        return claims.body[MEMBER_ID].toString().toLong()
     }
 
     fun getJwtTokenFrom(authentication: Authentication): String {

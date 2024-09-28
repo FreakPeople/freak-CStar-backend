@@ -4,6 +4,9 @@ import org.junit.jupiter.api.DisplayName
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import yjh.cstar.IntegrationTest
+import yjh.cstar.common.BaseErrorCode
+import yjh.cstar.common.BaseException
+import yjh.cstar.game.infrastructure.jpa.GameJpaRepository
 import yjh.cstar.member.infrastructure.jpa.MemberEntity
 import yjh.cstar.member.infrastructure.jpa.MemberJpaRepository
 import yjh.cstar.room.domain.RoomCreateCommand
@@ -33,6 +36,9 @@ class RoomServiceTest : IntegrationTest() {
 
     @Autowired
     private lateinit var memberJpaRepository: MemberJpaRepository
+
+    @Autowired
+    private lateinit var gameJpaRepository: GameJpaRepository
 
     @Test
     fun `게임 방 전체 조회 테스트`() {
@@ -194,5 +200,35 @@ class RoomServiceTest : IntegrationTest() {
         assertEquals(1L, participants[0])
         assertEquals(3L, participants[1])
         assertEquals(2L, participants[2])
+    }
+
+    @Test
+    fun `게임 종료 후 게임 방 상태 및 현재 방 인원 수 초기화 테스트`() {
+        // given
+        val savedRoom = roomJpaRepository.save(
+            RoomEntity(
+                maxCapacity = 5,
+                currCapacity = 3,
+                status = RoomStatus.IN_PROGRESS,
+                createdAt = null,
+                updatedAt = null
+            )
+        ).toModel()
+
+        // when
+        roomService.endGameAndResetRoom(savedRoom.id)
+
+        // then
+        val updatedRoom = roomJpaRepository.findByIdOrNull(savedRoom.id)
+            ?: throw BaseException(BaseErrorCode.NOT_FOUND_ROOM)
+
+        val updatedRoomCurrCapacity = updatedRoom.toModel().currCapacity
+        val updatedRoomStatus = updatedRoom.toModel().status
+
+        with(updatedRoom) {
+            assertNotNull(this)
+            assertEquals(0, updatedRoomCurrCapacity)
+            assertEquals(RoomStatus.WAITING, updatedRoomStatus)
+        }
     }
 }
