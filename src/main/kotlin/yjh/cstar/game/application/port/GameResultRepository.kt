@@ -4,4 +4,6 @@ import yjh.cstar.game.domain.GameResult
 
 interface GameResultRepository {
     fun save(gameResult: GameResult): GameResult
+
+    fun saveAll(gameResults: List<GameResult>)
 }

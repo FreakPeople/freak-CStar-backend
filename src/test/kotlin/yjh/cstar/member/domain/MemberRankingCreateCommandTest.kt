@@ -9,7 +9,7 @@ import yjh.cstar.common.BaseException
 import kotlin.test.assertEquals
 
 @DisplayName("[Domain 테스트] MemberCreateCommand")
-class MemberCreateCommandTest {
+class MemberRankingCreateCommandTest {
 
     @Test
     fun `회원 생성 커맨드 테스트`() {

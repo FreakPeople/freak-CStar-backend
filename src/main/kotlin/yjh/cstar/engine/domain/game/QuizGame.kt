@@ -8,7 +8,8 @@ import yjh.cstar.engine.domain.player.Players
 import yjh.cstar.engine.domain.quiz.Quizzes
 import yjh.cstar.engine.domain.ranking.Ranking
 import yjh.cstar.game.application.GameResultService
-import yjh.cstar.game.presentation.request.RankingCreateRequest
+import yjh.cstar.game.domain.GameResultCreateCommand
+import yjh.cstar.room.application.RoomService
 import yjh.cstar.util.Logger
 import java.time.LocalDateTime
 
@@ -18,7 +19,8 @@ class QuizGame(
     private val gameNotifier: GameNotifier,
     private val rankingHandler: RankingHandler,
     private val gameResultService: GameResultService,
-) : GameInitializable, GameRunnable {
+    private val roomService: RoomService,
+) : GameInitializable, GameRunnable, GameFinalizable {
 
     private val players = gameInfo.players
     private val quizzes = gameInfo.quizzes
@@ -86,6 +88,10 @@ class QuizGame(
         }
     }
 
+    override fun finishGame() {
+        roomService.endGameAndResetRoom(roomId)
+    }
+
     private fun recordGameResult(gameStartedAt: LocalDateTime) {
         val ranking = rankingHandler.getRanking(roomId)
         saveGameResult(ranking, quizzes, gameStartedAt)
@@ -93,15 +99,15 @@ class QuizGame(
 
     private fun saveGameResult(ranking: Ranking, quizzes: Quizzes, gameStartedAt: LocalDateTime) {
         val winnerId = findWinner()
-        val rankingCreateRequest = RankingCreateRequest(
-            ranking,
+        val gameResultCreateCommand = GameResultCreateCommand(
+            ranking.getRanking(),
             roomId,
             winnerId,
             quizzes.getSize(),
             categoryId,
             gameStartedAt
         )
-        gameResultService.create(rankingCreateRequest)
+        gameResultService.create(gameResultCreateCommand)
     }
 
     private fun isTimeOut(startTime: Long) = getDuration(startTime) >= TIME_LIMIT_MILLIS
@@ -129,3 +135,4 @@ class QuizGame(
 
     private fun getDuration(pastTime: Long) = getCurrentTime() - pastTime
 }
+

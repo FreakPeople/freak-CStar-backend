@@ -7,10 +7,15 @@ import yjh.cstar.game.infrastructure.jpa.GameResultEntity
 import yjh.cstar.game.infrastructure.jpa.GameResultJpaRepository
 
 @Repository
-class GameResultRepository(
+class GameResultRepositoryAdapter(
     private val gameResultJpaRepository: GameResultJpaRepository,
 ) : GameResultRepository {
+
     override fun save(gameResult: GameResult): GameResult {
         return gameResultJpaRepository.save(GameResultEntity.from(gameResult)).toModel()
+    }
+
+    override fun saveAll(gameResults: List<GameResult>) {
+        gameResultJpaRepository.saveAll(gameResults.map { GameResultEntity.from(it) })
     }
 }

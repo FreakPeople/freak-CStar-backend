@@ -1,10 +1,9 @@
-package yjh.cstar.game.presentation.request
+package yjh.cstar.game.domain
 
-import yjh.cstar.engine.domain.ranking.Ranking
 import java.time.LocalDateTime
 
-data class RankingCreateRequest(
-    val ranking: Ranking,
+data class GameResultCreateCommand(
+    val ranking: LinkedHashMap<String, Int>,
     val roomId: Long,
     val winningPlayerId: Long,
     val totalQuizSize: Int,

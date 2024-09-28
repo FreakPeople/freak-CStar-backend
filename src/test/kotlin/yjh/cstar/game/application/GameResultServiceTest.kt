@@ -7,10 +7,10 @@ import yjh.cstar.IntegrationTest
 import yjh.cstar.common.BaseErrorCode
 import yjh.cstar.common.BaseException
 import yjh.cstar.engine.domain.ranking.Ranking
+import yjh.cstar.game.domain.GameResultCreateCommand
 import yjh.cstar.game.infrastructure.jpa.GameEntity
 import yjh.cstar.game.infrastructure.jpa.GameJpaRepository
 import yjh.cstar.game.infrastructure.jpa.GameResultJpaRepository
-import yjh.cstar.game.presentation.request.RankingCreateRequest
 import yjh.cstar.room.domain.RoomStatus
 import yjh.cstar.room.infrastructure.jpa.RoomEntity
 import yjh.cstar.room.infrastructure.jpa.RoomJpaRepository
@@ -51,8 +51,8 @@ class GameResultServiceTest : IntegrationTest() {
             "player:3" to 3,
             "player:1" to 2
         )
-        val rankingCreateRequest = RankingCreateRequest(
-            Ranking(ranking),
+        val gameResultCreateCommand = GameResultCreateCommand(
+            ranking,
             roomId,
             2L,
             10,
@@ -60,7 +60,7 @@ class GameResultServiceTest : IntegrationTest() {
             LocalDateTime.now()
         )
         // when
-        gameResultService.create(rankingCreateRequest)
+        gameResultService.create(gameResultCreateCommand)
 
         // then
         // 1. Game
@@ -105,15 +105,15 @@ class GameResultServiceTest : IntegrationTest() {
             "player:3" to 3,
             "player:1" to 2
         )
-        val rankingCreateRequest = RankingCreateRequest(
-            Ranking(ranking),
+        val gameResultCreateCommand = GameResultCreateCommand(
+            ranking,
             savedRoom.id,
             1L,
             5,
             1L,
             LocalDateTime.now()
         )
-        gameResultService.create(rankingCreateRequest)
+        gameResultService.create(gameResultCreateCommand)
 
         // then
         val updatedRoom = roomJpaRepository.findByIdOrNull(savedRoom.id)

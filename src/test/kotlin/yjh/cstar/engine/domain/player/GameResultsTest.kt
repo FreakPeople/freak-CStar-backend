@@ -8,7 +8,7 @@ import yjh.cstar.common.BaseException
 import kotlin.test.assertEquals
 
 @DisplayName("[Domain 테스트] Players")
-class PlayersTest {
+class GameResultsTest {
 
     @Test
     fun `플레이어 목록 생성 테스트`() {

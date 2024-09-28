@@ -5,8 +5,8 @@ import org.springframework.transaction.annotation.Transactional
 import yjh.cstar.game.application.port.GameRepository
 import yjh.cstar.game.application.port.GameResultRepository
 import yjh.cstar.game.domain.Game
-import yjh.cstar.game.domain.GameResult
-import yjh.cstar.game.presentation.request.RankingCreateRequest
+import yjh.cstar.game.domain.GameResultCreateCommand
+import yjh.cstar.game.domain.GameResults
 import yjh.cstar.room.application.RoomService
 
 @Service
@@ -16,36 +16,12 @@ class GameResultService(
     private val roomService: RoomService,
 ) {
     @Transactional
-    fun create(request: RankingCreateRequest) {
-        val game = Game(
-            roomId = request.roomId,
-            winnerId = request.winningPlayerId,
-            totalQuizCount = request.totalQuizSize,
-            categoryId = request.categoryId,
-            startedAt = request.gameStartedAt
-        )
-        val savedGame = gameRepository.save(game)
+    fun create(command: GameResultCreateCommand) {
+        val game = Game.create(command)
+            .let { gameRepository.save(it) }
 
-        val sortedRanking: LinkedHashMap<String, Int> = request.ranking.getRanking()
-        for ((idx, entry) in sortedRanking.entries.withIndex()) {
-            val (key, score) = entry
-            val rank = idx + 1
-            val playerId = key.split(":").get(1).toLong()
+        val gameResults = GameResults.create(command, game)
 
-            if (playerId == null || score == null) {
-                continue
-            }
-
-            val gameResult = GameResult(
-                gameId = savedGame.id,
-                playerId = playerId,
-                totalCount = request.totalQuizSize,
-                correctCount = score,
-                ranking = rank
-            )
-            gameResultRepository.save(gameResult)
-        }
-
-        roomService.endGameAndResetRoom(savedGame.roomId)
+        gameResultRepository.saveAll(gameResults.records)
     }
 }
