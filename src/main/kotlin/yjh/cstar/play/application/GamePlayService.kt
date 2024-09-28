@@ -2,7 +2,7 @@ package yjh.cstar.play.application
 
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
-import yjh.cstar.play.domain.quiz.QuizDto
+import yjh.cstar.play.application.request.QuizDto
 import yjh.cstar.util.Logger
 
 @Service

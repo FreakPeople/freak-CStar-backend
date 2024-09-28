@@ -1,7 +1,8 @@
-package yjh.cstar.play.domain.quiz
+package yjh.cstar.play.domain.player
 
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import yjh.cstar.play.domain.quiz.Quiz
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 

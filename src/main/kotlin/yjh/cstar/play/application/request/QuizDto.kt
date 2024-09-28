@@ -1,4 +1,6 @@
-package yjh.cstar.play.domain.quiz
+package yjh.cstar.play.application.request
+
+import yjh.cstar.play.domain.quiz.Quiz
 
 data class QuizDto(val id: Long, val question: String, val answer: String)
 

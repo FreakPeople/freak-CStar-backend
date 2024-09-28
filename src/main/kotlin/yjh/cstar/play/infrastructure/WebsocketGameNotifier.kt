@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service
 import yjh.cstar.chat.application.BroadCastService
 import yjh.cstar.game.presentation.response.QuizInfoResponse
 import yjh.cstar.play.application.port.GameNotifier
-import yjh.cstar.play.domain.game.QuizGame
+import yjh.cstar.play.domain.QuizGame
 import yjh.cstar.play.domain.player.Players
 import yjh.cstar.play.domain.quiz.Quiz
 import yjh.cstar.play.domain.ranking.Ranking

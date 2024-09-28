@@ -1,6 +1,6 @@
 package yjh.cstar.play.infrastructure.redis
 
-import yjh.cstar.play.domain.quiz.PlayerAnswer
+import yjh.cstar.play.domain.player.PlayerAnswer
 
 class PlayerAnswerEntity(
     val answer: String,

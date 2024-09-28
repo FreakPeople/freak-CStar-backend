@@ -1,4 +1,6 @@
-package yjh.cstar.play.domain.quiz
+package yjh.cstar.play.domain.player
+
+import yjh.cstar.play.domain.quiz.Quiz
 
 class PlayerAnswer(
     val answer: String,

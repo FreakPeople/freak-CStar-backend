@@ -1,4 +1,4 @@
-package yjh.cstar.play.domain.game
+package yjh.cstar.play.domain
 
 import yjh.cstar.common.BaseException
 import yjh.cstar.game.application.GameResultService
@@ -6,6 +6,10 @@ import yjh.cstar.game.domain.GameResultCreateCommand
 import yjh.cstar.play.application.port.AnswerProvider
 import yjh.cstar.play.application.port.GameNotifier
 import yjh.cstar.play.application.port.RankingHandler
+import yjh.cstar.play.domain.game.GameFinalizable
+import yjh.cstar.play.domain.game.GameInfo
+import yjh.cstar.play.domain.game.GameInitializable
+import yjh.cstar.play.domain.game.GameRunnable
 import yjh.cstar.play.domain.player.Players
 import yjh.cstar.play.domain.quiz.Quizzes
 import yjh.cstar.play.domain.ranking.Ranking

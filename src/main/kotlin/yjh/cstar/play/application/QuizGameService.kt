@@ -5,9 +5,10 @@ import yjh.cstar.game.application.GameResultService
 import yjh.cstar.play.application.port.AnswerProvider
 import yjh.cstar.play.application.port.GameNotifier
 import yjh.cstar.play.application.port.RankingHandler
+import yjh.cstar.play.application.request.QuizDto
+import yjh.cstar.play.application.request.toModel
+import yjh.cstar.play.domain.QuizGame
 import yjh.cstar.play.domain.game.GameInfo
-import yjh.cstar.play.domain.game.QuizGame
-import yjh.cstar.play.domain.quiz.QuizDto
 import yjh.cstar.room.application.RoomService
 
 @Service
@@ -19,8 +20,8 @@ class QuizGameService(
     private val roomService: RoomService,
 ) {
 
-    fun play(players: Map<Long, String>, quizzes: List<QuizDto>, roomId: Long, categoryId: Long) {
-        val gameInfo = GameInfo.of(players, quizzes, roomId, categoryId)
+    fun play(players: Map<Long, String>, randomQuizzes: List<QuizDto>, roomId: Long, categoryId: Long) {
+        val gameInfo = GameInfo.of(players, randomQuizzes.map { it.toModel() }, roomId, categoryId)
         val quizGame = QuizGame(gameInfo, answerProvider, gameNotifier, rankingHandler, gameResultService, roomService)
 
         quizGame.initialize()

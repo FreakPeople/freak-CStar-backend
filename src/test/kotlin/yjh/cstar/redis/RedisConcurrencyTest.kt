@@ -13,7 +13,7 @@ import org.testcontainers.containers.GenericContainer
 import org.testcontainers.utility.DockerImageName
 import yjh.cstar.chat.application.PlayerAnswerSendService
 import yjh.cstar.chat.infrastructure.RedisAnswerMessageBroker
-import yjh.cstar.play.domain.quiz.PlayerAnswer
+import yjh.cstar.play.domain.player.PlayerAnswer
 import yjh.cstar.play.infrastructure.RedisQueueAnswerProvider
 import yjh.cstar.util.Logger
 import yjh.cstar.util.RedisUtil

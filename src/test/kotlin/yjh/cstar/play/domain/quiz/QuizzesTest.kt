@@ -11,42 +11,42 @@ class QuizzesTest {
     @Test
     fun `퀴즈목록 생성 테스트`() {
         // given
-        val quizDtos = listOf(
-            QuizDto(1L, "question1", "answer1"),
-            QuizDto(2L, "question2", "answer2"),
-            QuizDto(3L, "question3", "answer3")
+        val quizList = listOf(
+            Quiz(1L, "question1", "answer1"),
+            Quiz(2L, "question2", "answer2"),
+            Quiz(3L, "question3", "answer3")
         )
 
         // when & then
-        assertDoesNotThrow { Quizzes.of(quizDtos) }
+        assertDoesNotThrow { Quizzes.of(quizList) }
     }
 
     @Test
     fun `퀴즈목록 조회 테스트`() {
         // given
-        val quizDtos = listOf(
-            QuizDto(1L, "question1", "answer1"),
-            QuizDto(2L, "question2", "answer2"),
-            QuizDto(3L, "question3", "answer3")
+        val quizList = listOf(
+            Quiz(1L, "question1", "answer1"),
+            Quiz(2L, "question2", "answer2"),
+            Quiz(3L, "question3", "answer3")
         )
-        val quizzes = Quizzes.of(quizDtos)
+        val quizzes = Quizzes.of(quizList)
 
         // when
-        val quizList = quizzes.getQuizList()
+        val result = quizzes.getQuizList()
 
         // then
-        assertEquals(3, quizList.size)
+        assertEquals(3, result.size)
     }
 
     @Test
     fun `퀴즈목록 개수 조회 테스트`() {
         // given
-        val quizDtos = listOf(
-            QuizDto(1L, "question1", "answer1"),
-            QuizDto(2L, "question2", "answer2"),
-            QuizDto(3L, "question3", "answer3")
+        val quizList = listOf(
+            Quiz(1L, "question1", "answer1"),
+            Quiz(2L, "question2", "answer2"),
+            Quiz(3L, "question3", "answer3")
         )
-        val quizzes = Quizzes.of(quizDtos)
+        val quizzes = Quizzes.of(quizList)
 
         // when
         val size = quizzes.getSize()

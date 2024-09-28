@@ -3,7 +3,7 @@ package yjh.cstar.play.infrastructure
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.stereotype.Service
 import yjh.cstar.play.application.port.AnswerProvider
-import yjh.cstar.play.domain.quiz.PlayerAnswer
+import yjh.cstar.play.domain.player.PlayerAnswer
 import yjh.cstar.play.infrastructure.redis.PlayerAnswerEntity
 import yjh.cstar.util.RedisUtil
 

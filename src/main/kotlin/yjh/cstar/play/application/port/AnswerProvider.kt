@@ -1,6 +1,6 @@
 package yjh.cstar.play.application.port
 
-import yjh.cstar.play.domain.quiz.PlayerAnswer
+import yjh.cstar.play.domain.player.PlayerAnswer
 
 interface AnswerProvider {
 
