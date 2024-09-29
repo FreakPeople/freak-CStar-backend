@@ -5,8 +5,8 @@
   <img src = "https://github.com/user-attachments/assets/b9fb33d8-d512-4818-a344-780cc0405efb" width="75%">
 
   <h3>컴퓨터 공학 퀴즈 웹 애플리케이션 프로젝트 입니다.</h3>
-  
-  <a href='https://topaz-raincoat-203.notion.site/CStar-febbaabc63204da28f4beb91346c1814'>📒 팀 노션</a> | 
+
+  <a href='https://topaz-raincoat-203.notion.site/CStar-febbaabc63204da28f4beb91346c1814'>📒 팀 노션</a> |
   <a href='https://github.com/FreakPeople/freak-CStar-frontend'>🎨 프론트엔드 레포지토리</a> |
   <a href='https://github.com/FreakPeople/freak-CStar-backend/pulls?page=2&q=is%3Apr+is%3Aclosed'>🎨 이슈 & PR 관리</a>
 </div>
@@ -44,7 +44,7 @@ main...
 │    ├── category
 │    ├── common
 │    ├── config
-│    ├── engine
+│    ├── play
 │    ├── game
 │         ├── application
 │         ├── domain
@@ -54,20 +54,20 @@ main...
 │    ├── quiz
 │    ├── room
 │    ├── util
-│    ├── websocket
-│    │      
+│    ├── chat
+│    │
 │    ├── CstarApplication.kt
 │
 test...
-├── devtoon
-     ├── engine
+├── cstar
+     ├── play
      ├── game
      ├── jpa
      ├── member
      ├── quiz
      ├── redis
      ├── room
-     ├── websocket
+     ├── chat
      ├── IntegrationTest.kt
 ```
 ### main
@@ -75,12 +75,12 @@ test...
 - category : 퀴즈의 카테고리 도메인을 구현한다
 - common : 모든 도메인에서 공통적으로 사용하는 기능(공통 예외, 공통 응답, 예외 핸들러 등)을 포함한다
 - config : 설정 파일을 정의한다
-- engine : 실시간 게임 로직을 구현한다
+- play : 실시간 게임 로직을 구현한다
 - member : 회원 도메인을 구현한다
 - quiz : 퀴즈 도메인을 구현한다
 - room : 게임방 도메인을 구현한다
 - util : 공통 유틸 클래스를 정의한다(redis util)
-- websocket : 웹소켓 핸들러 및 Stomp Message 컨트롤러를 정의한다
+- chat : 웹소켓 핸들러 및 Stomp Message 컨트롤러를 정의한다
 
 ### test
 - 도메인별로 테스트가 정의되어 있다

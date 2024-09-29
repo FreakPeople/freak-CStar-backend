@@ -15,7 +15,7 @@ import yjh.cstar.room.domain.Validator.Companion.MIN_CAPACITY
  * 20 ~ 29 : Quiz 도메인
  * 30 ~ 39 : Game 도메인
  * 40 ~ 49 : Play 도메인
- * 50 ~ 59 : Websocket 도메인
+ * 50 ~ 59 : Chat 도메인
  */
 enum class BaseErrorCode(
     val httpStatus: HttpStatus,
@@ -53,5 +53,5 @@ enum class BaseErrorCode(
 
     // Game
     // Play
-    // Websocket
+    // Chat
 }
