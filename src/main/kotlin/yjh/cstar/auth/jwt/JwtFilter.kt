@@ -7,8 +7,6 @@ import jakarta.servlet.http.HttpServletRequest
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.util.StringUtils
 import org.springframework.web.filter.GenericFilterBean
-import yjh.cstar.common.BaseErrorCode
-import yjh.cstar.common.BaseException
 import yjh.cstar.util.Logger
 
 class JwtFilter(
@@ -40,11 +38,11 @@ class JwtFilter(
         filterChain.doFilter(servletRequest, servletResponse)
     }
 
-    private fun resolveToken(request: HttpServletRequest): String {
+    private fun resolveToken(request: HttpServletRequest): String? {
         val bearerToken = request.getHeader(AUTHORIZATION_HEADER)
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(TOKEN_TYPE_BEARER)) {
             return bearerToken.substring(TOKEN_TYPE_BEARER.length)
         }
-        throw BaseException(BaseErrorCode.UNAUTHORIZED)
+        return null
     }
 }
