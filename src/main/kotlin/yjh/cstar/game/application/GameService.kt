@@ -21,16 +21,18 @@ class GameService(
     fun start(command: GameStartCommand) {
         roomService.startGame(command.roomId)
 
-        val players = getPlayers(command)
-        val quizzes = getQuizzes(command)
-        gamePlayService.start(players, quizzes, command.roomId, command.quizCategoryId)
+        val playerInfo: Map<Long, String> = getParticipantPlayerInfo(command)
+
+        val randomQuizData: List<QuizDto> = getRandomQuizData(command)
+
+        gamePlayService.start(playerInfo, randomQuizData, command.roomId, command.quizCategoryId)
     }
 
-    private fun getQuizzes(command: GameStartCommand) =
-        quizService.getQuizzes(command.quizCategoryId, command.totalQuestions)
+    private fun getRandomQuizData(command: GameStartCommand) =
+        quizService.getRandomQuizzes(command.quizCategoryId, command.totalQuestions)
             .map { QuizDto(it.id, it.question, it.answer) }
 
-    private fun getPlayers(command: GameStartCommand): Map<Long, String> {
+    private fun getParticipantPlayerInfo(command: GameStartCommand): Map<Long, String> {
         val playerIds: List<Long> = roomService.retrieveCurrParticipant(command.roomId)
         val players: Map<Long, String> = memberService.retrieveAll(playerIds)
             .associate { it.id to it.nickname }

@@ -20,9 +20,9 @@ class QuizService(
     val categoryJpaRepository: CategoryJpaRepository,
     val quizFilterFactory: QuizFilterFactory,
 ) {
-    fun getQuizzes(quizCategoryId: Long, totalQuestions: Int): List<Quiz> {
+    fun getRandomQuizzes(quizCategoryId: Long, totalQuestions: Int): List<Quiz> {
         checkQuizCategoryIdValidate(quizCategoryId)
-        return quizRepository.getQuizzes(quizCategoryId, totalQuestions)
+        return quizRepository.getRandomQuizzes(quizCategoryId, totalQuestions)
     }
 
     @Transactional

@@ -6,7 +6,7 @@ import yjh.cstar.quiz.domain.Quiz
 
 interface QuizRepository {
     fun save(quiz: Quiz): Quiz
-    fun getQuizzes(quizCategoryId: Long, totalQuestions: Int): List<Quiz>
+    fun getRandomQuizzes(quizCategoryId: Long, totalQuestions: Int): List<Quiz>
     fun findAllByCategory(quizCategoryId: Long, pageable: Pageable): Page<Quiz>
     fun findAllCreatedByMember(writerId: Long, pageable: Pageable): Page<Quiz>
     fun findAllAttemptedByMember(memberId: Long, pageable: Pageable): Page<Quiz>
