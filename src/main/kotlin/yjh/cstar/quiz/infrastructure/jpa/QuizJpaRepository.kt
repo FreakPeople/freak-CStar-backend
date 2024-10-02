@@ -13,7 +13,7 @@ interface QuizJpaRepository : JpaRepository<QuizEntity, Long> {
             FROM quiz
             WHERE category_id = :quizCategoryId
                 AND deleted_at IS NULL
-            ORDER BY created_at DESC
+            ORDER BY RAND()
             LIMIT :totalQuestions
         """,
         nativeQuery = true
@@ -31,17 +31,17 @@ interface QuizJpaRepository : JpaRepository<QuizEntity, Long> {
 
     @Query(
         value = """
-        SELECT q.*
-        FROM quiz q
-        WHERE q.deleted_at IS NULL
-          AND q.quiz_id IN (
-              SELECT gq.quiz_id
-              FROM game_quiz gq
-              JOIN member_game_result mgr ON mgr.game_id = gq.game_id
-              WHERE mgr.member_id = :memberId
-                AND mgr.total_count > 0
-          )
-    """,
+            SELECT q.*
+            FROM quiz q
+            WHERE q.deleted_at IS NULL
+              AND q.quiz_id IN (
+                  SELECT gq.quiz_id
+                  FROM game_quiz gq
+                  JOIN member_game_result mgr ON mgr.game_id = gq.game_id
+                  WHERE mgr.member_id = :memberId
+                    AND mgr.total_count > 0
+              )
+        """,
         nativeQuery = true
     )
     fun findAllAttemptedByMember(
