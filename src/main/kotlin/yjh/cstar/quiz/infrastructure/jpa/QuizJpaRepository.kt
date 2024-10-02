@@ -18,7 +18,7 @@ interface QuizJpaRepository : JpaRepository<QuizEntity, Long> {
         """,
         nativeQuery = true
     )
-    fun getQuizzes(
+    fun getRandomQuizzes(
         @Param("quizCategoryId") quizCategoryId: Long,
         @Param("totalQuestions") totalQuestions: Int,
     ): List<QuizEntity>

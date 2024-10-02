@@ -16,8 +16,8 @@ class QuizRepositoryAdapter(
         return quizJpaRepository.save(QuizEntity.from(quiz)).toModel()
     }
 
-    override fun getQuizzes(quizCategoryId: Long, totalQuestions: Int): List<Quiz> {
-        return quizJpaRepository.getQuizzes(quizCategoryId, totalQuestions)
+    override fun getRandomQuizzes(quizCategoryId: Long, totalQuestions: Int): List<Quiz> {
+        return quizJpaRepository.getRandomQuizzes(quizCategoryId, totalQuestions)
             .map { quizEntity -> quizEntity.toModel() }
     }
 

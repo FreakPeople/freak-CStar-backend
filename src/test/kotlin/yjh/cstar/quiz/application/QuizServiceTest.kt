@@ -115,7 +115,7 @@ class QuizServiceTest : IntegrationTest() {
         val totalQuestions = 2
 
         // when
-        val quizzes = quizService.getQuizzes(
+        val quizzes = quizService.getRandomQuizzes(
             quizCategoryId = categoryId,
             totalQuestions = totalQuestions
         )
@@ -132,7 +132,7 @@ class QuizServiceTest : IntegrationTest() {
 
         // when
         val exception = assertThrows<BaseException> {
-            quizService.getQuizzes(
+            quizService.getRandomQuizzes(
                 quizCategoryId = quizCategoryId,
                 totalQuestions = totalQuestions
             )
