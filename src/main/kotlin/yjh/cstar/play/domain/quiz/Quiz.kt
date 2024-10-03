@@ -10,5 +10,9 @@ class Quiz(
         fun of(id: Long, question: String, answer: String) = Quiz(id, question, answer)
     }
 
-    fun isSameAnswer(answer: String) = this.answer == answer
+    fun isSameAnswer(playerAnswer: String) = normalize(this.answer) == normalize(playerAnswer)
+
+    private fun normalize(str: String): String {
+        return str.replace("\\s".toRegex(), "").lowercase()
+    }
 }

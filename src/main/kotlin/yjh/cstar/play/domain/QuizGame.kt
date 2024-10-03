@@ -54,6 +54,7 @@ class QuizGame(
                 gameNotifier.notifyQuizQuestion(destination, quizNo, quiz)
 
                 val roundStartTime = getCurrentTime()
+                // TODO("while true 를 사용하지 않도록 수정할 것")
                 while (true) {
                     Logger.info("[INFO] 정답 대기중...")
 
