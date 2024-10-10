@@ -27,7 +27,7 @@ class QuizGame(
 ) : GameInitializable, GameRunnable, GameFinalizable {
 
     private val players = gameInfo.players
-    private val quizzes = gameInfo.roomQuizSet
+    private val roomQuizSet = gameInfo.roomQuizSet
     private val roomId = gameInfo.roomId
     private val categoryId = gameInfo.categoryId
     private val destination = "/topic/rooms/$roomId"
@@ -45,7 +45,7 @@ class QuizGame(
         gameNotifier.notifyGameStartComments(destination, gameInfo.roomId)
 
         try {
-            for ((index, quiz) in quizzes.getQuizList().withIndex()) {
+            for ((index, quiz) in roomQuizSet.getQuizList().withIndex()) {
                 val quizNo = index + 1
                 val quizId = quiz.id
 
@@ -99,7 +99,7 @@ class QuizGame(
 
     private fun recordGameResult(gameStartedAt: LocalDateTime) {
         val ranking = rankingHandler.getRanking(roomId)
-        saveGameResult(ranking, quizzes, gameStartedAt)
+        saveGameResult(ranking, roomQuizSet, gameStartedAt)
     }
 
     private fun saveGameResult(ranking: Ranking, roomQuizSet: RoomQuizSet, gameStartedAt: LocalDateTime) {
