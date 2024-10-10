@@ -1,9 +1,9 @@
 package yjh.cstar.play.domain.quiz
 
-class Quizzes(private val quizzes: List<Quiz>) {
+class RoomQuizSet(private val quizzes: List<Quiz>) {
 
     companion object {
-        fun of(quizzes: List<Quiz>) = Quizzes(quizzes)
+        fun of(quizzes: List<Quiz>) = RoomQuizSet(quizzes)
     }
 
     fun getQuizList() = quizzes

@@ -11,7 +11,7 @@ import yjh.cstar.play.domain.game.GameInfo
 import yjh.cstar.play.domain.game.GameInitializable
 import yjh.cstar.play.domain.game.GameRunnable
 import yjh.cstar.play.domain.player.Players
-import yjh.cstar.play.domain.quiz.Quizzes
+import yjh.cstar.play.domain.quiz.RoomQuizSet
 import yjh.cstar.play.domain.ranking.Ranking
 import yjh.cstar.room.application.RoomService
 import yjh.cstar.util.Logger
@@ -27,7 +27,7 @@ class QuizGame(
 ) : GameInitializable, GameRunnable, GameFinalizable {
 
     private val players = gameInfo.players
-    private val quizzes = gameInfo.quizzes
+    private val quizzes = gameInfo.roomQuizSet
     private val roomId = gameInfo.roomId
     private val categoryId = gameInfo.categoryId
     private val destination = "/topic/rooms/$roomId"
@@ -102,13 +102,13 @@ class QuizGame(
         saveGameResult(ranking, quizzes, gameStartedAt)
     }
 
-    private fun saveGameResult(ranking: Ranking, quizzes: Quizzes, gameStartedAt: LocalDateTime) {
+    private fun saveGameResult(ranking: Ranking, roomQuizSet: RoomQuizSet, gameStartedAt: LocalDateTime) {
         val winnerId = findWinner()
         val gameResultCreateCommand = GameResultCreateCommand(
             ranking.getRanking(),
             roomId,
             winnerId,
-            quizzes.getSize(),
+            roomQuizSet.getSize(),
             categoryId,
             gameStartedAt
         )

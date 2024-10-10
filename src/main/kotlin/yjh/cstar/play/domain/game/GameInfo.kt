@@ -2,11 +2,11 @@ package yjh.cstar.play.domain.game
 
 import yjh.cstar.play.domain.player.Players
 import yjh.cstar.play.domain.quiz.Quiz
-import yjh.cstar.play.domain.quiz.Quizzes
+import yjh.cstar.play.domain.quiz.RoomQuizSet
 
 class GameInfo(
     val players: Players,
-    val quizzes: Quizzes,
+    val roomQuizSet: RoomQuizSet,
     val roomId: Long,
     val categoryId: Long,
 ) {
@@ -20,7 +20,7 @@ class GameInfo(
         ): GameInfo {
             return GameInfo(
                 Players.of(players),
-                Quizzes.of(quizzes),
+                RoomQuizSet.of(quizzes),
                 roomId,
                 categoryId
             )
