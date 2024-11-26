@@ -7,7 +7,7 @@ interface RankingHandler {
 
     fun initRankingBoard(roomId: Long, players: Players)
 
-    fun assignScoreToPlayer(roomId: Long, playerId: Long)
+    fun assignScoreToRoundWinner(roomId: Long, roundWinner: Long)
 
     fun getWinner(roomId: Long): Long
 

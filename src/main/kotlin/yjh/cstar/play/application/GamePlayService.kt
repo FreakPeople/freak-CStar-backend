@@ -2,6 +2,7 @@ package yjh.cstar.play.application
 
 import org.springframework.stereotype.Service
 import yjh.cstar.game.application.GameResultService
+import yjh.cstar.play.domain.GameConfig
 import yjh.cstar.play.application.port.AnswerProvider
 import yjh.cstar.play.application.port.GameNotifier
 import yjh.cstar.play.application.port.RankingHandler
@@ -21,8 +22,21 @@ class GamePlayService(
 ) {
 
     fun play(players: Map<Long, String>, randomQuizzes: List<QuizDto>, roomId: Long, categoryId: Long) {
-        val gameInfo = GameInfo.of(players, randomQuizzes.map { it.toModel() }, roomId, categoryId)
-        val quizGame = QuizGame(gameInfo, answerProvider, gameNotifier, rankingHandler, gameResultService, roomService)
+        val gameInfo = GameInfo.of(
+            players = players,
+            quizzes = randomQuizzes.map { it.toModel() },
+            roomId = roomId,
+            categoryId = categoryId
+        )
+
+        val gameConfig = GameConfig(
+            answerProvider,
+            gameNotifier,
+            rankingHandler,
+            gameResultService,
+            roomService
+        )
+        val quizGame = QuizGame.of(gameInfo, gameConfig)
 
         quizGame.initialize()
         quizGame.run()

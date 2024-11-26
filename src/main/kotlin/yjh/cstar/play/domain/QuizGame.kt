@@ -33,7 +33,18 @@ class QuizGame(
     private val destination = "/topic/rooms/$roomId"
 
     companion object {
-        const val TIME_LIMIT_MILLIS = 10000 // TODO("사용자의 입력을 받도록 개선")
+        const val TIME_LIMIT_MILLIS = 10000
+
+        fun of(gameInfo: GameInfo, gameConfig: GameConfig): QuizGame {
+            return QuizGame(
+                gameInfo = gameInfo,
+                answerProvider = gameConfig.answerProvider,
+                gameNotifier = gameConfig.gameNotifier,
+                rankingHandler = gameConfig.rankingHandler,
+                gameResultService = gameConfig.gameResultService,
+                roomService = gameConfig.roomService
+            )
+        }
     }
 
     override fun initialize() {
@@ -54,7 +65,7 @@ class QuizGame(
                 gameNotifier.notifyQuizQuestion(destination, quizNo, quiz)
 
                 val roundStartTime = getCurrentTime()
-                // TODO("while true 를 사용하지 않도록 수정할 것")
+
                 while (true) {
                     Logger.info("[INFO] 정답 대기중...")
 
@@ -65,16 +76,14 @@ class QuizGame(
                         break
                     }
 
-                    /**
-                     * 1초 동안 플레이어 응답을 대기합니다.(Blocking)
-                     */
-                    val playerAnswer = answerProvider.receivePlayerAnswer(roomId, quizId)
+
+                    val playerAnswer = answerProvider.receivePlayerAnswer(roomId, quizId, awaitSecond = 1L)
                         ?: continue
 
                     if (playerAnswer.isCorrect(quiz)) {
                         val roundWinnerId = playerAnswer.playerId
 
-                        rankingHandler.assignScoreToPlayer(roomId, roundWinnerId)
+                        rankingHandler.assignScoreToRoundWinner(roomId, roundWinnerId)
                         notifyRanking()
 
                         notifyRoundResult(roundWinnerId)
