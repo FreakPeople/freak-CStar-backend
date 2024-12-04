@@ -17,11 +17,11 @@ class RoomQuizSet(
         return currQuizNo < quizzes.size
     }
 
-    fun getNextQuizInfo(): Pair<Int, Quiz> {
+    fun getNextQuizInfo(): QuizInfo {
         validateFinished()
 
         val currQuiz = quizzes[currQuizNo++]
-        return Pair(currQuizNo, currQuiz)
+        return QuizInfo(currQuizNo, currQuiz.id, currQuiz)
     }
 
     fun getQuizList(): List<Quiz> =

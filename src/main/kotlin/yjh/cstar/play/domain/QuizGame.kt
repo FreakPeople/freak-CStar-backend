@@ -1,5 +1,6 @@
 package yjh.cstar.play.domain
 
+import java.time.LocalDateTime
 import yjh.cstar.common.BaseException
 import yjh.cstar.game.application.GameResultService
 import yjh.cstar.game.domain.GameResultCreateCommand
@@ -19,7 +20,6 @@ import yjh.cstar.util.Logger
 import yjh.cstar.util.TimeUtil.Companion.getCurrentLocalDateTime
 import yjh.cstar.util.TimeUtil.Companion.getCurrentTime
 import yjh.cstar.util.TimeUtil.Companion.getDuration
-import java.time.LocalDateTime
 
 class QuizGame(
     private val gameInfo: GameInfo,
@@ -62,8 +62,8 @@ class QuizGame(
 
         try {
             runGameWhile({ roomQuizSet.isRunning() }) {
-                val (quizNo, quiz) = roomQuizSet.getNextQuizInfo()
-                val quizId: Long = quiz.id
+                val quizInfo = roomQuizSet.getNextQuizInfo()
+                val (quizNo, quizId, quiz) = quizInfo
 
                 submitQuizToPlayers(quizId, quizNo, quiz)
             }
