@@ -11,5 +11,5 @@ data class GameConfig(
     val gameNotifier: GameNotifier,
     val rankingHandler: RankingHandler,
     val gameResultService: GameResultService,
-    val roomService: RoomService
+    val roomService: RoomService,
 )

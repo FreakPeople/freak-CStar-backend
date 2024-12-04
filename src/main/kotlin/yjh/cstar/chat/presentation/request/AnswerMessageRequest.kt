@@ -9,7 +9,7 @@ data class AnswerMessageRequest(
 )
 
 fun AnswerMessageRequest.toPlayerAnswer(roomId: Long, playerId: Long): PlayerAnswer {
-    return  PlayerAnswer(
+    return PlayerAnswer(
         answer = answer,
         quizId = quizId,
         roomId = roomId,
