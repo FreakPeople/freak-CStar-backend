@@ -39,7 +39,6 @@ class Room(
 
     fun endGameAndResetRoom() {
         resetStatusIfInProgress()
-        currCapacity = 0
     }
 
     private fun resetStatusIfInProgress() {
