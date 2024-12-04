@@ -20,7 +20,7 @@ class WebsocketGameNotifier(
         broadCastService.sendMessage(
             destination,
             "guide",
-            "각 문제당 ${QuizGame.TIME_LIMIT_MILLIS / 1000}초의 제한시간이 주어집니다.",
+            "각 문제당 ${QuizGame.TIME_LIMIT_DURATION / 1000}초의 제한시간이 주어집니다.",
             null
         )
     }

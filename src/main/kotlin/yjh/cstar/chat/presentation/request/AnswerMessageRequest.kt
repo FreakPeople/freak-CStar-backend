@@ -8,10 +8,12 @@ data class AnswerMessageRequest(
     val nickname: String,
 )
 
-fun AnswerMessageRequest.toPlayerAnswer(roomId: Long, PlayerId: Long) = PlayerAnswer(
-    answer,
-    quizId,
-    roomId,
-    roomId,
-    nickname
-)
+fun AnswerMessageRequest.toPlayerAnswer(roomId: Long, playerId: Long): PlayerAnswer {
+    return  PlayerAnswer(
+        answer = answer,
+        quizId = quizId,
+        roomId = roomId,
+        playerId = playerId,
+        nickname = nickname
+    )
+}

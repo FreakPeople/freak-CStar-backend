@@ -9,7 +9,7 @@ interface RankingHandler {
 
     fun assignScoreToRoundWinner(roomId: Long, roundWinner: Long)
 
-    fun getWinner(roomId: Long): Long
+    fun getWinnerId(roomId: Long): Long
 
     fun getRanking(roomId: Long): Ranking
 }

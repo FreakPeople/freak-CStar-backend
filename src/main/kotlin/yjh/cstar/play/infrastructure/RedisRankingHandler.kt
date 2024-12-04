@@ -35,7 +35,7 @@ class RedisRankingHandler(
         redisUtil.zincrby(key, value, INCREASE_SCORE.toDouble())
     }
 
-    override fun getWinner(roomId: Long): Long {
+    override fun getWinnerId(roomId: Long): Long {
         val key = getKey(roomId)
         val rankings = redisUtil.zrevrange(key, 0, -1)
 

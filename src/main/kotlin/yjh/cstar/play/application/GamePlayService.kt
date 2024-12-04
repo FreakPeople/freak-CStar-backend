@@ -1,16 +1,18 @@
 package yjh.cstar.play.application
 
 import org.springframework.stereotype.Service
+import yjh.cstar.common.BaseException
 import yjh.cstar.game.application.GameResultService
-import yjh.cstar.play.domain.GameConfig
 import yjh.cstar.play.application.port.AnswerProvider
 import yjh.cstar.play.application.port.GameNotifier
 import yjh.cstar.play.application.port.RankingHandler
 import yjh.cstar.play.application.request.QuizDto
 import yjh.cstar.play.application.request.toModel
+import yjh.cstar.play.domain.GameConfig
 import yjh.cstar.play.domain.QuizGame
 import yjh.cstar.play.domain.game.GameInfo
 import yjh.cstar.room.application.RoomService
+import yjh.cstar.util.Logger
 
 @Service
 class GamePlayService(
@@ -22,24 +24,32 @@ class GamePlayService(
 ) {
 
     fun play(players: Map<Long, String>, randomQuizzes: List<QuizDto>, roomId: Long, categoryId: Long) {
-        val gameInfo = GameInfo.of(
-            players = players,
-            quizzes = randomQuizzes.map { it.toModel() },
-            roomId = roomId,
-            categoryId = categoryId
-        )
+        try {
+            val gameInfo = GameInfo.of(
+                players = players,
+                quizzes = randomQuizzes.map { it.toModel() },
+                roomId = roomId,
+                categoryId = categoryId
+            )
 
-        val gameConfig = GameConfig(
-            answerProvider,
-            gameNotifier,
-            rankingHandler,
-            gameResultService,
-            roomService
-        )
-        val quizGame = QuizGame.of(gameInfo, gameConfig)
+            val gameConfig = GameConfig(
+                answerProvider,
+                gameNotifier,
+                rankingHandler,
+                gameResultService,
+                roomService
+            )
+            val quizGame = QuizGame.of(gameInfo, gameConfig)
 
-        quizGame.initialize()
-        quizGame.run()
-        quizGame.finishGame()
+            quizGame.initialize()
+            quizGame.run()
+            quizGame.finishGame()
+        } catch (e: BaseException) {
+            Logger.error(e.toString())
+            roomService.endGameAndResetRoom(roomId)
+        } catch (e: Exception) {
+            Logger.error(e.toString())
+            roomService.endGameAndResetRoom(roomId)
+        }
     }
 }
