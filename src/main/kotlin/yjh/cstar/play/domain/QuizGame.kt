@@ -1,6 +1,5 @@
 package yjh.cstar.play.domain
 
-import java.time.LocalDateTime
 import yjh.cstar.common.BaseException
 import yjh.cstar.game.application.GameResultService
 import yjh.cstar.game.domain.GameResultCreateCommand
@@ -20,6 +19,7 @@ import yjh.cstar.util.Logger
 import yjh.cstar.util.TimeUtil.Companion.getCurrentLocalDateTime
 import yjh.cstar.util.TimeUtil.Companion.getCurrentTime
 import yjh.cstar.util.TimeUtil.Companion.getDuration
+import java.time.LocalDateTime
 
 class QuizGame(
     private val gameInfo: GameInfo,
