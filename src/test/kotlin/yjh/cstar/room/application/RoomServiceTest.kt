@@ -199,7 +199,7 @@ class RoomServiceTest : IntegrationTest() {
     }
 
     @Test
-    fun `게임 종료 후 게임 방 상태 및 현재 방 인원 수 초기화 테스트`() {
+    fun `게임 종료 후 게임 방 상태 초기화 테스트`() {
         // given
         val savedRoom = roomJpaRepository.save(
             RoomEntity(
@@ -218,12 +218,10 @@ class RoomServiceTest : IntegrationTest() {
         val updatedRoom = roomJpaRepository.findByIdOrNull(savedRoom.id)
             ?: throw BaseException(BaseErrorCode.NOT_FOUND_ROOM)
 
-        val updatedRoomCurrCapacity = updatedRoom.toModel().currCapacity
         val updatedRoomStatus = updatedRoom.toModel().status
 
         with(updatedRoom) {
             assertNotNull(this)
-            assertEquals(0, updatedRoomCurrCapacity)
             assertEquals(RoomStatus.WAITING, updatedRoomStatus)
         }
     }

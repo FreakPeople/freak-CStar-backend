@@ -4,7 +4,7 @@ import yjh.cstar.play.domain.player.PlayerAnswer
 
 interface AnswerProvider {
 
-    fun receivePlayerAnswer(roomId: Long, quizId: Long): PlayerAnswer?
+    fun receivePlayerAnswer(roomId: Long, quizId: Long, awaitSecond: Long): PlayerAnswer?
 
     fun initializePlayerAnswerToReceive(roomId: Long, quizId: Long)
 }

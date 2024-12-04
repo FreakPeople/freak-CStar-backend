@@ -29,13 +29,13 @@ class RedisRankingHandler(
         }
     }
 
-    override fun assignScoreToPlayer(roomId: Long, playerId: Long) {
+    override fun assignScoreToRoundWinner(roomId: Long, roundWinner: Long) {
         val key = getKey(roomId)
-        val value = getValue(playerId)
+        val value = getValue(roundWinner)
         redisUtil.zincrby(key, value, INCREASE_SCORE.toDouble())
     }
 
-    override fun getWinner(roomId: Long): Long {
+    override fun getWinnerId(roomId: Long): Long {
         val key = getKey(roomId)
         val rankings = redisUtil.zrevrange(key, 0, -1)
 

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import kotlin.test.assertEquals
 
 @DisplayName("[Domain 테스트] Quizzes")
-class QuizzesTest {
+class RoomQuizSetTest {
 
     @Test
     fun `퀴즈목록 생성 테스트`() {
@@ -18,7 +18,7 @@ class QuizzesTest {
         )
 
         // when & then
-        assertDoesNotThrow { Quizzes.of(quizList) }
+        assertDoesNotThrow { RoomQuizSet.of(quizList) }
     }
 
     @Test
@@ -29,10 +29,10 @@ class QuizzesTest {
             Quiz(2L, "question2", "answer2"),
             Quiz(3L, "question3", "answer3")
         )
-        val quizzes = Quizzes.of(quizList)
+        val roomQuizSet = RoomQuizSet.of(quizList)
 
         // when
-        val result = quizzes.getQuizList()
+        val result = roomQuizSet.getQuizList()
 
         // then
         assertEquals(3, result.size)
@@ -46,10 +46,10 @@ class QuizzesTest {
             Quiz(2L, "question2", "answer2"),
             Quiz(3L, "question3", "answer3")
         )
-        val quizzes = Quizzes.of(quizList)
+        val roomQuizSet = RoomQuizSet.of(quizList)
 
         // when
-        val size = quizzes.getSize()
+        val size = roomQuizSet.getSize()
 
         // then
         assertEquals(3, size)

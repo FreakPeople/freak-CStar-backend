@@ -13,9 +13,9 @@ class RedisQueueAnswerProvider(
     private val objectMapper: ObjectMapper,
 ) : AnswerProvider {
 
-    override fun receivePlayerAnswer(roomId: Long, quizId: Long): PlayerAnswer? {
+    override fun receivePlayerAnswer(roomId: Long, quizId: Long, awaitSecond: Long): PlayerAnswer? {
         val key = generateKey(roomId, quizId)
-        return redisUtil.lpop(key, 1)?.let {
+        return redisUtil.lpop(key, awaitSecond)?.let {
             objectMapper.readValue(it, PlayerAnswerEntity::class.java).toModel()
         }
     }
