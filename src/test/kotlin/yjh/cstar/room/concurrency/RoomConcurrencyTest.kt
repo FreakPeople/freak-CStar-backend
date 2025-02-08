@@ -10,6 +10,7 @@ import yjh.cstar.member.infrastructure.jpa.MemberEntity
 import yjh.cstar.member.infrastructure.jpa.MemberJpaRepository
 import yjh.cstar.room.domain.RoomStatus
 import yjh.cstar.room.infrastructure.jpa.RoomEntity
+import yjh.cstar.room.infrastructure.jpa.RoomJoinJpaRepository
 import yjh.cstar.room.infrastructure.jpa.RoomJpaRepository
 import yjh.cstar.room.presentation.RoomController
 import yjh.cstar.util.Logger
@@ -32,6 +33,9 @@ class RoomConcurrencyTest {
     private lateinit var roomJpaRepository: RoomJpaRepository
 
     @Autowired
+    private lateinit var roomJoinJpaRepository: RoomJoinJpaRepository
+
+    @Autowired
     private lateinit var memberJpaRepository: MemberJpaRepository
 
     @Autowired
@@ -40,12 +44,14 @@ class RoomConcurrencyTest {
     @BeforeTest
     fun clearBefore() {
         roomJpaRepository.deleteAll()
+        roomJoinJpaRepository.deleteAll()
         memberJpaRepository.deleteAll()
     }
 
     @AfterTest
     fun clearAfter() {
         roomJpaRepository.deleteAll()
+        roomJoinJpaRepository.deleteAll()
         memberJpaRepository.deleteAll()
     }
 
