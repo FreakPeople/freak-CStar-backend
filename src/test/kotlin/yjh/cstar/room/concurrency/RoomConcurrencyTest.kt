@@ -19,6 +19,7 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import yjh.cstar.room.infrastructure.jpa.RoomJoinJpaRepository
 
 @DisplayName("[동시성 테스트] RoomConcurrency")
 @ActiveProfiles("local-test")
@@ -32,6 +33,9 @@ class RoomConcurrencyTest {
     private lateinit var roomJpaRepository: RoomJpaRepository
 
     @Autowired
+    private lateinit var roomJoinJpaRepository: RoomJoinJpaRepository
+
+    @Autowired
     private lateinit var memberJpaRepository: MemberJpaRepository
 
     @Autowired
@@ -40,12 +44,14 @@ class RoomConcurrencyTest {
     @BeforeTest
     fun clearBefore() {
         roomJpaRepository.deleteAll()
+        roomJoinJpaRepository.deleteAll()
         memberJpaRepository.deleteAll()
     }
 
     @AfterTest
     fun clearAfter() {
         roomJpaRepository.deleteAll()
+        roomJoinJpaRepository.deleteAll()
         memberJpaRepository.deleteAll()
     }
 
