@@ -3,6 +3,7 @@ package yjh.cstar.room.application
 import org.junit.jupiter.api.DisplayName
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
+import org.springframework.transaction.annotation.Transactional
 import yjh.cstar.IntegrationTest
 import yjh.cstar.common.BaseErrorCode
 import yjh.cstar.common.BaseException
@@ -21,6 +22,7 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
+@Transactional
 @DisplayName("[Application 테스트] RoomService")
 class RoomServiceTest : IntegrationTest() {
 

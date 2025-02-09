@@ -3,8 +3,7 @@ package yjh.cstar.room.concurrency
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.ActiveProfiles
+import yjh.cstar.IntegrationTest
 import yjh.cstar.auth.jwt.TokenProvider
 import yjh.cstar.member.infrastructure.jpa.MemberEntity
 import yjh.cstar.member.infrastructure.jpa.MemberJpaRepository
@@ -22,9 +21,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 @DisplayName("[동시성 테스트] RoomConcurrency")
-@ActiveProfiles("local-test")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class RoomConcurrencyTest {
+class RoomConcurrencyTest : IntegrationTest() {
 
     @Autowired
     private lateinit var roomController: RoomController
