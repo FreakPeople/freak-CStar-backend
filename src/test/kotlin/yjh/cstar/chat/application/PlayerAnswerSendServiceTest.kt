@@ -1,19 +1,13 @@
 package yjh.cstar.chat.application
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.redis.core.RedisTemplate
-import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.DynamicPropertyRegistry
-import org.springframework.test.context.DynamicPropertySource
-import org.testcontainers.containers.GenericContainer
-import org.testcontainers.utility.DockerImageName
+import org.springframework.transaction.annotation.Transactional
+import yjh.cstar.IntegrationTest
 import yjh.cstar.chat.domain.PlayerAnswer
 import yjh.cstar.chat.infrastructure.RedisAnswerMessageBroker
 import yjh.cstar.util.RedisUtil
@@ -21,10 +15,9 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 
-@ActiveProfiles("local-test")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Transactional
 @DisplayName("[Application 테스트] PlayerAnswerSendService")
-class PlayerAnswerSendServiceTest {
+class PlayerAnswerSendServiceTest : IntegrationTest() {
 
     @Autowired
     private lateinit var redisUtil: RedisUtil
@@ -42,29 +35,6 @@ class PlayerAnswerSendServiceTest {
         private const val ROOM_ID = 1L
         private const val QUIZ_ID = 1L
         private val KEY = RedisAnswerMessageBroker.getKey(ROOM_ID, QUIZ_ID)
-
-        private val redis: GenericContainer<*> = GenericContainer(DockerImageName.parse("redis:latest"))
-            .withExposedPorts(6379)
-            .withReuse(true)
-
-        @JvmStatic
-        @DynamicPropertySource
-        fun properties(registry: DynamicPropertyRegistry) {
-            registry.add("spring.data.redis.host", redis::getHost)
-            registry.add("spring.data.redis.port", redis::getFirstMappedPort)
-        }
-
-        @BeforeAll
-        @JvmStatic
-        fun beforeAll() {
-            redis.start()
-        }
-
-        @AfterAll
-        @JvmStatic
-        fun afterAll() {
-            redis.stop()
-        }
     }
 
     @BeforeTest

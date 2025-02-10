@@ -3,8 +3,7 @@ package yjh.cstar.member.concurrency
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.ActiveProfiles
+import yjh.cstar.IntegrationTest
 import yjh.cstar.member.application.MemberService
 import yjh.cstar.member.domain.MemberCreateCommand
 import yjh.cstar.member.infrastructure.jpa.MemberJpaRepository
@@ -20,9 +19,7 @@ import kotlin.test.assertEquals
  * @Transactional 를 사용하지 않아야 함(사용하면 올바르게 동작하지 않음)
  */
 @DisplayName("[동시성 테스트] MemberService")
-@ActiveProfiles("local-test")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class MemberConcurrencyTest {
+class MemberConcurrencyTest : IntegrationTest() {
 
     @Autowired
     private lateinit var memberService: MemberService

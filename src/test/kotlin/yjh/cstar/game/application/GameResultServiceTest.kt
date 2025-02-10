@@ -3,6 +3,7 @@ package yjh.cstar.game.application
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.transaction.annotation.Transactional
 import yjh.cstar.IntegrationTest
 import yjh.cstar.game.domain.GameResultCreateCommand
 import yjh.cstar.game.infrastructure.jpa.GameJpaRepository
@@ -13,6 +14,7 @@ import yjh.cstar.room.infrastructure.jpa.RoomJpaRepository
 import java.time.LocalDateTime
 import kotlin.test.assertEquals
 
+@Transactional
 @DisplayName("[Application 테스트] GameResultService")
 class GameResultServiceTest : IntegrationTest() {
 

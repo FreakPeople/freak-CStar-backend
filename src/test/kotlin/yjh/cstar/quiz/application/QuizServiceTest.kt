@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
+import org.springframework.transaction.annotation.Transactional
 import yjh.cstar.IntegrationTest
 import yjh.cstar.category.domain.CategoryType
 import yjh.cstar.category.infrastructure.jpa.CategoryEntity
@@ -28,6 +29,7 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
+@Transactional
 @DisplayName("[Application 테스트] QuizService")
 class QuizServiceTest : IntegrationTest() {
 

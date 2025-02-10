@@ -1,11 +1,10 @@
 spring:
   datasource:
-    url: jdbc:tc:mysql:8.0.35:///?useSSL=false&serverTimezone=Asia/Seoul
-    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # datasource 정보는 ApplicationContext 로드시 동적으로 주입
   data:
     redis:
-      host: test_container # 임의의 호스트명
-      port: 9999 # 임의의 포트번호
+      # redis 정보는 ApplicationContext 로드시 동적으로 주입
   jpa:
     hibernate:
       ddl-auto: none
