@@ -1,0 +1,39 @@
+server:
+  port: 8081
+spring:
+  config:
+    activate:
+      on-profile: local
+  application:
+    name: cstar_engine
+  datasource:
+    url: jdbc:mysql://localhost:3306/cstar_db
+    username: local_user
+    password: local_password
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  flyway:
+    enabled: true
+    url: jdbc:mysql://localhost:3306/cstar_db
+    user: local_user
+    password: local_password
+    baseline-on-migrate: true
+    locations: classpath:/db
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+cors:
+  src: http://localhost:3000
+
+game:
+  play:
+    threads:
+      max: 300
+      core: 200
