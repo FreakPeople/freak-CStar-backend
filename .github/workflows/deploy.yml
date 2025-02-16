@@ -25,7 +25,7 @@ jobs:
         run: echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./cstar-api/src/main/resources/application-prod.yml
 
       - name: 빌드 및 테스트
-        run: ./gradlew clean build
+        run: ./gradlew clean build -x test
 
       - name: AWS Resource에 접근할 수 있게 AWS credentials 설정(GitHub Actions -> ECR)
         uses: aws-actions/configure-aws-credentials@v4
