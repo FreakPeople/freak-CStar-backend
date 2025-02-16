@@ -39,13 +39,13 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Docker 이미지 생성
-        run: docker build -t cstar-backend-server -f ./docker/app/Dockerfile .
+        run: docker build -t cstar-backend-api-server -f ./cstar-api/docker/Dockerfile .
 
       - name: Docker 이미지에 Tag 붙이기(이미지 이름은 ECR 레포지토리 주소랑 일치해야함)
-        run: docker tag cstar-backend-server ${{ steps.login-ecr.outputs.registry }}/cstar-backend-server:latest
+        run: docker tag cstar-backend-api-server ${{ steps.login-ecr.outputs.registry }}/cstar-backend-api-server:latest
 
       - name: ECR에 Docker 이미지 Push하기
-        run: docker push ${{ steps.login-ecr.outputs.registry }}/cstar-backend-server:latest
+        run: docker push ${{ steps.login-ecr.outputs.registry }}/cstar-backend-api-server:latest
 
       - name: SSH로 EC2에 접속하기
         uses: appleboy/ssh-action@v1.0.3
@@ -55,8 +55,9 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script_stop: true
           script: |
-            docker stop cstar-backend-container || true
-            docker rm cstar-backend-container || true
-            docker rmi ${{ steps.login-ecr.outputs.registry }}/cstar-backend-server:latest || true
-            docker pull ${{ steps.login-ecr.outputs.registry }}/cstar-backend-server:latest
-            docker run -d --name cstar-backend-container -p 80:8080 ${{ steps.login-ecr.outputs.registry }}/cstar-backend-server:latest
+            docker stop cstar-backend-api-container || true
+            docker rm cstar-backend-api-container || true
+            docker rmi ${{ steps.login-ecr.outputs.registry }}/cstar-backend-api-server:latest || true
+            docker pull ${{ steps.login-ecr.outputs.registry }}/cstar-backend-api-server:latest
+            docker run -d --name cstar-backend-api-container -p 80:8080 ${{ steps.login-ecr.outputs.registry
+            }}/cstar-backend-api-server:latest
