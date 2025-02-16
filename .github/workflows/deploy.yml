@@ -22,7 +22,7 @@ jobs:
           distribution: temurin
 
       - name: application-prod.yml 만들기
-        run: echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./src/main/resources/application-prod.yml
+        run: echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./cstar-api/src/main/resources/application-prod.yml
 
       - name: 빌드 및 테스트
         run: ./gradlew clean build
