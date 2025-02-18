@@ -3,6 +3,10 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 dependencies {
     implementation(project(":cstar-common"))
 
+    // flyway
+    implementation("org.flywaydb:flyway-core")
+    implementation("org.flywaydb:flyway-mysql")
+
     // JPA
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
