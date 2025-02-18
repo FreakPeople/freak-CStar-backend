@@ -6,8 +6,8 @@ class Game(
     val id: Long = 0,
     val roomId: Long,
     val winnerId: Long,
+    val gameType: GameType,
     var totalQuizCount: Int,
-    val categoryId: Long,
     var startedAt: LocalDateTime,
     var createdAt: LocalDateTime? = null,
     var updatedAt: LocalDateTime? = null,
@@ -19,8 +19,8 @@ class Game(
             return Game(
                 roomId = command.roomId,
                 winnerId = command.winningPlayerId,
+                gameType = command.gameType,
                 totalQuizCount = command.totalQuizSize,
-                categoryId = command.categoryId,
                 startedAt = command.gameStartedAt
             )
         }
