@@ -25,13 +25,16 @@ class RoomEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private val id: Long = 0,
 
+    @Column(name = "owner_id", nullable = false)
+    private val ownerId: Long,
+
     @Column(name = "max_capacity", nullable = false)
     private val maxCapacity: Int,
 
     @Column(name = "curr_capacity", nullable = false)
     private val currCapacity: Int,
 
-    @Column(name = "status", nullable = false)
+    @Column(name = "room_status", nullable = false)
     @Enumerated(EnumType.STRING)
     private val status: RoomStatus,
 
@@ -50,6 +53,7 @@ class RoomEntity(
         fun from(room: Room): RoomEntity {
             return RoomEntity(
                 id = room.id,
+                ownerId = room.ownerId,
                 maxCapacity = room.maxCapacity,
                 currCapacity = room.currCapacity,
                 status = room.status,
@@ -63,6 +67,7 @@ class RoomEntity(
     fun toModel(): Room {
         return Room(
             id = this.id,
+            ownerId = this.ownerId,
             maxCapacity = this.maxCapacity,
             currCapacity = this.currCapacity,
             status = this.status,

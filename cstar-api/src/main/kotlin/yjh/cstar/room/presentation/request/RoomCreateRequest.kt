@@ -4,8 +4,10 @@ import yjh.cstar.room.domain.RoomCreateCommand
 
 data class RoomCreateRequest(
     val maxCapacity: Int,
+    val ownerId: Long,
 )
 
 fun RoomCreateRequest.toCommand() = RoomCreateCommand(
-    maxCapacity = maxCapacity
+    maxCapacity = maxCapacity,
+    ownerId = ownerId
 )
