@@ -6,6 +6,7 @@ import java.time.LocalDateTime
 
 class Room(
     val id: Long = 0,
+    val ownerId: Long,
     val maxCapacity: Int,
     var currCapacity: Int = 0,
     var status: RoomStatus = RoomStatus.WAITING,
@@ -16,6 +17,7 @@ class Room(
     companion object {
         fun create(command: RoomCreateCommand): Room {
             return Room(
+                ownerId = command.ownerId,
                 maxCapacity = command.maxCapacity
             )
         }

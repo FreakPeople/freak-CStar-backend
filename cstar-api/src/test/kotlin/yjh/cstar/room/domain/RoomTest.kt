@@ -19,6 +19,7 @@ class RoomTest {
 
         invalidCurrCapacity.forEach { invalidCurrCapacity ->
             val room = Room(
+                ownerId = 1L,
                 maxCapacity = 5,
                 currCapacity = invalidCurrCapacity,
                 status = RoomStatus.WAITING
@@ -38,6 +39,7 @@ class RoomTest {
     fun `게임 방 인원 수 감소 테스트`() {
         // given
         val room = Room(
+            ownerId = 1L,
             maxCapacity = 5,
             currCapacity = 3,
             status = RoomStatus.WAITING
@@ -53,7 +55,7 @@ class RoomTest {
     @Test
     fun `게임 방 생성 테스트`() {
         // given
-        val roomCreateCommand = RoomCreateCommand(maxCapacity = 5)
+        val roomCreateCommand = RoomCreateCommand(maxCapacity = 5, ownerId = 1L)
 
         // when
         val room = assertDoesNotThrow { Room.create(roomCreateCommand) }
@@ -69,6 +71,7 @@ class RoomTest {
     fun `게임 방 참가 성공 테스트`() {
         // given
         val room = Room(
+            ownerId = 1L,
             maxCapacity = 5,
             currCapacity = 3,
             status = RoomStatus.WAITING
@@ -85,6 +88,7 @@ class RoomTest {
     fun `게임 방 참가 실패 테스트 - 인원 초과 `() {
         // given
         val room = Room(
+            ownerId = 1L,
             maxCapacity = 5,
             currCapacity = 5,
             status = RoomStatus.WAITING
@@ -101,6 +105,7 @@ class RoomTest {
     fun `게임 방 참가 실패 테스트 - 대기상태 아님 `() {
         // given
         val room = Room(
+            ownerId = 1L,
             maxCapacity = 5,
             currCapacity = 3,
             status = RoomStatus.IN_PROGRESS

@@ -15,7 +15,6 @@ import yjh.cstar.room.infrastructure.jpa.RoomEntity
 import yjh.cstar.room.infrastructure.jpa.RoomJoinEntity
 import yjh.cstar.room.infrastructure.jpa.RoomJoinJpaRepository
 import yjh.cstar.room.infrastructure.jpa.RoomJpaRepository
-import java.time.LocalDateTime
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -43,6 +42,7 @@ class RoomServiceTest : IntegrationTest() {
         // given
         roomJpaRepository.save(
             RoomEntity(
+                ownerId = 1L,
                 maxCapacity = 5,
                 currCapacity = 3,
                 status = RoomStatus.WAITING,
@@ -52,6 +52,7 @@ class RoomServiceTest : IntegrationTest() {
         ).toModel()
         roomJpaRepository.save(
             RoomEntity(
+                ownerId = 2L,
                 maxCapacity = 5,
                 currCapacity = 3,
                 status = RoomStatus.WAITING,
@@ -61,6 +62,7 @@ class RoomServiceTest : IntegrationTest() {
         ).toModel()
         roomJpaRepository.save(
             RoomEntity(
+                ownerId = 3L,
                 maxCapacity = 5,
                 currCapacity = 3,
                 status = RoomStatus.WAITING,
@@ -70,6 +72,7 @@ class RoomServiceTest : IntegrationTest() {
         ).toModel()
         roomJpaRepository.save(
             RoomEntity(
+                ownerId = 1L,
                 maxCapacity = 5,
                 currCapacity = 3,
                 status = RoomStatus.WAITING,
@@ -90,7 +93,7 @@ class RoomServiceTest : IntegrationTest() {
     @Test
     fun `게임 방 생성 테스트`() {
         // given
-        val command = RoomCreateCommand(maxCapacity = 5)
+        val command = RoomCreateCommand(maxCapacity = 5, ownerId = 1L)
 
         // when
         val roomId = roomService.create(command)
@@ -113,6 +116,7 @@ class RoomServiceTest : IntegrationTest() {
         // given
         val roomId = roomJpaRepository.save(
             RoomEntity(
+                ownerId = 1L,
                 maxCapacity = 5,
                 currCapacity = 3,
                 status = RoomStatus.WAITING,
@@ -145,7 +149,6 @@ class RoomServiceTest : IntegrationTest() {
         assertEquals(1, roomJoins.size)
         assertEquals(roomId, roomJoins[0].roomId)
         assertEquals(memberId, roomJoins[0].playerId)
-        assertNotNull(roomJoins[0].joinedAt)
     }
 
     @Test
@@ -153,6 +156,7 @@ class RoomServiceTest : IntegrationTest() {
         // given
         val roomId = roomJpaRepository.save(
             RoomEntity(
+                ownerId = 1L,
                 maxCapacity = 5,
                 currCapacity = 3,
                 status = RoomStatus.WAITING,
@@ -164,29 +168,25 @@ class RoomServiceTest : IntegrationTest() {
         roomJoinJpaRepository.save(
             RoomJoinEntity(
                 roomId = roomId,
-                playerId = 1L,
-                joinedAt = LocalDateTime.now()
+                playerId = 1L
             )
         )
         roomJoinJpaRepository.save(
             RoomJoinEntity(
                 roomId = roomId,
-                playerId = 2L,
-                joinedAt = LocalDateTime.now().minusDays(2L)
+                playerId = 2L
             )
         )
         roomJoinJpaRepository.save(
             RoomJoinEntity(
                 roomId = roomId,
-                playerId = 3L,
-                joinedAt = LocalDateTime.now().minusDays(1L)
+                playerId = 3L
             )
         )
         roomJoinJpaRepository.save(
             RoomJoinEntity(
                 roomId = roomId,
-                playerId = 4L,
-                joinedAt = LocalDateTime.now().minusDays(10L)
+                playerId = 4L
             )
         )
 
@@ -196,8 +196,8 @@ class RoomServiceTest : IntegrationTest() {
         // then
         assertEquals(3, participants.size)
         assertEquals(1L, participants[0])
-        assertEquals(3L, participants[1])
-        assertEquals(2L, participants[2])
+        assertEquals(2L, participants[1])
+        assertEquals(3L, participants[2])
     }
 
     @Test
@@ -205,6 +205,7 @@ class RoomServiceTest : IntegrationTest() {
         // given
         val savedRoom = roomJpaRepository.save(
             RoomEntity(
+                ownerId = 1L,
                 maxCapacity = 5,
                 currCapacity = 3,
                 status = RoomStatus.IN_PROGRESS,

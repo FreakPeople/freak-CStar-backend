@@ -22,7 +22,13 @@ class QuizEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private val id: Long = 0,
 
-    @Column(name = "member_id", nullable = false)
+    @Column(name = "quiz_category_id", nullable = false)
+    private val categoryId: Long,
+
+    @Column(name = "workbook_id", nullable = false)
+    private val workbookId: Long,
+
+    @Column(name = "writer_id", nullable = false)
     private val writerId: Long,
 
     @Column(name = "question", nullable = false)
@@ -30,9 +36,6 @@ class QuizEntity(
 
     @Column(name = "answer", nullable = false)
     val answer: String,
-
-    @Column(name = "category_id", nullable = false)
-    private val categoryId: Long,
 
     @CreatedDate
     @Column(name = "created_at", nullable = false)
@@ -50,6 +53,7 @@ class QuizEntity(
             return QuizEntity(
                 id = quiz.id,
                 writerId = quiz.writerId,
+                workbookId = quiz.workbookId,
                 question = quiz.question,
                 answer = quiz.answer,
                 categoryId = quiz.categoryId,
@@ -64,6 +68,7 @@ class QuizEntity(
         return Quiz(
             id = this.id,
             writerId = this.writerId,
+            workbookId = this.workbookId,
             question = this.question,
             answer = this.answer,
             categoryId = this.categoryId,

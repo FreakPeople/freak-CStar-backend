@@ -13,14 +13,14 @@ import yjh.cstar.category.domain.CategoryType
 import yjh.cstar.category.infrastructure.jpa.CategoryEntity
 import yjh.cstar.category.infrastructure.jpa.CategoryJpaRepository
 import yjh.cstar.common.exception.BaseException
+import yjh.cstar.game.domain.GameType
 import yjh.cstar.game.infrastructure.jpa.GameEntity
 import yjh.cstar.game.infrastructure.jpa.GameJpaRepository
+import yjh.cstar.game.infrastructure.jpa.GameQuizEntity
+import yjh.cstar.game.infrastructure.jpa.GameQuizJpaRepository
 import yjh.cstar.game.infrastructure.jpa.GameResultEntity
 import yjh.cstar.game.infrastructure.jpa.GameResultJpaRepository
 import yjh.cstar.quiz.domain.QuizCreateCommand
-import yjh.cstar.quiz.infrastructure.jpa.GameQuizEntity
-import yjh.cstar.quiz.infrastructure.jpa.GameQuizId
-import yjh.cstar.quiz.infrastructure.jpa.GameQuizJpaRepository
 import yjh.cstar.quiz.infrastructure.jpa.QuizEntity
 import yjh.cstar.quiz.infrastructure.jpa.QuizJpaRepository
 import java.time.LocalDateTime
@@ -57,7 +57,8 @@ class QuizServiceTest : IntegrationTest() {
         val command = QuizCreateCommand(
             question = "question",
             answer = "answer",
-            categoryId = 2L
+            categoryId = 2L,
+            workbookId = 1L
         )
         val writerId = 1L
 
@@ -80,12 +81,18 @@ class QuizServiceTest : IntegrationTest() {
     @Test
     fun `퀴즈 문제 조회 테스트`() {
         // given
-        val categoryId = categoryJpaRepository.save(CategoryEntity(category = CategoryType.NETWORK))
-            .toModel().id
+        val categoryId = categoryJpaRepository.save(
+            CategoryEntity(
+                category = CategoryType.NETWORK,
+                createdAt = null,
+                updatedAt = null
+            )
+        ).toModel().id
 
         quizJpaRepository.save(
             QuizEntity(
                 writerId = 1L,
+                workbookId = 1L,
                 question = "문제1",
                 answer = "정답1",
                 categoryId = categoryId,
@@ -96,6 +103,7 @@ class QuizServiceTest : IntegrationTest() {
         quizJpaRepository.save(
             QuizEntity(
                 writerId = 1L,
+                workbookId = 2L,
                 question = "문제2",
                 answer = "정답2",
                 categoryId = categoryId,
@@ -106,6 +114,7 @@ class QuizServiceTest : IntegrationTest() {
         quizJpaRepository.save(
             QuizEntity(
                 writerId = 1L,
+                workbookId = 3L,
                 question = "문제3",
                 answer = "정답3",
                 categoryId = categoryId,
@@ -147,12 +156,18 @@ class QuizServiceTest : IntegrationTest() {
     @Test
     fun `퀴즈 카테고리별로 퀴즈를 조회하는 테스트`() {
         // given
-        val categoryId = categoryJpaRepository.save(CategoryEntity(category = CategoryType.NETWORK))
-            .toModel().id
+        val categoryId = categoryJpaRepository.save(
+            CategoryEntity(
+                category = CategoryType.NETWORK,
+                createdAt = null,
+                updatedAt = null
+            )
+        ).toModel().id
 
         quizJpaRepository.save(
             QuizEntity(
                 writerId = 1L,
+                workbookId = 1L,
                 question = "문제1",
                 answer = "정답1",
                 categoryId = categoryId,
@@ -163,6 +178,7 @@ class QuizServiceTest : IntegrationTest() {
         quizJpaRepository.save(
             QuizEntity(
                 writerId = 2L,
+                workbookId = 2L,
                 question = "문제2",
                 answer = "정답2",
                 categoryId = categoryId,
@@ -173,6 +189,7 @@ class QuizServiceTest : IntegrationTest() {
         quizJpaRepository.save(
             QuizEntity(
                 writerId = 1L,
+                workbookId = 3L,
                 question = "문제3",
                 answer = "정답3",
                 categoryId = categoryId,
@@ -183,6 +200,7 @@ class QuizServiceTest : IntegrationTest() {
         quizJpaRepository.save(
             QuizEntity(
                 writerId = 1L,
+                workbookId = 4L,
                 question = "문제4",
                 answer = "정답4",
                 categoryId = 99999L,
@@ -227,6 +245,7 @@ class QuizServiceTest : IntegrationTest() {
         quizJpaRepository.save(
             QuizEntity(
                 writerId = 1L,
+                workbookId = 1L,
                 question = "문제11",
                 answer = "정답11",
                 categoryId = 3L,
@@ -237,6 +256,7 @@ class QuizServiceTest : IntegrationTest() {
         quizJpaRepository.save(
             QuizEntity(
                 writerId = 1L,
+                workbookId = 2L,
                 question = "문제22",
                 answer = "정답22",
                 categoryId = 3L,
@@ -247,6 +267,7 @@ class QuizServiceTest : IntegrationTest() {
         quizJpaRepository.save(
             QuizEntity(
                 writerId = 2L,
+                workbookId = 3L,
                 question = "문제33",
                 answer = "정답33",
                 categoryId = 5L,
@@ -275,6 +296,7 @@ class QuizServiceTest : IntegrationTest() {
         quizJpaRepository.save(
             QuizEntity(
                 writerId = 2L,
+                workbookId = 1L,
                 question = "문제33",
                 answer = "정답33",
                 categoryId = 5L,
@@ -307,6 +329,7 @@ class QuizServiceTest : IntegrationTest() {
             QuizEntity(
                 id = 1L,
                 writerId = 1L,
+                workbookId = 1L,
                 question = "문제111",
                 answer = "정답111",
                 categoryId = 5L,
@@ -319,6 +342,7 @@ class QuizServiceTest : IntegrationTest() {
             QuizEntity(
                 id = 2L,
                 writerId = 1L,
+                workbookId = 2L,
                 question = "문제222",
                 answer = "정답222",
                 categoryId = 5L,
@@ -331,6 +355,7 @@ class QuizServiceTest : IntegrationTest() {
             QuizEntity(
                 id = 3L,
                 writerId = 1L,
+                workbookId = 3L,
                 question = "문제333",
                 answer = "정답333",
                 categoryId = 5L,
@@ -344,11 +369,10 @@ class QuizServiceTest : IntegrationTest() {
             GameEntity(
                 roomId = 1L,
                 winnerId = 2L,
+                gameType = GameType.SINGLE,
                 totalQuizCount = 3,
-                categoryId = 3L,
                 startedAt = LocalDateTime.now(),
-                createdAt = null,
-                updatedAt = null
+                createdAt = null
             )
         ).toModel()
 
@@ -359,16 +383,15 @@ class QuizServiceTest : IntegrationTest() {
                 totalCount = 3,
                 correctCount = 2,
                 ranking = 1,
-                createdAt = null,
-                updatedAt = null
+                createdAt = null
             )
         ).toModel().id
 
         gameQuizJpaRepository.saveAll(
             listOf(
-                GameQuizEntity(id = GameQuizId(gameId = savedGame.id, quizId = quiz1.id)),
-                GameQuizEntity(id = GameQuizId(gameId = savedGame.id, quizId = quiz2.id)),
-                GameQuizEntity(id = GameQuizId(gameId = savedGame.id, quizId = quiz3.id))
+                GameQuizEntity(gameId = savedGame.id, quizId = quiz1.id),
+                GameQuizEntity(gameId = savedGame.id, quizId = quiz2.id),
+                GameQuizEntity(gameId = savedGame.id, quizId = quiz3.id)
             )
         )
 

@@ -17,6 +17,7 @@ import yjh.cstar.room.domain.Validator.Companion.MIN_CAPACITY
  * 30 ~ 39 : Game 도메인
  * 40 ~ 49 : Play 도메인
  * 50 ~ 59 : Chat 도메인
+ * 60 ~ 69 : Workbook 도메인
  */
 enum class ApiErrorCode(
     override val httpStatus: HttpStatus,
@@ -49,10 +50,15 @@ enum class ApiErrorCode(
     CONFLICT_MEMBER(HttpStatus.CONFLICT, 40910, "회원이 이미 존재합니다."),
 
     // Quiz
-    QUIZ_CATEGORY_INVALID(HttpStatus.BAD_REQUEST, 40020, "지원하지 않는 퀴즈 카테고리 입니다."),
+    QUIZ_CATEGORY_INVALID(HttpStatus.BAD_REQUEST, 40020, "지원하지 않는 퀴즈 카테고리입니다."),
     QUIZ_FILTER_INVALID(HttpStatus.BAD_REQUEST, 40021, "유효하지 않은 퀴즈 필터입니다."),
 
     // Game
+    GAME_TYPE_INVALID(HttpStatus.BAD_REQUEST, 40030, "지원하지 않는 게임 타입입니다."),
+
     // Play
     // Chat
+
+    // Workbook
+    WORK_BOOK_TYPE_INVALID(HttpStatus.BAD_REQUEST, 40060, "지원하지 않는 워크북 타입입니다."),
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.transaction.annotation.Transactional
 import yjh.cstar.IntegrationTest
 import yjh.cstar.game.domain.GameResultCreateCommand
+import yjh.cstar.game.domain.GameType
 import yjh.cstar.game.infrastructure.jpa.GameJpaRepository
 import yjh.cstar.game.infrastructure.jpa.GameResultJpaRepository
 import yjh.cstar.room.domain.RoomStatus
@@ -35,6 +36,7 @@ class GameResultServiceTest : IntegrationTest() {
         // given
         val roomId = roomJpaRepository.save(
             RoomEntity(
+                ownerId = 1L,
                 maxCapacity = 5,
                 currCapacity = 3,
                 status = RoomStatus.WAITING,
@@ -52,6 +54,7 @@ class GameResultServiceTest : IntegrationTest() {
             ranking,
             roomId,
             2L,
+            GameType.SINGLE,
             10,
             1L,
             LocalDateTime.now()

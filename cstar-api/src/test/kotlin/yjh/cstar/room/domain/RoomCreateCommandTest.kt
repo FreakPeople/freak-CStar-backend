@@ -16,7 +16,7 @@ class RoomCreateCommandTest {
         // given
         val maxCapacity = 5
         // when, then
-        assertDoesNotThrow { RoomCreateCommand(maxCapacity = maxCapacity) }
+        assertDoesNotThrow { RoomCreateCommand(maxCapacity = maxCapacity, ownerId = 1L) }
     }
 
     @Test
@@ -26,7 +26,9 @@ class RoomCreateCommandTest {
 
         // when, then
         invalidCapacity.forEach { maxCapacity ->
-            val exception = assertThrows<BaseException> { RoomCreateCommand(maxCapacity = maxCapacity) }
+            val exception = assertThrows<BaseException> {
+                RoomCreateCommand(maxCapacity = maxCapacity, ownerId = 2L)
+            }
             assertEquals(HttpStatus.BAD_REQUEST, exception.errorCode.httpStatus)
         }
     }

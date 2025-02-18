@@ -57,6 +57,7 @@ class RoomConcurrencyTest : IntegrationTest() {
         // given
         val roomId = roomJpaRepository.save(
             RoomEntity(
+                ownerId = 1L,
                 maxCapacity = 100,
                 currCapacity = 0,
                 status = RoomStatus.WAITING,

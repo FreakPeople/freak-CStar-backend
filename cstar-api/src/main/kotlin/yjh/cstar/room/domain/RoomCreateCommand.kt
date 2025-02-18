@@ -7,6 +7,7 @@ import yjh.cstar.room.domain.Validator.Companion.validate
 
 class RoomCreateCommand(
     val maxCapacity: Int,
+    val ownerId: Long,
 ) {
     init {
         validate(maxCapacity <= MAX_CAPACITY) { ApiErrorCode.MAX_CAPACITY_OUT_OF_RANGE }

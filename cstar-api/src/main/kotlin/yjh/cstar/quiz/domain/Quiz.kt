@@ -8,6 +8,7 @@ class Quiz(
     val question: String,
     val answer: String,
     val categoryId: Long,
+    val workbookId: Long,
     var createdAt: LocalDateTime? = null,
     var updatedAt: LocalDateTime? = null,
     val deletedAt: LocalDateTime? = null,
@@ -18,7 +19,8 @@ class Quiz(
                 writerId = writerId,
                 question = command.question,
                 answer = command.answer,
-                categoryId = command.categoryId
+                categoryId = command.categoryId,
+                workbookId = command.workbookId
             )
         }
     }

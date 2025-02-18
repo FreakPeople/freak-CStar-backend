@@ -9,9 +9,8 @@ interface RoomJoinJpaRepository : JpaRepository<RoomJoinEntity, Long> {
     @Query(
         value = """
             SELECT *
-            FROM room_join
+            FROM room_member_mapping
             WHERE room_id = :roomId
-            ORDER BY joined_at DESC
             LIMIT :currentCapacity
         """,
         nativeQuery = true

@@ -6,10 +6,12 @@ data class QuizCreateRequest(
     val question: String,
     val answer: String,
     val categoryId: Long,
+    val workBookId: Long,
 )
 
 fun QuizCreateRequest.toCommand() = QuizCreateCommand(
     question = question,
     answer = answer,
-    categoryId = categoryId
+    categoryId = categoryId,
+    workbookId = workBookId
 )

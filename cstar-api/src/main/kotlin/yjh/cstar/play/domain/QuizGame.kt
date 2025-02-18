@@ -7,6 +7,7 @@ import yjh.cstar.common.util.TimeUtil.Companion.getDuration
 import yjh.cstar.common.util.logging.Logger
 import yjh.cstar.game.application.GameResultService
 import yjh.cstar.game.domain.GameResultCreateCommand
+import yjh.cstar.game.domain.GameType
 import yjh.cstar.play.application.port.AnswerProvider
 import yjh.cstar.play.application.port.GameNotifier
 import yjh.cstar.play.application.port.RankingHandler
@@ -136,6 +137,7 @@ class QuizGame(
             ranking.getRanking(),
             roomId,
             winnerId,
+            GameType.SINGLE,
             roomQuizSet.getSize(),
             categoryId,
             gameStartedAt

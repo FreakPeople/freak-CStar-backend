@@ -6,6 +6,7 @@ data class GameResultCreateCommand(
     val ranking: LinkedHashMap<String, Int>,
     val roomId: Long,
     val winningPlayerId: Long,
+    val gameType: GameType,
     val totalQuizSize: Int,
     val categoryId: Long,
     val gameStartedAt: LocalDateTime,

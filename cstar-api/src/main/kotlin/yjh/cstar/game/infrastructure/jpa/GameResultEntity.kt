@@ -8,17 +8,16 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.springframework.data.annotation.CreatedDate
-import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import yjh.cstar.game.domain.GameResult
 import java.time.LocalDateTime
 
 @EntityListeners(AuditingEntityListener::class)
-@Table(name = "member_game_result")
+@Table(name = "member_game_history")
 @Entity
 class GameResultEntity(
     @Id
-    @Column(name = "member_game_result_id")
+    @Column(name = "member_game_history_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private val id: Long = 0,
 
@@ -41,10 +40,6 @@ class GameResultEntity(
     @Column(name = "created_at", nullable = false)
     private var createdAt: LocalDateTime?,
 
-    @LastModifiedDate
-    @Column(name = "updated_at", nullable = false)
-    private var updatedAt: LocalDateTime?,
-
     @Column(name = "deleted_at")
     private val deletedAt: LocalDateTime? = null,
 ) {
@@ -58,7 +53,6 @@ class GameResultEntity(
                 correctCount = gameResult.correctCount,
                 ranking = gameResult.ranking,
                 createdAt = gameResult.createdAt,
-                updatedAt = gameResult.updatedAt,
                 deletedAt = gameResult.deletedAt
             )
         }
@@ -72,7 +66,6 @@ class GameResultEntity(
             correctCount = this.correctCount,
             ranking = this.ranking,
             createdAt = this.createdAt,
-            updatedAt = this.updatedAt,
             deletedAt = this.deletedAt
         )
     }
