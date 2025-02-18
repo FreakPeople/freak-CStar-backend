@@ -4,18 +4,17 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.transaction.annotation.Transactional
 import yjh.cstar.IntegrationTest
+import yjh.cstar.game.domain.GameType
 import yjh.cstar.game.infrastructure.jpa.GameEntity
 import yjh.cstar.game.infrastructure.jpa.GameJpaRepository
+import yjh.cstar.game.infrastructure.jpa.GameQuizEntity
+import yjh.cstar.game.infrastructure.jpa.GameQuizJpaRepository
 import yjh.cstar.game.infrastructure.jpa.GameResultEntity
 import yjh.cstar.game.infrastructure.jpa.GameResultJpaRepository
 import yjh.cstar.member.infrastructure.jpa.MemberEntity
 import yjh.cstar.member.infrastructure.jpa.MemberJpaRepository
-import yjh.cstar.quiz.infrastructure.jpa.GameQuizEntity
-import yjh.cstar.quiz.infrastructure.jpa.GameQuizId
-import yjh.cstar.quiz.infrastructure.jpa.GameQuizJpaRepository
 import yjh.cstar.quiz.infrastructure.jpa.QuizEntity
 import yjh.cstar.quiz.infrastructure.jpa.QuizJpaRepository
 import yjh.cstar.room.domain.RoomStatus
@@ -80,6 +79,7 @@ class JpaTest : IntegrationTest() {
         // given
         roomJpaRepository.save(
             RoomEntity(
+                ownerId = 1L,
                 maxCapacity = 5,
                 currCapacity = 3,
                 status = RoomStatus.WAITING,
@@ -103,6 +103,7 @@ class JpaTest : IntegrationTest() {
         // given
         val roomId = roomJpaRepository.save(
             RoomEntity(
+                ownerId = 1L,
                 maxCapacity = 5,
                 currCapacity = 3,
                 status = RoomStatus.WAITING,
@@ -126,8 +127,7 @@ class JpaTest : IntegrationTest() {
         roomJoinJpaRepository.save(
             RoomJoinEntity(
                 roomId = 1L,
-                playerId = 1L,
-                joinedAt = LocalDateTime.now()
+                playerId = 1L
             )
         )
 
@@ -148,11 +148,10 @@ class JpaTest : IntegrationTest() {
             GameEntity(
                 roomId = 1L,
                 winnerId = 1L,
+                gameType = GameType.SINGLE,
                 totalQuizCount = 5,
-                categoryId = 2L,
                 startedAt = LocalDateTime.now(),
-                createdAt = LocalDateTime.now(),
-                updatedAt = LocalDateTime.now()
+                createdAt = LocalDateTime.now()
             )
         )
 
@@ -176,8 +175,7 @@ class JpaTest : IntegrationTest() {
                 totalCount = 5,
                 correctCount = 5,
                 ranking = 1,
-                createdAt = LocalDateTime.now(),
-                updatedAt = LocalDateTime.now()
+                createdAt = LocalDateTime.now()
             )
         )
 
@@ -200,6 +198,7 @@ class JpaTest : IntegrationTest() {
                 question = "question",
                 answer = "answer",
                 categoryId = 2L,
+                workbookId = 1L,
                 createdAt = LocalDateTime.now(),
                 updatedAt = LocalDateTime.now()
             )
@@ -218,16 +217,20 @@ class JpaTest : IntegrationTest() {
     @Test
     fun `GameQuiz Entity 연결 테스트`() {
         // given
-        val gameQuizId = GameQuizId(1L, 1L)
-        gameQuizJpaRepository.save(GameQuizEntity(id = gameQuizId))
+        gameQuizJpaRepository.save(
+            GameQuizEntity(
+                gameId = 1L,
+                quizId = 2L
+            )
+        )
 
         // when
-        val gameQuiz = gameQuizJpaRepository.findByIdOrNull(GameQuizId(1L, 1L))
+        val gameQuizzes = gameQuizJpaRepository.findAll()
 
         // then
-        assertNotNull(gameQuiz).also {
-            assertEquals(1L, gameQuiz.id.gameId)
-            assertEquals(1L, gameQuiz.id.quizId)
-        }
+        assertAll(
+            { assertNotNull(gameQuizzes) },
+            { assertEquals(1, gameQuizzes.size) }
+        )
     }
 }
