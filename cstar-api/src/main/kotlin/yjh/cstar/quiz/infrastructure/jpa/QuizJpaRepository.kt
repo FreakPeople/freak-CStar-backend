@@ -11,7 +11,7 @@ interface QuizJpaRepository : JpaRepository<QuizEntity, Long> {
         value = """
             SELECT *
             FROM quiz
-            WHERE category_id = :quizCategoryId
+            WHERE quiz.quiz_category_id = :quizCategoryId
                 AND deleted_at IS NULL
             ORDER BY RAND()
             LIMIT :totalQuestions
@@ -36,8 +36,8 @@ interface QuizJpaRepository : JpaRepository<QuizEntity, Long> {
             WHERE q.deleted_at IS NULL
               AND q.quiz_id IN (
                   SELECT gq.quiz_id
-                  FROM game_quiz gq
-                  JOIN member_game_result mgr ON mgr.game_id = gq.game_id
+                  FROM game_quiz_mapping gq
+                  JOIN member_game_history mgr ON mgr.game_id = gq.game_id
                   WHERE mgr.member_id = :memberId
                     AND mgr.total_count > 0
               )

@@ -4,4 +4,5 @@ class QuizCreateCommand(
     val question: String,
     val answer: String,
     val categoryId: Long,
+    val workbookId: Long,
 )
