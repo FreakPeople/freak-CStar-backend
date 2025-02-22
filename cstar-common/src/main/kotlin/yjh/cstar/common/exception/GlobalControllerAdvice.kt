@@ -1,17 +1,25 @@
 package yjh.cstar.common.exception
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import yjh.cstar.common.response.ErrorResponse
-import yjh.cstar.common.util.logging.Logger
+import yjh.cstar.common.util.logging2.RequestLogTrace
+import yjh.cstar.common.util.logging2.TraceId
 
 @RestControllerAdvice
-class GlobalControllerAdvice {
+class GlobalControllerAdvice(
+    val requestLogTrace: RequestLogTrace,
+) {
+
+    private val logger: Logger = LoggerFactory.getLogger(GlobalControllerAdvice::class.java)
 
     @ExceptionHandler(BaseException::class)
     fun handleBaseException(e: BaseException): ResponseEntity<ErrorResponse> {
-        Logger.error("[ERROR] $e")
+        printErrorLog(e)
+
         val errorCode = e.errorCode
         return ResponseEntity.ok(
             ErrorResponse(
@@ -24,7 +32,8 @@ class GlobalControllerAdvice {
 
     @ExceptionHandler(Exception::class)
     fun handleException(e: Exception): ResponseEntity<ErrorResponse> {
-        Logger.error("[ERROR] $e")
+        printErrorLog(e)
+
         return ResponseEntity.ok(
             ErrorResponse(
                 status = CommonErrorCode.INTERNAL_SERVER_ERROR,
@@ -32,5 +41,11 @@ class GlobalControllerAdvice {
                 message = "서버 내부 에러"
             )
         )
+    }
+
+    private fun printErrorLog(e: Exception) {
+        val traceId: TraceId = requestLogTrace.getTraceId()
+        logger.error("[{}] {}", traceId.uuid, e.toString())
+        requestLogTrace.removeTraceHolder()
     }
 }
