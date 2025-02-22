@@ -67,7 +67,7 @@ class RequestLogTrace(
         traceIdHolder.remove()
     }
 
-    fun getTraceId(): TraceId {
+    fun getTraceId(): TraceId? {
         return traceIdHolder.get()
     }
 }

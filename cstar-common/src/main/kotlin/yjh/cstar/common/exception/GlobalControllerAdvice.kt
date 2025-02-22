@@ -44,8 +44,12 @@ class GlobalControllerAdvice(
     }
 
     private fun printErrorLog(e: Exception) {
-        val traceId: TraceId = requestLogTrace.getTraceId()
-        logger.error("[{}] {}", traceId.uuid, e.toString())
+        val traceId: TraceId? = requestLogTrace.getTraceId()
+        if (traceId == null) {
+            logger.error("UNEXPECTED ERROR : {}", e.toString())
+            return
+        }
+        logger.error("[{}] LOGGING ERROR : {}", traceId.uuid, e.toString())
         requestLogTrace.removeTraceHolder()
     }
 }
