@@ -2,6 +2,7 @@ package yjh.cstar.common.util.logging2
 
 import org.slf4j.Logger
 import org.springframework.stereotype.Component
+import yjh.cstar.common.constant.Icon
 
 @Component
 class RequestLogTrace(
@@ -10,7 +11,6 @@ class RequestLogTrace(
     companion object {
         val START_PREFIX = "-->"
         val END_PREFIX = "<--"
-        val EXCEPTION_PREFIX = "<X-"
     }
 
     override fun begin(message: String, logger: Logger): TraceStartInfo {
@@ -43,24 +43,20 @@ class RequestLogTrace(
         if (traceId.isFirstLevel()) {
             traceIdHolder.remove()
         } else {
-            traceIdHolder.set(traceId.prevTraceId())
+            val prevTraceId = traceId.prevTraceId()
+            traceIdHolder.set(prevTraceId)
         }
     }
 
-    override fun exception(startStatus: TraceStartInfo, e: Exception, logger: Logger) {
-        val traceId = startStatus.traceId
-        val intervalTimeMs = System.currentTimeMillis() - startStatus.startTime
+    override fun exception(message: String, logger: Logger) {
+        val traceId = traceIdHolder.get()
+        if (traceId.hasErrorStatus()) {
+            return
+        }
 
-        logger.info(
-            "[{}] {}{} time={}ms exception={}",
-            traceId.uuid,
-            "  ".repeat(traceId.level) + "|" + EXCEPTION_PREFIX,
-            startStatus.message,
-            intervalTimeMs,
-            e.message
-        )
+        logger.info("[{}] ${Icon.ERROR.value} LOGGING ERROR ${Icon.ERROR.value} : {}", traceId.uuid, message)
 
-        traceIdHolder.set(traceId.prevTraceId())
+        traceIdHolder.set(TraceId.changeStatusToError())
     }
 
     fun removeTraceHolder() {

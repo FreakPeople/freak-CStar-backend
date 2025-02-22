@@ -33,7 +33,9 @@ class MemberService(
         val encodedPassword = passwordEncryptor.encode(command.password)
 
         val member = Member.create(command, encodedPassword)
-        return memberRepository.save(member).id
+        val savedMember = memberRepository.save(member)
+
+        return savedMember.id
     }
 
     private fun checkNicknameDuplicated(nickname: String) {

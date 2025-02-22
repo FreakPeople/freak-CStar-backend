@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import yjh.cstar.common.constant.Icon
 import yjh.cstar.common.response.ErrorResponse
 import yjh.cstar.common.util.logging2.RequestLogTrace
 import yjh.cstar.common.util.logging2.TraceId
@@ -13,7 +14,6 @@ import yjh.cstar.common.util.logging2.TraceId
 class GlobalControllerAdvice(
     val requestLogTrace: RequestLogTrace,
 ) {
-
     private val logger: Logger = LoggerFactory.getLogger(GlobalControllerAdvice::class.java)
 
     @ExceptionHandler(BaseException::class)
@@ -46,10 +46,14 @@ class GlobalControllerAdvice(
     private fun printErrorLog(e: Exception) {
         val traceId: TraceId? = requestLogTrace.getTraceId()
         if (traceId == null) {
-            logger.error("UNEXPECTED ERROR : {}", e.toString())
+            printErrorLog("UNEXPECTED ERROR", e)
             return
         }
-        logger.error("[{}] LOGGING ERROR : {}", traceId.uuid, e.toString())
+        printErrorLog("LOGGING ERROR", e)
         requestLogTrace.removeTraceHolder()
+    }
+
+    private fun printErrorLog(message: String, e: Exception) {
+        logger.error("${Icon.ERROR.value} $message ${Icon.ERROR.value}", e)
     }
 }

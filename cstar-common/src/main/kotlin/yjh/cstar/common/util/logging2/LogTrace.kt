@@ -7,5 +7,5 @@ interface LogTrace {
 
     fun end(status: TraceStartInfo, logger: Logger)
 
-    fun exception(status: TraceStartInfo, e: Exception, logger: Logger)
+    fun exception(message: String, logger: Logger)
 }

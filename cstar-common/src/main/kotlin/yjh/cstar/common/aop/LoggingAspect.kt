@@ -9,7 +9,6 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Configuration
 import yjh.cstar.common.util.logging2.LogTrace
-import yjh.cstar.common.util.logging2.TraceStartInfo
 
 @Aspect
 @Configuration
@@ -17,24 +16,25 @@ class LoggingAspect(
     private val trace: LogTrace,
 ) {
     val logger: Logger = LoggerFactory.getLogger(LoggingAspect::class.java)
-    lateinit var traceStartInfo: TraceStartInfo
 
     @Around("@annotation(yjh.cstar.common.aop.annotation.Logging)")
-    fun logAdvice(joinPoint: ProceedingJoinPoint) {
+    fun logAdvice(joinPoint: ProceedingJoinPoint): Any? {
         val traceMessage = createTraceMessage(joinPoint)
-        traceStartInfo = trace.begin(traceMessage, logger)
+        val traceStartInfo = trace.begin(traceMessage, logger)
 
-        joinPoint.proceed()
+        val result = joinPoint.proceed()
 
         trace.end(traceStartInfo, logger)
+        return result
     }
 
     @AfterThrowing("@annotation(yjh.cstar.common.aop.annotation.Logging)", throwing = "e")
     fun logExceptionAdvice(joinPoint: JoinPoint, e: Exception) {
-        trace.exception(traceStartInfo, e, logger)
+        val traceMessage = createTraceMessage(joinPoint)
+        trace.exception(traceMessage, logger)
     }
 
-    private fun createTraceMessage(joinPoint: ProceedingJoinPoint): String {
+    private fun createTraceMessage(joinPoint: JoinPoint): String {
         val className = joinPoint.target.javaClass.name
         val methodName = joinPoint.signature.name
         return "$className.$methodName()"
