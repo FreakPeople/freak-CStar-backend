@@ -33,6 +33,7 @@ class SecurityConfig(
             .authorizeHttpRequests {
                 it.requestMatchers(HttpMethod.POST, "/v1/authenticate").permitAll()
                     .requestMatchers(HttpMethod.POST, "/v1/members").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                     .requestMatchers("/connect/websocket").permitAll()
                     .anyRequest().authenticated()
             }

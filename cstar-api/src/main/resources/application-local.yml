@@ -1,5 +1,9 @@
 server:
   port: 8080
+  # 액츄에이터 메트릭에 톰캣 다양한 설정 보기
+  tomcat:
+    mbeanregistry:
+      enabled: true
 spring:
   config:
     activate:
@@ -41,3 +45,12 @@ game:
     threads:
       max: 300
       core: 200
+
+# 액츄에이터 다양한 기능 보기
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+

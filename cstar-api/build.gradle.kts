@@ -3,26 +3,29 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 dependencies {
     implementation(project(":cstar-common"))
 
-    // flyway
-    implementation("org.flywaydb:flyway-core")
-    implementation("org.flywaydb:flyway-mysql")
-
-    // JPA
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-
-    // websocket
-    implementation("org.springframework.boot:spring-boot-starter-websocket")
-
-    // redis
-    implementation("org.springframework.boot:spring-boot-starter-data-redis")
-
     // web
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
+    // actuator
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+
+    // websocket
+    implementation("org.springframework.boot:spring-boot-starter-websocket")
+
     // security
     implementation("org.springframework.boot:spring-boot-starter-security")
+
+    // JPA
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+
+    // redis
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+
+    // flyway
+    implementation("org.flywaydb:flyway-core")
+    implementation("org.flywaydb:flyway-mysql")
 
     // mysql
     runtimeOnly("com.mysql:mysql-connector-j")
