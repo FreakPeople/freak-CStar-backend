@@ -3,11 +3,13 @@ package yjh.cstar.quiz.infrastructure
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
+import yjh.cstar.common.aop.annotation.Logging
 import yjh.cstar.quiz.application.port.QuizRepository
 import yjh.cstar.quiz.domain.Quiz
 import yjh.cstar.quiz.infrastructure.jpa.QuizEntity
 import yjh.cstar.quiz.infrastructure.jpa.QuizJpaRepository
 
+@Logging
 @Repository
 class QuizRepositoryAdapter(
     private val quizJpaRepository: QuizJpaRepository,

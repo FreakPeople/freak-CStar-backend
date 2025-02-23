@@ -10,10 +10,12 @@ import yjh.cstar.auth.jwt.TokenProvider
 import yjh.cstar.auth.presentation.request.LoginRequest
 import yjh.cstar.auth.presentation.response.JwtTokenResponse
 import yjh.cstar.common.ApiErrorCode
+import yjh.cstar.common.aop.annotation.Logging
 import yjh.cstar.common.exception.BaseException
 import yjh.cstar.common.response.Response
 import yjh.cstar.member.application.MemberService
 
+@Logging
 @RestController
 @RequestMapping("/v1")
 class AuthController(

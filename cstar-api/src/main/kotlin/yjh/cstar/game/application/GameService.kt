@@ -2,6 +2,7 @@ package yjh.cstar.game.application
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import yjh.cstar.common.aop.annotation.Logging
 import yjh.cstar.game.domain.GameStartCommand
 import yjh.cstar.member.application.MemberService
 import yjh.cstar.play.application.request.QuizDto
@@ -9,6 +10,7 @@ import yjh.cstar.play.presentation.GamePlayEngine
 import yjh.cstar.quiz.application.QuizService
 import yjh.cstar.room.application.RoomService
 
+@Logging
 @Transactional(readOnly = true)
 @Service
 class GameService(

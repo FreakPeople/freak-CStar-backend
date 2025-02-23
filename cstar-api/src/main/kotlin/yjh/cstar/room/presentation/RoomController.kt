@@ -12,12 +12,14 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import yjh.cstar.auth.jwt.TokenProvider
+import yjh.cstar.common.aop.annotation.Logging
 import yjh.cstar.common.response.Response
 import yjh.cstar.room.application.RoomService
 import yjh.cstar.room.presentation.request.RoomCreateRequest
 import yjh.cstar.room.presentation.request.toCommand
 import yjh.cstar.room.presentation.response.RoomResponse
 
+@Logging
 @RestController
 @RequestMapping("/v1")
 class RoomController(

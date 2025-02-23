@@ -15,13 +15,13 @@ import yjh.cstar.member.presentation.reponse.MemberResponse
 import yjh.cstar.member.presentation.request.MemberCreateRequest
 import yjh.cstar.member.presentation.request.toCommand
 
+@Logging
 @RestController
 @RequestMapping("/v1")
 class MemberController(
     private val memberService: MemberService,
     private val tokenProvider: TokenProvider,
 ) {
-    @Logging
     @PostMapping("/members")
     fun create(
         @RequestBody request: MemberCreateRequest,

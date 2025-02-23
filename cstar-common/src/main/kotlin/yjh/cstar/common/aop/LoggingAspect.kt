@@ -17,7 +17,7 @@ class LoggingAspect(
 ) {
     val logger: Logger = LoggerFactory.getLogger(LoggingAspect::class.java)
 
-    @Around("@annotation(yjh.cstar.common.aop.annotation.Logging)")
+    @Around("@within(yjh.cstar.common.aop.annotation.Logging)")
     fun logAdvice(joinPoint: ProceedingJoinPoint): Any? {
         val traceMessage = createTraceMessage(joinPoint)
         val traceStartInfo = trace.begin(traceMessage, logger)
@@ -28,7 +28,7 @@ class LoggingAspect(
         return result
     }
 
-    @AfterThrowing("@annotation(yjh.cstar.common.aop.annotation.Logging)", throwing = "e")
+    @AfterThrowing("@within(yjh.cstar.common.aop.annotation.Logging)", throwing = "e")
     fun logExceptionAdvice(joinPoint: JoinPoint, e: Exception) {
         val traceMessage = createTraceMessage(joinPoint)
         trace.exception(traceMessage, logger)

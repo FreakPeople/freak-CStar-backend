@@ -8,6 +8,7 @@ import yjh.cstar.member.domain.Member
 import yjh.cstar.member.infrastructure.jpa.MemberEntity
 import yjh.cstar.member.infrastructure.jpa.MemberJpaRepository
 
+@Logging
 @Repository
 class MemberRepositoryAdapter(
     private val memberJpaRepository: MemberJpaRepository,
@@ -25,7 +26,6 @@ class MemberRepositoryAdapter(
         return memberJpaRepository.findAllById(playerIds).map { it.toModel() }
     }
 
-    @Logging
     override fun save(member: Member): Member {
         return memberJpaRepository.save(MemberEntity.from(member))
             .toModel()

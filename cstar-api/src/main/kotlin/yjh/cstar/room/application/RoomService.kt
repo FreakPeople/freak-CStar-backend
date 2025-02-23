@@ -4,6 +4,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import yjh.cstar.common.ApiErrorCode
+import yjh.cstar.common.aop.annotation.Logging
 import yjh.cstar.common.exception.BaseException
 import yjh.cstar.room.application.port.RoomJoinRepository
 import yjh.cstar.room.application.port.RoomRepository
@@ -11,6 +12,7 @@ import yjh.cstar.room.domain.Room
 import yjh.cstar.room.domain.RoomCreateCommand
 import yjh.cstar.room.domain.RoomJoin
 
+@Logging
 @Transactional(readOnly = true)
 @Service
 class RoomService(

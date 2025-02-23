@@ -7,12 +7,14 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import yjh.cstar.category.infrastructure.jpa.CategoryJpaRepository
 import yjh.cstar.common.ApiErrorCode
+import yjh.cstar.common.aop.annotation.Logging
 import yjh.cstar.common.exception.BaseException
 import yjh.cstar.quiz.application.port.QuizFilter.QuizFilterFactory
 import yjh.cstar.quiz.application.port.QuizRepository
 import yjh.cstar.quiz.domain.Quiz
 import yjh.cstar.quiz.domain.QuizCreateCommand
 
+@Logging
 @Transactional(readOnly = true)
 @Service
 class QuizService(

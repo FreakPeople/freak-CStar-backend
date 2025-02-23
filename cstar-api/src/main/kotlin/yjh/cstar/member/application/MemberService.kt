@@ -11,6 +11,7 @@ import yjh.cstar.member.domain.Member
 import yjh.cstar.member.domain.MemberCreateCommand
 
 @Transactional(readOnly = true)
+@Logging
 @Service
 class MemberService(
     private val memberRepository: MemberRepository,
@@ -24,7 +25,6 @@ class MemberService(
 
     fun retrieveAll(playerIds: List<Long>) = memberRepository.findByIdIn(playerIds)
 
-    @Logging
     @Transactional
     fun create(command: MemberCreateCommand): Long {
         checkEmailDuplicated(command.email)

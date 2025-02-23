@@ -1,5 +1,5 @@
 package yjh.cstar.common.aop.annotation
 
-@Target(AnnotationTarget.FUNCTION)
+@Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class Logging

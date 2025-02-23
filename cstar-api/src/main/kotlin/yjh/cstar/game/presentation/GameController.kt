@@ -7,11 +7,13 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import yjh.cstar.auth.jwt.TokenProvider
+import yjh.cstar.common.aop.annotation.Logging
 import yjh.cstar.common.response.Response
 import yjh.cstar.game.application.GameService
 import yjh.cstar.game.presentation.request.GameStartRequest
 import yjh.cstar.game.presentation.request.toCommand
 
+@Logging
 @RestController
 @RequestMapping("/v1")
 class GameController(

@@ -33,7 +33,7 @@ class RequestLogTrace(
         val intervalTimeMs = System.currentTimeMillis() - startStatus.startTime
 
         logger.info(
-            "[{}] {}{} time={}ms",
+            "[{}] {}{} time = {}ms",
             traceId.uuid,
             "  ".repeat(traceId.level) + "|" + END_PREFIX,
             startStatus.message,

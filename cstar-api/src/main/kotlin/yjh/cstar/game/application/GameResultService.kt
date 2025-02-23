@@ -2,6 +2,7 @@ package yjh.cstar.game.application
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import yjh.cstar.common.aop.annotation.Logging
 import yjh.cstar.game.application.port.GameRepository
 import yjh.cstar.game.application.port.GameResultRepository
 import yjh.cstar.game.domain.Game
@@ -9,6 +10,7 @@ import yjh.cstar.game.domain.GameResultCreateCommand
 import yjh.cstar.game.domain.GameResults
 import yjh.cstar.room.application.RoomService
 
+@Logging
 @Service
 class GameResultService(
     private val gameRepository: GameRepository,

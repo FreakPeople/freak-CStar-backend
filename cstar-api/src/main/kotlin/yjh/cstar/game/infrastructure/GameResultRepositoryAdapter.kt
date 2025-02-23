@@ -1,11 +1,13 @@
 package yjh.cstar.game.infrastructure
 
 import org.springframework.stereotype.Repository
+import yjh.cstar.common.aop.annotation.Logging
 import yjh.cstar.game.application.port.GameResultRepository
 import yjh.cstar.game.domain.GameResult
 import yjh.cstar.game.infrastructure.jpa.GameResultEntity
 import yjh.cstar.game.infrastructure.jpa.GameResultJpaRepository
 
+@Logging
 @Repository
 class GameResultRepositoryAdapter(
     private val gameResultJpaRepository: GameResultJpaRepository,

@@ -1,11 +1,13 @@
 package yjh.cstar.room.infrastructure
 
 import org.springframework.stereotype.Repository
+import yjh.cstar.common.aop.annotation.Logging
 import yjh.cstar.room.application.port.RoomJoinRepository
 import yjh.cstar.room.domain.RoomJoin
 import yjh.cstar.room.infrastructure.jpa.RoomJoinEntity
 import yjh.cstar.room.infrastructure.jpa.RoomJoinJpaRepository
 
+@Logging
 @Repository
 class RoomJoinRepositoryAdapter(
     private val roomJoinJpaRepository: RoomJoinJpaRepository,
