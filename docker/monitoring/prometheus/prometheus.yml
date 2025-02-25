@@ -1,0 +1,8 @@
+global:
+  scrape_interval: 5s # 5초마다 metric을 pulling
+  evaluation_interval: 5s
+scrape_configs:
+  - job_name: 'cstar-api-server'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['host.docker.internal:8080'] # 해당 타겟의 도메인과 포트

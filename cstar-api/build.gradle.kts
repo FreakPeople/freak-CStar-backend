@@ -27,6 +27,9 @@ dependencies {
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-mysql")
 
+    // prometheus
+    implementation("io.micrometer:micrometer-registry-prometheus")
+
     // mysql
     runtimeOnly("com.mysql:mysql-connector-j")
 
