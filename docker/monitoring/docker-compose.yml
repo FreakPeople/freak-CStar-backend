@@ -1,0 +1,25 @@
+services:
+  prometheus:
+    image: prom/prometheus:v3.2.0
+    container_name: cstar_prometheus
+    volumes:
+      - type: bind
+        source: ./prometheus/prometheus.yml
+        target: /etc/prometheus/prometheus.yml
+        read_only: true
+    ports:
+      - "9090:9090"
+    networks:
+      - cstar-monitoring
+  grafana:
+    image: grafana/grafana:11.5.2
+    container_name: cstar_grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - cstar-monitoring
+    depends_on:
+      - prometheus
+
+networks:
+  cstar-monitoring:
