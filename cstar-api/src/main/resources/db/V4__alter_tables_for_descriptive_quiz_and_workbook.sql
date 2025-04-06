@@ -1,4 +1,5 @@
 -- 1. 기존 category 테이블을 quiz_category로 변경
+RENAME TABLE category TO quiz_category;
 ALTER TABLE quiz_category MODIFY category_id BIGINT NOT NULL AUTO_INCREMENT COMMENT '퀴즈 카테고리 ID';
 ALTER TABLE quiz_category CHANGE category category_name VARCHAR(100) NOT NULL COMMENT '카테고리명';
 ALTER TABLE quiz_category ADD COLUMN created_at TIMESTAMP NOT NULL COMMENT '테이블 생성 시간';
